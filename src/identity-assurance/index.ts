@@ -1,5 +1,7 @@
 export * from './claim-proofs.js'
 export * from './converters.js'
+export * from './identity-evidence.js'
 export * from './schemas.js'
+export * from './tenant-trust.js'
 export * from './types.js'
 export * from './vocabulary.js'

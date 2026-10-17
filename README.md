@@ -14,14 +14,19 @@ The package keeps three concerns separate:
 
 ```ts
 import {
+  ClearingHouseTenantCapability,
   ClaimProofFormat,
+  EudiPidClaim,
   IdentityAttestationCapability,
+  IdentityEvidenceType,
   SchemaOrgIdentityClaim,
+  defineAuthorizedWorkforceIdentityEvidenceStatement,
   defineClaimProofBinding,
-  eudiPidAgeOverClaimName,
   importOidc4IdaToSchemaOrgFlatClaims,
   projectSchemaOrgFlatClaimsToOidc4Ida,
+  selectAuthoritativeTenantEndpoint,
   verifiedClaimsJsonSchema,
+  workforceIdentityEvidenceStatementJsonSchema,
 } from 'antifraud-data-utils-ts/identity-assurance'
 ```
 
@@ -36,6 +41,25 @@ The initial governed projection covers the registered OpenID identity claims
 that have direct Schema.org equivalents. An unknown mapping fails on export.
 Import reports unsupported claims and conflicting existing values instead of
 discarding or overwriting them.
+
+An authorized workforce member may record identity evidence only when trusted
+server context supplies the member assignment, a controller-governed work
+group, an active Consent reference and `identity.evidence.record`. The form
+collects the evidence observation; it does not select the actor, grant the
+permission or sign a credential. Raw identity documents are excluded from the
+statement. Attachments are referenced by digest.
+
+The home tenant is the initial trust root. An employer or index-provider tenant
+publishes its own authoritative endpoint. A different source tenant is usable
+only after the home tenant explicitly trusts it and the source advertises the
+required capability. The source tenant reads its stored record before issuing
+an attestation; caller-authored claims are never signed as authoritative data.
+
+EUDI Person Identification Data and OpenID Identity Assurance are related but
+different contracts. For example, EUDI PID defines `birth_date` and
+`age_over_18`, while the OpenID `verified_claims.claims` projection uses the
+registered `birthdate` claim. OpenID4VP presents credentials and OpenID4VCI
+issues them; OpenID Identity Assurance describes verified claims and evidence.
 
 ## Repository boundary
 

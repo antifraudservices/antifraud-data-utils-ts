@@ -1,4 +1,7 @@
 export const IdentityAttestationCapability = Object.freeze({
+  CreateSubject: 'identity.subject.create',
+  UpdateSubject: 'identity.subject.update',
+  RecordEvidence: 'identity.evidence.record',
   VerifyClaim: 'identity.claim.verify',
   AttestSubject: 'identity.subject.attest',
   AttestRelationship: 'identity.relationship.attest',
@@ -34,6 +37,20 @@ export const OidcIdentityClaim = Object.freeze({
 
 export type OidcIdentityClaimValue =
   typeof OidcIdentityClaim[keyof typeof OidcIdentityClaim]
+
+/**
+ * EUDI Person Identification Data elements are credential data elements, not
+ * aliases for the OpenID Identity Assurance `verified_claims` member names.
+ */
+export const EudiPidClaim = Object.freeze({
+  FamilyName: 'family_name',
+  GivenName: 'given_name',
+  BirthDate: 'birth_date',
+  AgeOver18: 'age_over_18',
+} as const)
+
+export type EudiPidClaimValue =
+  typeof EudiPidClaim[keyof typeof EudiPidClaim]
 
 export const SchemaOrgToOidcIdentityClaim = Object.freeze({
   [SchemaOrgIdentityClaim.PersonName]: OidcIdentityClaim.Name,

@@ -13,3 +13,11 @@ All notable changes to this project will be documented in this file.
 - Normative identity verification and attestation contract.
 - Claim-to-proof bindings with multiple proof references and privacy-preserving
   age-over predicates.
+- Controller-governed workforce evidence statements requiring an authenticated
+  assignment, operational group, active Consent and exact capability.
+- Form-ready JSON Schema that excludes raw evidence documents and marks
+  server-derived actor and authorization fields read-only.
+- Home-tenant-first Clearing House selection with explicit federation trust
+  for employer and index-provider sources.
+- Explicit separation between EUDI PID data elements and OpenID Identity
+  Assurance claim names.

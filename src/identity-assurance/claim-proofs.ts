@@ -1,4 +1,5 @@
 import {
+  EudiPidClaim,
   SchemaOrgIdentityClaim,
   type SchemaOrgIdentityClaimValue,
 } from './vocabulary.js'
@@ -81,7 +82,10 @@ function assertAgeThreshold(threshold: number): void {
 
 export function eudiPidAgeOverClaimName(threshold: number): `age_over_${number}` {
   assertAgeThreshold(threshold)
-  return `age_over_${threshold}`
+  if (threshold !== 18) {
+    throw new TypeError('The EUDI PID profile only standardizes age_over_18')
+  }
+  return EudiPidClaim.AgeOver18
 }
 
 export function defineClaimProofBinding(input: Readonly<{

@@ -27,6 +27,9 @@ const verificationFixture = Object.freeze({
 
 test('exports product-neutral identity attestation capabilities', () => {
   assert.deepEqual(IdentityAttestationCapability, {
+    CreateSubject: 'identity.subject.create',
+    UpdateSubject: 'identity.subject.update',
+    RecordEvidence: 'identity.evidence.record',
     VerifyClaim: 'identity.claim.verify',
     AttestSubject: 'identity.subject.attest',
     AttestRelationship: 'identity.relationship.attest',
