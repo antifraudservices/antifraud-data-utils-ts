@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add a validated, product-neutral flat-claim projection for subject identity,
+  subject relationships and age-over evidence targets.
+
 ### Added
 
 - Product-neutral identity verification and attestation capabilities.
