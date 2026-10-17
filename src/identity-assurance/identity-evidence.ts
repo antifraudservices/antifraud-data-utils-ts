@@ -104,6 +104,7 @@ export type IdentityEvidenceTarget =
       relationshipType: string
       relatedSubjectReference: string
     }>
+
   | Readonly<{
       kind: 'predicate'
       predicate: typeof IdentityPredicateKind.AgeOver
@@ -112,6 +113,19 @@ export type IdentityEvidenceTarget =
       threshold: number
       result: boolean
     }>
+
+export const IdentityEvidenceTargetClaim = Object.freeze({
+  SubjectReference: 'identity.evidence.subjectReference',
+  Kind: 'identity.evidence.target.kind',
+  ClaimPath: 'identity.evidence.target.claimPath',
+  RelationshipType: 'identity.evidence.target.relationshipType',
+  RelatedSubjectReference: 'identity.evidence.target.relatedSubjectReference',
+  Predicate: 'identity.evidence.target.predicate',
+  SourceSubjectReference: 'identity.evidence.target.sourceSubjectReference',
+  SourceClaimPath: 'identity.evidence.target.sourceClaimPath',
+  Threshold: 'identity.evidence.target.threshold',
+  Result: 'identity.evidence.target.result',
+} as const)
 
 export type AuthenticatedWorkforceEvidenceContext = Readonly<{
   actorReference: string
@@ -239,6 +253,37 @@ function assertEvidenceTarget(target: IdentityEvidenceTarget): void {
     return
   }
   throw new TypeError('Unsupported identity evidence target')
+}
+
+/** Converts one validated target into strings suitable for claims-first indexing. */
+export function toIdentityEvidenceTargetFlatClaims(input: Readonly<{
+  subjectReference: string
+  target: IdentityEvidenceTarget
+}>): Readonly<Record<string, string>> {
+  requireNonEmpty(input.subjectReference, 'subjectReference')
+  assertEvidenceTarget(input.target)
+  const common = {
+    [IdentityEvidenceTargetClaim.SubjectReference]: input.subjectReference,
+    [IdentityEvidenceTargetClaim.Kind]: input.target.kind,
+  }
+  if (input.target.kind === 'subject') return Object.freeze(common)
+  if (input.target.kind === 'claim') return Object.freeze({
+    ...common,
+    [IdentityEvidenceTargetClaim.ClaimPath]: input.target.claimPath,
+  })
+  if (input.target.kind === 'relationship') return Object.freeze({
+    ...common,
+    [IdentityEvidenceTargetClaim.RelationshipType]: input.target.relationshipType,
+    [IdentityEvidenceTargetClaim.RelatedSubjectReference]: input.target.relatedSubjectReference,
+  })
+  return Object.freeze({
+    ...common,
+    [IdentityEvidenceTargetClaim.Predicate]: input.target.predicate,
+    [IdentityEvidenceTargetClaim.SourceSubjectReference]: input.target.sourceSubjectReference,
+    [IdentityEvidenceTargetClaim.SourceClaimPath]: input.target.sourceClaimPath,
+    [IdentityEvidenceTargetClaim.Threshold]: String(input.target.threshold),
+    [IdentityEvidenceTargetClaim.Result]: String(input.target.result),
+  })
 }
 
 /**

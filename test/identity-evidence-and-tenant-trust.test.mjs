@@ -13,12 +13,14 @@ import {
   IdentityPredicateKind,
   OidcIdentityClaim,
   SchemaOrgIdentityClaim,
+  IdentityEvidenceTargetClaim,
   SchemaOrgMediaObjectClaim,
   defineAuthorizedWorkforceIdentityEvidenceStatement,
   eudiPidAgeOverClaimName,
   selectAuthoritativeTenantEndpoint,
   projectEvidenceAttachmentToSchemaOrgMediaObject,
   toSchemaOrgEvidenceMediaFlatClaims,
+  toIdentityEvidenceTargetFlatClaims,
   workforceIdentityEvidenceStatementJsonSchema,
 } from '../dist/identity-assurance/index.js'
 
@@ -163,6 +165,42 @@ test('accepts governed age-over thresholds while reserving the EUDI PID name for
   assert.equal(eudiPidAgeOverClaimName(18), EudiPidClaim.AgeOver18)
   assert.throws(() => eudiPidAgeOverClaimName(19), /only standardizes age_over_18/i)
   assert.throws(() => eudiPidAgeOverClaimName(21), /only standardizes age_over_18/i)
+})
+
+test('projects animal, owner relationship and age-over targets to neutral flat claims', () => {
+  assert.deepEqual(toIdentityEvidenceTargetFlatClaims({
+    subjectReference: 'did:web:person.example:owner',
+    target: {
+      kind: 'predicate',
+      predicate: IdentityPredicateKind.AgeOver,
+      sourceSubjectReference: 'did:web:person.example:owner',
+      sourceClaimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+      threshold: 21,
+      result: true,
+    },
+  }), {
+    [IdentityEvidenceTargetClaim.SubjectReference]: 'did:web:person.example:owner',
+    [IdentityEvidenceTargetClaim.Kind]: 'predicate',
+    [IdentityEvidenceTargetClaim.Predicate]: 'age-over',
+    [IdentityEvidenceTargetClaim.SourceSubjectReference]: 'did:web:person.example:owner',
+    [IdentityEvidenceTargetClaim.SourceClaimPath]: 'org.schema.Person.birthDate',
+    [IdentityEvidenceTargetClaim.Threshold]: '21',
+    [IdentityEvidenceTargetClaim.Result]: 'true',
+  })
+
+  assert.deepEqual(toIdentityEvidenceTargetFlatClaims({
+    subjectReference: 'did:web:animal.example:card',
+    target: {
+      kind: 'relationship',
+      relationshipType: 'owner',
+      relatedSubjectReference: 'did:web:person.example:owner',
+    },
+  }), {
+    [IdentityEvidenceTargetClaim.SubjectReference]: 'did:web:animal.example:card',
+    [IdentityEvidenceTargetClaim.Kind]: 'relationship',
+    [IdentityEvidenceTargetClaim.RelationshipType]: 'owner',
+    [IdentityEvidenceTargetClaim.RelatedSubjectReference]: 'did:web:person.example:owner',
+  })
 })
 
 test('builds workforce identity evidence from controller-governed context instead of caller identity fields', () => {
