@@ -27,8 +27,13 @@ const workforceEvidenceAttachmentSchema = {
   properties: {
     id: { type: 'string', minLength: 1 },
     mediaType: { type: 'string', minLength: 1 },
-    digestAlgorithm: { enum: ['sha-256', 'sha-384', 'sha-512'] },
+    digestAlgorithm: { enum: ['sha-256', 'sha-384', 'sha-512', 'sha3-384'] },
     digest: { type: 'string', minLength: 1 },
+    contentId: {
+      type: 'string',
+      pattern: '^z[1-9A-HJ-NP-Za-km-z]+$',
+      description: 'Optional CIDv1(raw, SHA3-384) encoded with multibase base58btc.',
+    },
   },
   additionalProperties: false,
 } as const

@@ -33,3 +33,5 @@ All notable changes to this project will be documented in this file.
 - Document the DC4EU education and medical credential catalogue, including
   EUHED, Doctor ID, professional suitability, medical training, authority
   separation and draft-schema interoperability risks.
+- Extend digest-bound OpenID Identity Assurance attachment references with
+  negotiated SHA3-384 and validated CIDv1 raw multibase identifiers.

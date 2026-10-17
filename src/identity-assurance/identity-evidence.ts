@@ -17,9 +17,65 @@ export type IdentityEvidenceTypeValue =
 export type IdentityEvidenceAttachmentReference = Readonly<{
   id: string
   mediaType?: string
-  digestAlgorithm: 'sha-256' | 'sha-384' | 'sha-512'
+  digestAlgorithm: 'sha-256' | 'sha-384' | 'sha-512' | 'sha3-384'
   digest: string
+  contentId?: string
 }>
+
+const BASE58BTC_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+
+function decodeBase58btc(value: string): Uint8Array {
+  let decoded = 0n
+  for (const character of value) {
+    const index = BASE58BTC_ALPHABET.indexOf(character)
+    if (index < 0) throw new TypeError('Invalid base58btc character')
+    decoded = decoded * 58n + BigInt(index)
+  }
+  const bytes: number[] = []
+  while (decoded > 0n) {
+    bytes.unshift(Number(decoded & 0xffn))
+    decoded >>= 8n
+  }
+  for (const character of value) {
+    if (character !== '1') break
+    bytes.unshift(0)
+  }
+  return Uint8Array.from(bytes)
+}
+
+/** Validates CIDv1(raw, SHA3-384) encoded with multibase base58btc. */
+export function assertSha3_384EvidenceContentId(contentId: string): void {
+  if (!/^z[1-9A-HJ-NP-Za-km-z]+$/u.test(contentId)) {
+    throw new TypeError('Evidence contentId must be a base58btc multibase CID')
+  }
+  const bytes = decodeBase58btc(contentId.slice(1))
+  if (
+    bytes.length !== 52
+    || bytes[0] !== 0x01
+    || bytes[1] !== 0x55
+    || bytes[2] !== 0x15
+    || bytes[3] !== 0x30
+  ) {
+    throw new TypeError('Evidence contentId must be CIDv1 raw with a SHA3-384 multihash')
+  }
+}
+
+function assertContentIdMatchesDigest(contentId: string, digest: string): void {
+  const cidBytes = decodeBase58btc(contentId.slice(1))
+  let digestBytes: Uint8Array
+  try {
+    digestBytes = Uint8Array.from(atob(digest), character => character.charCodeAt(0))
+  } catch {
+    throw new TypeError('Evidence attachment digest must be base64 encoded')
+  }
+  const cidDigest = cidBytes.slice(4)
+  if (
+    digestBytes.length !== cidDigest.length
+    || digestBytes.some((value, index) => value !== cidDigest[index])
+  ) {
+    throw new TypeError('Evidence attachment digest does not match contentId')
+  }
+}
 
 export type IdentityEvidenceCheck = Readonly<{
   checkMethod: string
@@ -124,6 +180,13 @@ function assertReferenceOnlyEvidence(evidence: IdentityEvidenceInput): void {
   evidence.attachments?.forEach((attachment) => {
     requireNonEmpty(attachment.id, 'evidence.attachments.id')
     requireNonEmpty(attachment.digest, 'evidence.attachments.digest')
+    if (attachment.contentId !== undefined) {
+      assertSha3_384EvidenceContentId(attachment.contentId)
+      if (attachment.digestAlgorithm !== 'sha3-384') {
+        throw new TypeError('A SHA3-384 evidence contentId requires digestAlgorithm sha3-384')
+      }
+      assertContentIdMatchesDigest(attachment.contentId, attachment.digest)
+    }
   })
 }
 

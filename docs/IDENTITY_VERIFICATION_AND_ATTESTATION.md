@@ -243,6 +243,14 @@ The supported OpenID Identity Assurance evidence categories are `document`,
 personally reviews evidence normally records the check and, where applicable,
 a `vouch`; this does not make their statement an issuer-signed credential.
 
+Scanned PDF, PNG, JPEG and TIFF evidence uses the OpenID Identity Assurance
+attachment model rather than Schema.org claims. An interoperable external
+attachment carries a protected URL and a negotiated base64 digest. The
+confidential storage layer may additionally bind the same bytes to
+CIDv1(raw, SHA3-384) in multibase base58btc form. A CID is an integrity and
+retrieval reference; it is not proof that the claimed qualification issuer
+created or validated the document.
+
 ### Employee identity and qualification evidence
 
 A controller or human-resources employee may record evidence about an

@@ -187,14 +187,33 @@ test('rejects embedded identity documents while retaining digest-bound attachmen
         attachments: [{
           id: 'urn:attachment:opaque',
           mediaType: 'application/pdf',
-          digestAlgorithm: 'sha-256',
-          digest: 'opaque-digest',
+          digestAlgorithm: 'sha3-384',
+          digest: 'mJ+lnlA8LeEHHgH2qJjjCt1TmFJWDRmtelW8l7lXsSswcDcGahIuhvPVoXAvQ/PA',
+          contentId: 'zKYrhS8ZkySGc9pjHe8KE4bo1RjKKbjaxatf3zM16DD2hLGPvK3bqbSGvpNYA2qafoUeBYT',
         }],
       }],
     },
   })
 
-  assert.equal(statement.evidence[0].attachments[0].digest, 'opaque-digest')
+  assert.equal(statement.evidence[0].attachments[0].digestAlgorithm, 'sha3-384')
+  assert.match(statement.evidence[0].attachments[0].contentId, /^z/)
+
+  assert.throws(() => defineAuthorizedWorkforceIdentityEvidenceStatement({
+    context: workforceContext,
+    request: {
+      ...evidenceStatementRequest,
+      evidence: [{
+        ...evidenceStatementRequest.evidence[0],
+        attachments: [{
+          id: 'urn:attachment:opaque',
+          mediaType: 'image/tiff',
+          digestAlgorithm: 'sha3-384',
+          digest: 'opaque-digest',
+          contentId: 'z123',
+        }],
+      }],
+    },
+  }), /CIDv1 raw with a SHA3-384 multihash/i)
 })
 
 test('trusts the home tenant endpoint without silently trusting another tenant', () => {

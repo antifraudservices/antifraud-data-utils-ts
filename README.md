@@ -62,6 +62,9 @@ lawful representative authorization remains a distinct optional gate when the
 use case requires it. The form collects the evidence observation; it does not
 select the actor, grant permission or sign a credential. Raw identity documents
 are excluded from the statement. Attachments are referenced by digest.
+OpenID Identity Assurance attachment metadata may additionally bind the same
+bytes to a CIDv1(raw, SHA3-384) encoded with multibase base58btc; the CID is an
+internal content-addressed reference, not a Schema.org qualification claim.
 
 A controller or authorized human-resources employee may use the same governed
 flow to record evidence about an employee's identity or qualifications. When a
