@@ -27,3 +27,6 @@ All notable changes to this project will be documented in this file.
   for employer and index-provider sources.
 - Explicit separation between EUDI PID data elements and OpenID Identity
   Assurance claim names.
+- Neutral professional-qualification contracts using Schema.org flat claims,
+  independent employer, issuer and professional-body proofs, derived trust
+  badges and privacy-minimized ledger anchors.

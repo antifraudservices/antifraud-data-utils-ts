@@ -25,12 +25,18 @@ import {
   EudiPidClaim,
   IdentityAttestationCapability,
   IdentityEvidenceType,
+  QualificationAuthorityKind,
+  QualificationVerificationStatus,
   SchemaOrgIdentityClaim,
+  SchemaOrgQualificationClaim,
+  buildQualificationLedgerAnchor,
+  defineProfessionalQualification,
   defineAuthorizedWorkforceIdentityEvidenceStatement,
   defineClaimProofBinding,
   importOidc4IdaToSchemaOrgFlatClaims,
   projectSchemaOrgFlatClaimsToOidc4Ida,
   selectAuthoritativeTenantEndpoint,
+  toSchemaOrgQualificationFlatClaims,
   verifiedClaimsJsonSchema,
   workforceIdentityEvidenceStatementJsonSchema,
 } from 'antifraud-data-utils-ts/identity-assurance'
@@ -85,6 +91,16 @@ only after the home tenant explicitly trusts it and the source advertises the
 required capability. The source tenant reads its stored record before issuing
 an attestation; caller-authored claims are never signed as authoritative data.
 
+Professional qualifications use product-neutral Schema.org
+`EducationalOccupationalCredential` flat claims. Employer, awarding body and
+professional-body proofs remain independent. The package does not expose a
+health-specific model or a native FHIR projection. Health applications may
+project this neutral contract to their FHIR version in their own data-utility
+layer. `buildQualificationLedgerAnchor` deliberately excludes personal claims,
+qualification values, legal identifiers, credentials, documents and
+signatures; a shared ledger receives only opaque links, a content hash and
+lifecycle metadata.
+
 EUDI Person Identification Data and OpenID Identity Assurance are related but
 different contracts. For example, EUDI PID defines `birth_date` and
 `age_over_18`, while the OpenID `verified_claims.claims` projection uses the
@@ -108,6 +124,8 @@ for the normative model and downstream acceptance requirements.
 - [Schema.org Person](https://schema.org/Person)
 - [Schema.org Action](https://schema.org/Action)
 - [Schema.org AssessAction](https://schema.org/AssessAction)
+- [Schema.org EducationalOccupationalCredential](https://schema.org/EducationalOccupationalCredential)
+- [DC4EU EUDI Wallet large-scale pilot](https://ec.europa.eu/digital-building-blocks/sites/spaces/EUDIGITALIDENTITYWALLET/pages/920064520/LSP-DC4EU)
 
 ## Development
 
