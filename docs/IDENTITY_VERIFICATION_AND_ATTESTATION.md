@@ -89,6 +89,54 @@ Conversion is therefore intentionally not a blind serialization round trip.
 The caller must resolve contradictions and decide whether to create a new
 assertion, correction or attestation.
 
+## Claim proof bindings and selective disclosure
+
+A canonical claim value and the cryptographic material that supports it are
+different records. `ClaimProofBinding` links either one governed claim path or
+one derived predicate to one or more `ClaimProofReference` objects. This is how
+the same claim can be supported by several credentials, registers or signed
+evidence sources without duplicating or overwriting the canonical value.
+
+The reference records the proof format, issuer, credential reference,
+cryptographic binding, status and optional verification method, validity and
+disclosure digest. It never embeds a raw wallet presentation, SD-JWT
+Disclosure, identity document or signing key in the flat claim.
+
+For an SD-JWT Verifiable Credential, “proof for a claim” does not mean a
+separate digital signature for every field. The issuer signs an SD-JWT whose
+payload commits to selectively disclosable claims through digests. A
+Disclosure reveals a selected claim and is validated against the signed
+digest. A presentation may additionally use a Key Binding JWT to prove holder
+control. One proof reference therefore points to the signed credential and may
+identify the applicable disclosure digest; it does not copy the Disclosure.
+
+ISO/IEC 18013-5 mdoc issuer-signed data elements, W3C Verifiable Credential
+proofs, OpenID Identity Assurance verification results and separately signed
+evidence use different cryptographic bindings. They must retain distinct
+formats instead of being labelled generically as SD-JWT.
+
+Age checks are derived predicates, not aliases for date of birth. To prove
+that a person is over a threshold, use a predicate target with:
+
+```text
+predicate: age-over
+sourceClaimPath: org.schema.Person.birthDate
+threshold: 18
+result: true
+```
+
+The EUDI PID transport name is then `age_over_18`. The proof binding contains
+no birth-date value. A verifier that needs only majority status requests that
+predicate rather than `birth_date`, preserving data minimization. Other
+thresholds use `age_over_NN` only when the credential type and issuer policy
+support them.
+
+Normative references:
+
+- [SD-JWT-based Verifiable Digital Credentials](https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/)
+- [OpenID for Verifiable Presentations 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)
+- [EUDI PID Rulebook](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/latest/annexes/annex-06-pid-rulebook/)
+
 ## JSON Schema and forms
 
 The package exports the JSON Schema 2020-12 object

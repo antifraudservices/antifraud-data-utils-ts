@@ -11,3 +11,5 @@ All notable changes to this project will be documented in this file.
 - Conflict-safe conversion between flat claims and OIDC4IDA verified claims.
 - JSON Schema 2020-12 contract for verified claims and evidence.
 - Normative identity verification and attestation contract.
+- Claim-to-proof bindings with multiple proof references and privacy-preserving
+  age-over predicates.

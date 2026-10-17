@@ -14,13 +14,23 @@ The package keeps three concerns separate:
 
 ```ts
 import {
+  ClaimProofFormat,
   IdentityAttestationCapability,
   SchemaOrgIdentityClaim,
+  defineClaimProofBinding,
+  eudiPidAgeOverClaimName,
   importOidc4IdaToSchemaOrgFlatClaims,
   projectSchemaOrgFlatClaimsToOidc4Ida,
   verifiedClaimsJsonSchema,
 } from 'antifraud-data-utils-ts/identity-assurance'
 ```
+
+`ClaimProofBinding` connects one canonical claim or derived predicate to one or
+more credential-level proof references. For example, an `age-over` predicate
+can disclose `age_over_18=true` without disclosing the source birth date. An
+SD-JWT VC signs disclosure digests at credential level; the package does not
+misrepresent that mechanism as an independent signature embedded in every
+flat claim.
 
 The initial governed projection covers the registered OpenID identity claims
 that have direct Schema.org equivalents. An unknown mapping fails on export.
