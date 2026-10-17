@@ -88,7 +88,7 @@ export const verifiedClaimsJsonSchema = Object.freeze({
 /**
  * Stored-statement schema. A form may render its evidence fields, but the host
  * must populate the read-only actor and authorization fields from its trusted
- * session, workforce group and active consent.
+ * session, active group membership and reusable group authorization.
  */
 export const workforceIdentityEvidenceStatementJsonSchema = Object.freeze({
   $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -122,15 +122,12 @@ export const workforceIdentityEvidenceStatementJsonSchema = Object.freeze({
     authorization: {
       type: 'object',
       readOnly: true,
-      required: ['groupReferences', 'consentReference'],
+      required: ['groupReference', 'groupAuthorizationReference', 'controllerReference'],
       properties: {
-        groupReferences: {
-          type: 'array',
-          minItems: 1,
-          uniqueItems: true,
-          items: { type: 'string', minLength: 1 },
-        },
-        consentReference: { type: 'string', minLength: 1 },
+        groupReference: { type: 'string', minLength: 1 },
+        groupAuthorizationReference: { type: 'string', minLength: 1 },
+        controllerReference: { type: 'string', minLength: 1 },
+        subjectAuthorizationReference: { type: 'string', minLength: 1 },
       },
       additionalProperties: false,
     },

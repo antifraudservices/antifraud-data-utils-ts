@@ -3,6 +3,12 @@
 Product-neutral TypeScript contracts for identity verification, evidence and
 attestations.
 
+The central trust rule is provenance without authority substitution: every
+identity or qualification claim keeps who asserted it, under which authority
+and jurisdiction, from which evidence, at what time, with which proof and
+current status. Employer, university, licensing authority, verifier and subject
+are separate actors even when they support the same claim.
+
 The package keeps three concerns separate:
 
 1. Canonical business data uses governed Schema.org flat claims.
@@ -43,11 +49,35 @@ Import reports unsupported claims and conflicting existing values instead of
 discarding or overwriting them.
 
 An authorized workforce member may record identity evidence only when trusted
-server context supplies the member assignment, a controller-governed work
-group, an active Consent reference and `identity.evidence.record`. The form
-collects the evidence observation; it does not select the actor, grant the
-permission or sign a credential. Raw identity documents are excluded from the
-statement. Attachments are referenced by digest.
+server context supplies the active employee assignment, active membership in a
+controller-governed work group, that group's reusable authorization and
+`identity.evidence.record`. The employee has no separate Consent. A subject or
+lawful representative authorization remains a distinct optional gate when the
+use case requires it. The form collects the evidence observation; it does not
+select the actor, grant permission or sign a credential. Raw identity documents
+are excluded from the statement. Attachments are referenced by digest.
+
+A controller or authorized human-resources employee may use the same governed
+flow to record evidence about an employee's identity or qualifications. When a
+qualification refers to a university or another awarding organization, that
+organization must be resolved by its legal identifier and jurisdiction, not by
+display name alone. If no credential from the awarding organization exists,
+the result is an employer attestation about evidence the employer reviewed; it
+must not be represented as a university-issued credential. The employer's
+signature is its own proof. A later university credential or confirmation is
+added as a separate proof for the same claim instead of replacing the employer
+proof.
+
+This separation is essential in health and other regulated sectors. Evidence
+of a qualification is not by itself an active professional licence, an active
+employment assignment, or authority to perform an operation. A downstream
+policy evaluates each applicable status independently and fails closed on
+suspension, revocation, expiry, or an authority mismatch.
+
+An invitation may propose an optional department and zero or more groups. The
+proposal grants nothing before employee activation. Invitation acceptance and
+later department or group changes require a Communication notice, while the
+shared group authorization remains unchanged for the other active members.
 
 The home tenant is the initial trust root. An employer or index-provider tenant
 publishes its own authoritative endpoint. A different source tenant is usable

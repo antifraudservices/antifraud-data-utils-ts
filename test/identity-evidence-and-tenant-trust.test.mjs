@@ -1,5 +1,5 @@
 // Flow contract: reuse shared test fixtures and canonical types; do not introduce duplicated literals.
-// Journey: (1) a controller governs a workforce group and Consent; (2) an authenticated member records evidence;
+// Journey: (1) a controller governs one reusable group authorization; (2) an active group member records evidence;
 // (3) the home tenant is the initial trust root; (4) an external source is selected only through explicit federation trust.
 // Invariants: browser fields never choose the actor or authorization, raw evidence is not embedded, and source issuance remains separate.
 import assert from 'node:assert/strict'
@@ -30,13 +30,22 @@ const workforceContext = Object.freeze({
   actorReference: 'urn:actor:authorized-workforce-member',
   assignmentReference: 'urn:assignment:authorized-workforce-member',
   organizationReference: homeTenant.tenantReference,
-  groupReferences: Object.freeze(['urn:group:controller-created-work-area']),
-  consentReference: 'urn:consent:active-subject-maintenance',
-  capabilities: Object.freeze([
-    IdentityAttestationCapability.RecordEvidence,
-    IdentityAttestationCapability.CreateSubject,
-    IdentityAttestationCapability.UpdateSubject,
-  ]),
+  groupMembership: Object.freeze({
+    groupReference: 'urn:group:controller-created-work-area',
+    status: 'active',
+  }),
+  groupAuthorization: Object.freeze({
+    authorizationReference: 'urn:authorization:group-subject-maintenance',
+    groupReference: 'urn:group:controller-created-work-area',
+    controllerReference: 'urn:controller:organization-controller',
+    status: 'active',
+    capabilities: Object.freeze([
+      IdentityAttestationCapability.RecordEvidence,
+      IdentityAttestationCapability.CreateSubject,
+      IdentityAttestationCapability.UpdateSubject,
+    ]),
+  }),
+  subjectAuthorizationReference: 'urn:authorization:subject-if-required',
 })
 
 const evidenceStatementRequest = Object.freeze({
@@ -92,8 +101,10 @@ test('builds workforce identity evidence from controller-governed context instea
   assert.equal(statement.createdBy.actorReference, workforceContext.actorReference)
   assert.equal(statement.createdBy.assignmentReference, workforceContext.assignmentReference)
   assert.equal(statement.createdBy.organizationReference, workforceContext.organizationReference)
-  assert.deepEqual(statement.authorization.groupReferences, workforceContext.groupReferences)
-  assert.equal(statement.authorization.consentReference, workforceContext.consentReference)
+  assert.equal(statement.authorization.groupReference, workforceContext.groupMembership.groupReference)
+  assert.equal(statement.authorization.groupAuthorizationReference, workforceContext.groupAuthorization.authorizationReference)
+  assert.equal(statement.authorization.subjectAuthorizationReference, workforceContext.subjectAuthorizationReference)
+  assert.equal('employeeConsentReference' in statement.authorization, false)
   assert.equal(statement.capability, IdentityAttestationCapability.RecordEvidence)
   assert.equal(statement.evidence[0].type, IdentityEvidenceType.Vouch)
   assert.equal(JSON.stringify(statement).includes('doctor'), false)
@@ -101,28 +112,55 @@ test('builds workforce identity evidence from controller-governed context instea
   assert.equal(JSON.stringify(statement).includes('nurse'), false)
 })
 
-test('rejects workforce evidence creation without capability, controller-created group or active consent', () => {
+test('rejects workforce evidence creation without active membership or reusable group authorization', () => {
   assert.throws(
     () => defineAuthorizedWorkforceIdentityEvidenceStatement({
-      context: {...workforceContext, capabilities: []},
+      context: {
+        ...workforceContext,
+        groupAuthorization: {...workforceContext.groupAuthorization, capabilities: []},
+      },
       request: evidenceStatementRequest,
     }),
     /identity\.evidence\.record/,
   )
   assert.throws(
     () => defineAuthorizedWorkforceIdentityEvidenceStatement({
-      context: {...workforceContext, groupReferences: []},
+      context: {
+        ...workforceContext,
+        groupMembership: {...workforceContext.groupMembership, status: 'inactive'},
+      },
       request: evidenceStatementRequest,
     }),
-    /group/i,
+    /active group membership/i,
   )
   assert.throws(
     () => defineAuthorizedWorkforceIdentityEvidenceStatement({
-      context: {...workforceContext, consentReference: ''},
+      context: {
+        ...workforceContext,
+        groupAuthorization: {...workforceContext.groupAuthorization, groupReference: 'urn:group:different'},
+      },
       request: evidenceStatementRequest,
     }),
-    /consent/i,
+    /same professional group/i,
   )
+})
+
+test('reuses one group authorization for different active employee memberships', () => {
+  const first = defineAuthorizedWorkforceIdentityEvidenceStatement({
+    context: workforceContext,
+    request: evidenceStatementRequest,
+  })
+  const second = defineAuthorizedWorkforceIdentityEvidenceStatement({
+    context: {
+      ...workforceContext,
+      actorReference: 'urn:actor:second-workforce-member',
+      assignmentReference: 'urn:assignment:second-workforce-member',
+    },
+    request: {...evidenceStatementRequest, operationId: 'urn:operation:identity-evidence-2'},
+  })
+
+  assert.notEqual(first.createdBy.assignmentReference, second.createdBy.assignmentReference)
+  assert.equal(first.authorization.groupAuthorizationReference, second.authorization.groupAuthorizationReference)
 })
 
 test('rejects embedded identity documents while retaining digest-bound attachment references', () => {

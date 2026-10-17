@@ -49,9 +49,18 @@ export type AuthenticatedWorkforceEvidenceContext = Readonly<{
   actorReference: string
   assignmentReference: string
   organizationReference: string
-  groupReferences: readonly [string, ...string[]]
-  consentReference: string
-  capabilities: readonly IdentityAttestationCapabilityValue[]
+  groupMembership: Readonly<{
+    groupReference: string
+    status: 'active' | 'inactive'
+  }>
+  groupAuthorization: Readonly<{
+    authorizationReference: string
+    groupReference: string
+    controllerReference: string
+    status: 'active' | 'inactive'
+    capabilities: readonly IdentityAttestationCapabilityValue[]
+  }>
+  subjectAuthorizationReference?: string
 }>
 
 export type WorkforceIdentityEvidenceStatementRequest = Readonly<{
@@ -71,8 +80,10 @@ export type WorkforceIdentityEvidenceStatement = Readonly<{
     organizationReference: string
   }>
   authorization: Readonly<{
-    groupReferences: readonly string[]
-    consentReference: string
+    groupReference: string
+    groupAuthorizationReference: string
+    controllerReference: string
+    subjectAuthorizationReference?: string
   }>
   targets: readonly IdentityEvidenceTarget[]
   evidence: readonly IdentityEvidenceInput[]
@@ -118,25 +129,33 @@ function assertReferenceOnlyEvidence(evidence: IdentityEvidenceInput): void {
 
 /**
  * Creates an unsigned, governed evidence statement for an authorized workforce
- * member. The actor, assignment, organization, group and Consent always come
- * from trusted server context. A credential provider may later read this
- * statement back and issue a signed attestation.
+ * member. The actor, assignment, organization, active group membership and
+ * reusable group authorization always come from trusted server context. A
+ * credential provider may later read this statement back and issue a signed
+ * attestation. No employee-specific Consent is created.
  */
 export function defineAuthorizedWorkforceIdentityEvidenceStatement(input: Readonly<{
   context: AuthenticatedWorkforceEvidenceContext
   request: WorkforceIdentityEvidenceStatementRequest
 }>): WorkforceIdentityEvidenceStatement {
-  if (!input.context.capabilities.includes(IdentityAttestationCapability.RecordEvidence)) {
+  if (!input.context.groupAuthorization.capabilities.includes(IdentityAttestationCapability.RecordEvidence)) {
     throw new TypeError(`Missing required capability: ${IdentityAttestationCapability.RecordEvidence}`)
   }
   requireNonEmpty(input.context.actorReference, 'context.actorReference')
   requireNonEmpty(input.context.assignmentReference, 'context.assignmentReference')
   requireNonEmpty(input.context.organizationReference, 'context.organizationReference')
-  if (!Array.isArray(input.context.groupReferences) || input.context.groupReferences.length === 0) {
-    throw new TypeError('A controller-governed workforce group is required')
+  if (input.context.groupMembership.status !== 'active') {
+    throw new TypeError('An active group membership is required')
   }
-  input.context.groupReferences.forEach((reference) => requireNonEmpty(reference, 'context.groupReferences'))
-  requireNonEmpty(input.context.consentReference, 'context.consentReference')
+  requireNonEmpty(input.context.groupMembership.groupReference, 'context.groupMembership.groupReference')
+  if (input.context.groupAuthorization.status !== 'active') {
+    throw new TypeError('An active group authorization is required')
+  }
+  requireNonEmpty(input.context.groupAuthorization.authorizationReference, 'context.groupAuthorization.authorizationReference')
+  requireNonEmpty(input.context.groupAuthorization.controllerReference, 'context.groupAuthorization.controllerReference')
+  if (input.context.groupMembership.groupReference !== input.context.groupAuthorization.groupReference) {
+    throw new TypeError('Membership and authorization must reference the same professional group')
+  }
   requireNonEmpty(input.request.operationId, 'request.operationId')
   requireNonEmpty(input.request.subjectReference, 'request.subjectReference')
   if (!Array.isArray(input.request.targets) || input.request.targets.length === 0) {
@@ -157,8 +176,12 @@ export function defineAuthorizedWorkforceIdentityEvidenceStatement(input: Readon
       organizationReference: input.context.organizationReference,
     }),
     authorization: Object.freeze({
-      groupReferences: Object.freeze([...input.context.groupReferences]),
-      consentReference: input.context.consentReference,
+      groupReference: input.context.groupMembership.groupReference,
+      groupAuthorizationReference: input.context.groupAuthorization.authorizationReference,
+      controllerReference: input.context.groupAuthorization.controllerReference,
+      ...(input.context.subjectAuthorizationReference
+        ? { subjectAuthorizationReference: input.context.subjectAuthorizationReference }
+        : {}),
     }),
     targets: Object.freeze(input.request.targets.map((target) => Object.freeze({ ...target }))),
     evidence: Object.freeze(input.request.evidence.map((evidence) => Object.freeze({
