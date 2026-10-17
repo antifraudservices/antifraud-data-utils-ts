@@ -117,6 +117,11 @@ connection or deployment configuration.
 See [Identity verification and attestation contract](docs/IDENTITY_VERIFICATION_AND_ATTESTATION.md)
 for the normative model and downstream acceptance requirements.
 
+See [DC4EU education and medical credential reference](docs/DC4EU_EDUCATION_AND_MEDICAL_CREDENTIALS.md)
+for the upstream European Higher Education Diploma, Doctor ID, professional
+suitability and medical-training credential boundaries and their current draft
+status.
+
 ## Standards
 
 - [OpenID Identity Assurance Schema Definition 1.0](https://openid.net/specs/openid-ida-verified-claims-1_0-final.html)

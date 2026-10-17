@@ -30,3 +30,6 @@ All notable changes to this project will be documented in this file.
 - Neutral professional-qualification contracts using Schema.org flat claims,
   independent employer, issuer and professional-body proofs, derived trust
   badges and privacy-minimized ledger anchors.
+- Document the DC4EU education and medical credential catalogue, including
+  EUHED, Doctor ID, professional suitability, medical training, authority
+  separation and draft-schema interoperability risks.
