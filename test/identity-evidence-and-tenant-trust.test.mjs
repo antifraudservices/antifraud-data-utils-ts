@@ -10,10 +10,15 @@ import {
   EudiPidClaim,
   IdentityAttestationCapability,
   IdentityEvidenceType,
+  IdentityPredicateKind,
   OidcIdentityClaim,
+  SchemaOrgIdentityClaim,
+  SchemaOrgMediaObjectClaim,
   defineAuthorizedWorkforceIdentityEvidenceStatement,
   eudiPidAgeOverClaimName,
   selectAuthoritativeTenantEndpoint,
+  projectEvidenceAttachmentToSchemaOrgMediaObject,
+  toSchemaOrgEvidenceMediaFlatClaims,
   workforceIdentityEvidenceStatementJsonSchema,
 } from '../dist/identity-assurance/index.js'
 
@@ -92,6 +97,74 @@ test('publishes a form-ready schema for governed workforce evidence statements',
   )
 })
 
+test('models student, lawful-representative relationship and configurable age evidence without product types', () => {
+  const statement = defineAuthorizedWorkforceIdentityEvidenceStatement({
+    context: workforceContext,
+    request: {
+      ...evidenceStatementRequest,
+      subjectReference: 'urn:subject:student-opaque',
+      targets: [
+        {kind: 'subject'},
+        {
+          kind: 'relationship',
+          relationshipType: 'lawful-representative',
+          relatedSubjectReference: 'urn:subject:representative-opaque',
+        },
+        {
+          kind: 'predicate',
+          predicate: IdentityPredicateKind.AgeOver,
+          sourceSubjectReference: 'urn:subject:student-opaque',
+          sourceClaimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+          threshold: 21,
+          result: true,
+        },
+      ],
+    },
+  })
+
+  assert.equal(statement.subjectReference, 'urn:subject:student-opaque')
+  assert.deepEqual(statement.targets[1], {
+    kind: 'relationship',
+    relationshipType: 'lawful-representative',
+    relatedSubjectReference: 'urn:subject:representative-opaque',
+  })
+  assert.deepEqual(statement.targets[2], {
+    kind: 'predicate',
+    predicate: IdentityPredicateKind.AgeOver,
+    sourceSubjectReference: 'urn:subject:student-opaque',
+    sourceClaimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+    threshold: 21,
+    result: true,
+  })
+  assert.equal(
+    workforceIdentityEvidenceStatementJsonSchema.properties.targets.items.properties.threshold.maximum,
+    150,
+  )
+})
+
+test('accepts governed age-over thresholds while reserving the EUDI PID name for 18', () => {
+  for (const threshold of [18, 19, 21, 65]) {
+    assert.doesNotThrow(() => defineAuthorizedWorkforceIdentityEvidenceStatement({
+      context: workforceContext,
+      request: {
+        ...evidenceStatementRequest,
+        targets: [{
+          kind: 'predicate',
+          predicate: IdentityPredicateKind.AgeOver,
+          sourceSubjectReference: 'urn:subject:person-opaque',
+          sourceClaimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+          threshold,
+          result: true,
+        }],
+      },
+    }))
+  }
+
+  assert.equal(eudiPidAgeOverClaimName(18), EudiPidClaim.AgeOver18)
+  assert.throws(() => eudiPidAgeOverClaimName(19), /only standardizes age_over_18/i)
+  assert.throws(() => eudiPidAgeOverClaimName(21), /only standardizes age_over_18/i)
+})
+
 test('builds workforce identity evidence from controller-governed context instead of caller identity fields', () => {
   const statement = defineAuthorizedWorkforceIdentityEvidenceStatement({
     context: workforceContext,
@@ -107,9 +180,7 @@ test('builds workforce identity evidence from controller-governed context instea
   assert.equal('employeeConsentReference' in statement.authorization, false)
   assert.equal(statement.capability, IdentityAttestationCapability.RecordEvidence)
   assert.equal(statement.evidence[0].type, IdentityEvidenceType.Vouch)
-  assert.equal(JSON.stringify(statement).includes('doctor'), false)
-  assert.equal(JSON.stringify(statement).includes('veterinarian'), false)
-  assert.equal(JSON.stringify(statement).includes('nurse'), false)
+  assert.equal(JSON.stringify(statement).includes('occupation'), false)
 })
 
 test('rejects workforce evidence creation without active membership or reusable group authorization', () => {
@@ -214,6 +285,41 @@ test('rejects embedded identity documents while retaining digest-bound attachmen
       }],
     },
   }), /CIDv1 raw with a SHA3-384 multihash/i)
+})
+
+test('uses Schema.org MediaObject as the canonical scanned-evidence representation', () => {
+  const attachment = {
+    id: 'urn:attachment:opaque',
+    mediaType: 'application/pdf',
+    contentSize: 2048,
+    contentUrl: 'https://evidence.example/objects/opaque',
+    digestAlgorithm: 'sha3-384',
+    digest: 'mJ+lnlA8LeEHHgH2qJjjCt1TmFJWDRmtelW8l7lXsSswcDcGahIuhvPVoXAvQ/PA',
+    contentId: 'zKYrhS8ZkySGc9pjHe8KE4bo1RjKKbjaxatf3zM16DD2hLGPvK3bqbSGvpNYA2qafoUeBYT',
+  }
+
+  assert.deepEqual(projectEvidenceAttachmentToSchemaOrgMediaObject(attachment), {
+    '@context': 'https://schema.org',
+    '@type': 'MediaObject',
+    '@id': attachment.id,
+    identifier: {
+      '@type': 'PropertyValue',
+      propertyID: 'cidv1-raw-sha3-384',
+      value: attachment.contentId,
+    },
+    contentUrl: attachment.contentUrl,
+    encodingFormat: attachment.mediaType,
+    contentSize: String(attachment.contentSize),
+  })
+
+  assert.deepEqual(toSchemaOrgEvidenceMediaFlatClaims(attachment), {
+    [SchemaOrgMediaObjectClaim.Id]: attachment.id,
+    [SchemaOrgMediaObjectClaim.IdentifierPropertyId]: 'cidv1-raw-sha3-384',
+    [SchemaOrgMediaObjectClaim.IdentifierValue]: attachment.contentId,
+    [SchemaOrgMediaObjectClaim.ContentUrl]: attachment.contentUrl,
+    [SchemaOrgMediaObjectClaim.EncodingFormat]: attachment.mediaType,
+    [SchemaOrgMediaObjectClaim.ContentSize]: String(attachment.contentSize),
+  })
 })
 
 test('trusts the home tenant endpoint without silently trusting another tenant', () => {

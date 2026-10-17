@@ -62,9 +62,10 @@ lawful representative authorization remains a distinct optional gate when the
 use case requires it. The form collects the evidence observation; it does not
 select the actor, grant permission or sign a credential. Raw identity documents
 are excluded from the statement. Attachments are referenced by digest.
-OpenID Identity Assurance attachment metadata may additionally bind the same
-bytes to a CIDv1(raw, SHA3-384) encoded with multibase base58btc; the CID is an
-internal content-addressed reference, not a Schema.org qualification claim.
+Schema.org `MediaObject` flat claims describe a scanned artifact and bind its
+protected URL, media type and size to a CIDv1(raw, SHA3-384) identifier encoded
+with multibase base58btc. OpenID Identity Assurance attachment metadata is a
+projection of that same artifact; it is not the canonical store.
 
 A controller or authorized human-resources employee may use the same governed
 flow to record evidence about an employee's identity or qualifications. When a
@@ -124,6 +125,10 @@ See [DC4EU education and medical credential reference](docs/DC4EU_EDUCATION_AND_
 for the upstream European Higher Education Diploma, Doctor ID, professional
 suitability and medical-training credential boundaries and their current draft
 status.
+
+See [Education administrative assistant identity-evidence journey](docs/EDUCATION_ADMINISTRATIVE_ASSISTANT_IDENTITY_EVIDENCE.md)
+for the controller-governed employee flow, age predicates and the local
+user-interface acceptance boundary.
 
 ## Standards
 

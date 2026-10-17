@@ -1,7 +1,9 @@
 import {
   IdentityAttestationCapability,
+  SchemaOrgIdentityClaim,
   type IdentityAttestationCapabilityValue,
 } from './vocabulary.js'
+import { IdentityPredicateKind } from './claim-proofs.js'
 
 /** Evidence types registered by OpenID Identity Assurance. */
 export const IdentityEvidenceType = Object.freeze({
@@ -17,6 +19,8 @@ export type IdentityEvidenceTypeValue =
 export type IdentityEvidenceAttachmentReference = Readonly<{
   id: string
   mediaType?: string
+  contentUrl?: string
+  contentSize?: number
   digestAlgorithm: 'sha-256' | 'sha-384' | 'sha-512' | 'sha3-384'
   digest: string
   contentId?: string
@@ -100,6 +104,14 @@ export type IdentityEvidenceTarget =
       relationshipType: string
       relatedSubjectReference: string
     }>
+  | Readonly<{
+      kind: 'predicate'
+      predicate: typeof IdentityPredicateKind.AgeOver
+      sourceSubjectReference: string
+      sourceClaimPath: typeof SchemaOrgIdentityClaim.PersonBirthDate
+      threshold: number
+      result: boolean
+    }>
 
 export type AuthenticatedWorkforceEvidenceContext = Readonly<{
   actorReference: string
@@ -180,6 +192,15 @@ function assertReferenceOnlyEvidence(evidence: IdentityEvidenceInput): void {
   evidence.attachments?.forEach((attachment) => {
     requireNonEmpty(attachment.id, 'evidence.attachments.id')
     requireNonEmpty(attachment.digest, 'evidence.attachments.digest')
+    if (attachment.contentUrl !== undefined) {
+      requireNonEmpty(attachment.contentUrl, 'evidence.attachments.contentUrl')
+    }
+    if (
+      attachment.contentSize !== undefined
+      && (!Number.isSafeInteger(attachment.contentSize) || attachment.contentSize < 0)
+    ) {
+      throw new TypeError('Evidence attachment contentSize must be a non-negative safe integer')
+    }
     if (attachment.contentId !== undefined) {
       assertSha3_384EvidenceContentId(attachment.contentId)
       if (attachment.digestAlgorithm !== 'sha3-384') {
@@ -188,6 +209,36 @@ function assertReferenceOnlyEvidence(evidence: IdentityEvidenceInput): void {
       assertContentIdMatchesDigest(attachment.contentId, attachment.digest)
     }
   })
+}
+
+function assertEvidenceTarget(target: IdentityEvidenceTarget): void {
+  if (target.kind === 'subject') return
+  if (target.kind === 'claim') {
+    requireNonEmpty(target.claimPath, 'targets.claimPath')
+    return
+  }
+  if (target.kind === 'relationship') {
+    requireNonEmpty(target.relationshipType, 'targets.relationshipType')
+    requireNonEmpty(target.relatedSubjectReference, 'targets.relatedSubjectReference')
+    return
+  }
+  if (target.kind === 'predicate') {
+    if (target.predicate !== IdentityPredicateKind.AgeOver) {
+      throw new TypeError(`Unsupported identity predicate: ${String(target.predicate)}`)
+    }
+    requireNonEmpty(target.sourceSubjectReference, 'targets.sourceSubjectReference')
+    if (target.sourceClaimPath !== SchemaOrgIdentityClaim.PersonBirthDate) {
+      throw new TypeError('Age-over evidence must derive from the Schema.org Person.birthDate claim')
+    }
+    if (!Number.isInteger(target.threshold) || target.threshold < 1 || target.threshold > 150) {
+      throw new TypeError('Age-over threshold must be an integer between 1 and 150')
+    }
+    if (typeof target.result !== 'boolean') {
+      throw new TypeError('Age-over evidence result must be boolean')
+    }
+    return
+  }
+  throw new TypeError('Unsupported identity evidence target')
 }
 
 /**
@@ -224,6 +275,7 @@ export function defineAuthorizedWorkforceIdentityEvidenceStatement(input: Readon
   if (!Array.isArray(input.request.targets) || input.request.targets.length === 0) {
     throw new TypeError('Identity evidence requires at least one target')
   }
+  input.request.targets.forEach(assertEvidenceTarget)
   if (!Array.isArray(input.request.evidence) || input.request.evidence.length === 0) {
     throw new TypeError('Identity evidence requires at least one evidence item')
   }

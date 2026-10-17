@@ -107,10 +107,9 @@ authoritative tenant later reads the stored statement and subject record,
 evaluates policy and signs the credential. The member cannot cause the tenant
 to sign caller-authored claims merely by possessing form access.
 
-Medical, nursing or veterinary staff may be granted the same neutral
-capabilities by a health or animal-care product policy. Those occupations do
-not belong in this shared package and authentication alone grants none of the
-capabilities.
+Education occupations do not determine authority inside this shared package.
+The controller-governed assignment and exact capabilities do; authentication
+or a job title alone grants none of them.
 
 ## Canonical data and exchange projection
 
@@ -243,13 +242,14 @@ The supported OpenID Identity Assurance evidence categories are `document`,
 personally reviews evidence normally records the check and, where applicable,
 a `vouch`; this does not make their statement an issuer-signed credential.
 
-Scanned PDF, PNG, JPEG and TIFF evidence uses the OpenID Identity Assurance
-attachment model rather than Schema.org claims. An interoperable external
-attachment carries a protected URL and a negotiated base64 digest. The
-confidential storage layer may additionally bind the same bytes to
-CIDv1(raw, SHA3-384) in multibase base58btc form. A CID is an integrity and
-retrieval reference; it is not proof that the claimed qualification issuer
-created or validated the document.
+Scanned PDF, PNG, JPEG and TIFF evidence is represented canonically as a
+Schema.org `MediaObject`. Its flat claims retain the protected `contentUrl`,
+`encodingFormat`, `contentSize`, and a CIDv1(raw, SHA3-384) identifier in
+multibase base58btc form. An OpenID Identity Assurance export projects the same
+artifact into its external-attachment structure with a protected URL and a
+negotiated base64 digest. The CID is an integrity and retrieval reference; it
+is not proof that the claimed qualification issuer created or validated the
+document.
 
 ### Employee identity and qualification evidence
 

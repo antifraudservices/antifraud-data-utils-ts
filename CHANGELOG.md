@@ -35,3 +35,9 @@ All notable changes to this project will be documented in this file.
   separation and draft-schema interoperability risks.
 - Extend digest-bound OpenID Identity Assurance attachment references with
   negotiated SHA3-384 and validated CIDv1 raw multibase identifiers.
+- Add product-neutral subject, relationship and configurable age-over evidence
+  targets while reserving `age_over_18` as the EUDI PID projection.
+- Add canonical Schema.org `MediaObject` flat claims and projection for
+  protected evidence artifacts identified by CIDv1(raw, SHA3-384).
+- Document the education administrative-assistant journey and its real local
+  user-interface acceptance requirements.

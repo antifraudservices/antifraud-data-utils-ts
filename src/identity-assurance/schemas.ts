@@ -27,6 +27,8 @@ const workforceEvidenceAttachmentSchema = {
   properties: {
     id: { type: 'string', minLength: 1 },
     mediaType: { type: 'string', minLength: 1 },
+    contentUrl: { type: 'string', minLength: 1, format: 'uri' },
+    contentSize: { type: 'integer', minimum: 0 },
     digestAlgorithm: { enum: ['sha-256', 'sha-384', 'sha-512', 'sha3-384'] },
     digest: { type: 'string', minLength: 1 },
     contentId: {
@@ -143,10 +145,15 @@ export const workforceIdentityEvidenceStatementJsonSchema = Object.freeze({
         type: 'object',
         required: ['kind'],
         properties: {
-          kind: { enum: ['subject', 'claim', 'relationship'] },
+          kind: { enum: ['subject', 'claim', 'relationship', 'predicate'] },
           claimPath: { type: 'string', minLength: 1 },
           relationshipType: { type: 'string', minLength: 1 },
           relatedSubjectReference: { type: 'string', minLength: 1 },
+          predicate: { const: 'age-over' },
+          sourceSubjectReference: { type: 'string', minLength: 1 },
+          sourceClaimPath: { const: 'org.schema.Person.birthDate' },
+          threshold: { type: 'integer', minimum: 1, maximum: 150 },
+          result: { type: 'boolean' },
         },
         additionalProperties: false,
       },
