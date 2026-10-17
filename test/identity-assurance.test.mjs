@@ -3,9 +3,13 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
+  ClaimProofFormat,
   IdentityAttestationCapability,
+  IdentityPredicateKind,
   OidcIdentityClaim,
   SchemaOrgIdentityClaim,
+  defineClaimProofBinding,
+  eudiPidAgeOverClaimName,
   importOidc4IdaToSchemaOrgFlatClaims,
   projectSchemaOrgFlatClaimsToOidc4Ida,
   verifiedClaimsJsonSchema,
@@ -76,4 +80,71 @@ test('imports OIDC4IDA claims without silently overwriting existing flat claims'
 test('publishes a JSON Schema that requires claims and verification separately', () => {
   assert.deepEqual(verifiedClaimsJsonSchema.required, ['claims', 'verification'])
   assert.deepEqual(verifiedClaimsJsonSchema.properties.verification.required, ['evidence'])
+})
+
+test('binds one claim to multiple credential-level cryptographic proofs', () => {
+  const binding = defineClaimProofBinding({
+    target: {
+      kind: 'claim',
+      claimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+    },
+    proofs: [
+      {
+        id: 'urn:proof:pid',
+        format: ClaimProofFormat.IetfSdJwtVc,
+        issuer: 'https://issuer.example',
+        credentialReference: 'urn:credential:pid',
+        cryptographicBinding: 'issuer-signature-with-disclosure-digests',
+        status: 'active',
+      },
+      {
+        id: 'urn:proof:record',
+        format: ClaimProofFormat.OidcVerifiedClaims,
+        issuer: 'https://register.example',
+        credentialReference: 'urn:evidence:record',
+        cryptographicBinding: 'external-verification-result',
+        status: 'active',
+      },
+    ],
+  })
+
+  assert.equal(binding.proofs.length, 2)
+  assert.equal(binding.target.claimPath, SchemaOrgIdentityClaim.PersonBirthDate)
+})
+
+test('models age-over as a derived predicate without disclosing birth date', () => {
+  const binding = defineClaimProofBinding({
+    target: {
+      kind: 'predicate',
+      predicate: IdentityPredicateKind.AgeOver,
+      sourceClaimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+      threshold: 18,
+      result: true,
+    },
+    proofs: [{
+      id: 'urn:proof:age-over-18',
+      format: ClaimProofFormat.IetfSdJwtVc,
+      issuer: 'https://issuer.example',
+      credentialReference: 'urn:credential:pid',
+      disclosureDigest: 'sha-256:opaque-digest',
+      cryptographicBinding: 'issuer-signature-with-disclosure-digests',
+      status: 'active',
+    }],
+  })
+
+  assert.equal(eudiPidAgeOverClaimName(binding.target.threshold), 'age_over_18')
+  assert.equal('birthDate' in binding.target, false)
+})
+
+test('rejects a claim or predicate without at least one proof', () => {
+  assert.throws(
+    () => defineClaimProofBinding({
+      target: {
+        kind: 'claim',
+        claimPath: SchemaOrgIdentityClaim.PersonBirthDate,
+      },
+      proofs: [],
+    }),
+    /at least one proof/,
+  )
 })
