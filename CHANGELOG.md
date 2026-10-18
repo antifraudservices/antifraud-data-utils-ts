@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.6 - 2026-10-18
+
+- Add the canonical managed-signature request state, local user-presence method,
+  ML-DSA-65 actor-signing key and immutable manifest-binding contracts.
+- Build pending requests from a browser-controlled manifest draft and separate
+  trusted backend context for user, registered device, relying party, purpose,
+  signer and verification method; reject browser-authored authority.
+- Export one reusable synthetic signing-request fixture for SDK, gateway and
+  portal journey tests.
+
 ## 0.1.5 - 2026-10-18
 
 - Migrate the reviewed stateless `gdc-common-utils-ts` cryptography profile so
