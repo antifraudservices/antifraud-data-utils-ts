@@ -31,6 +31,8 @@ import {
   SchemaOrgContentIdentifierProfile,
   SchemaOrgDocumentResourceType,
   SchemaOrgQualificationClaim,
+  buildDidCommInlineBinaryAttachment,
+  buildDidCommLinkedBinaryAttachment,
   buildSchemaOrgConfidentialDocumentGraph,
   buildQualificationLedgerAnchor,
   defineProfessionalQualification,
@@ -79,6 +81,20 @@ documents through `hasPart`; each document relates its concrete file through
 builder verifies that the CID embeds a SHA3-384 digest matching the supplied
 digest, requires exact byte size, protected URL and media type, rejects
 duplicate resource identifiers and never accepts raw document bytes.
+
+The document graph and the binary transport are deliberately separate.
+Antifraud documents are always Schema.org `DigitalDocument` resources whose
+concrete encodings are Schema.org `MediaObject` resources; they are never FHIR
+`DocumentReference` resources. `buildDidCommInlineBinaryAttachment` carries a
+bounded file as DIDComm `attachments[].data.base64`, while
+`buildDidCommLinkedBinaryAttachment` carries the same governed `MediaObject`
+through `attachments[].data.links` plus its multibase multihash. Both forms
+preserve the Internet media type and exact byte count and work for PDF,
+spreadsheet, word-processing, image, video or another governed media type.
+DIDComm is the delivery transport and does not replace the Schema.org business
+record or become the persistence model. See
+[`docs/DIDCOMM_SCHEMA_ORG_ATTACHMENTS.md`](docs/DIDCOMM_SCHEMA_ORG_ATTACHMENTS.md)
+and [GitHub issue #2](https://github.com/antifraudservices/antifraud-data-utils-ts/issues/2).
 
 Historical inputs may have used `identifier.additionalType` to name an
 identifier scheme. `normalizeSchemaOrgContentIdentifier` reads that legacy
