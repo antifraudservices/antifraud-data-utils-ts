@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.3 - 2026-10-17
+
+- Export one product-neutral confidential-document fixture so gateways, SDKs
+  and portals reuse the same valid CIDv1 raw SHA3-384 attachment instead of
+  duplicating governed wire examples.
+
 ## 0.1.2 - 2026-10-17
 
 - Add the canonical strict JSON:API graph for Schema.org `DigitalDocument`

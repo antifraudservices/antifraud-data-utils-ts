@@ -8,33 +8,18 @@ import test from 'node:test'
 import {
   SchemaOrgContentIdentifierProfile,
   SchemaOrgDocumentResourceType,
+  SyntheticConfidentialDocumentFixture,
   buildSchemaOrgConfidentialDocumentGraph,
   normalizeSchemaOrgContentIdentifier,
 } from '../dist/identity-assurance/index.js'
 
-const attachment = Object.freeze({
-  id: 'urn:attachment:opaque',
-  mediaType: 'application/pdf',
-  contentSize: 2048,
-  contentUrl: 'https://evidence.example/objects/opaque',
-  digestAlgorithm: 'sha3-384',
-  digest: 'mJ+lnlA8LeEHHgH2qJjjCt1TmFJWDRmtelW8l7lXsSswcDcGahIuhvPVoXAvQ/PA',
-  contentId: 'zKYrhS8ZkySGc9pjHe8KE4bo1RjKKbjaxatf3zM16DD2hLGPvK3bqbSGvpNYA2qafoUeBYT',
-})
+const {attachment} = SyntheticConfidentialDocumentFixture
 
 test('builds a direct JSON:API Schema.org document and media graph', () => {
   const graph = buildSchemaOrgConfidentialDocumentGraph({
-    manifest: {
-      id: 'urn:document-set:agreement-001',
-      name: 'Agreement manifest',
-      additionalType: 'https://example.invalid/document-types/agreement-manifest',
-      version: '1',
-    },
+    manifest: SyntheticConfidentialDocumentFixture.manifest,
     documents: [{
-      id: 'urn:document:source-001',
-      name: 'Signed source document',
-      additionalType: 'https://example.invalid/document-types/source-document',
-      version: '1',
+      ...SyntheticConfidentialDocumentFixture.document,
       attachment,
     }],
   })
@@ -42,13 +27,13 @@ test('builds a direct JSON:API Schema.org document and media graph', () => {
   assert.equal(graph.jsonapi.version, '1.1')
   assert.equal(graph.data.length, 3)
   assert.deepEqual(graph.data.map(({type, id}) => ({type, id})), [
-    {type: SchemaOrgDocumentResourceType.DigitalDocument, id: 'urn:document-set:agreement-001'},
-    {type: SchemaOrgDocumentResourceType.DigitalDocument, id: 'urn:document:source-001'},
+    {type: SchemaOrgDocumentResourceType.DigitalDocument, id: SyntheticConfidentialDocumentFixture.manifest.id},
+    {type: SchemaOrgDocumentResourceType.DigitalDocument, id: SyntheticConfidentialDocumentFixture.document.id},
     {type: SchemaOrgDocumentResourceType.MediaObject, id: attachment.id},
   ])
   assert.deepEqual(graph.data[0].relationships.hasPart.data, [{
     type: SchemaOrgDocumentResourceType.DigitalDocument,
-    id: 'urn:document:source-001',
+    id: SyntheticConfidentialDocumentFixture.document.id,
   }])
   assert.deepEqual(graph.data[1].relationships.encoding.data, {
     type: SchemaOrgDocumentResourceType.MediaObject,
