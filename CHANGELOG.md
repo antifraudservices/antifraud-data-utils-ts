@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.7 - 2026-10-18
+
+- Add the canonical verified managed-signature proof projection. Manifest,
+  operation, signer, relying party, purpose, algorithm and verification method
+  are copied from the immutable request rather than accepted from wallet output.
+- Reject unverified, malformed, out-of-lifetime or authority-overriding proof
+  material and harden the ciphertext-tampering test so it always changes a
+  decoded byte rather than optional base64 padding bits.
+
 ## 0.1.6 - 2026-10-18
 
 - Add the canonical managed-signature request state, local user-presence method,

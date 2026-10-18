@@ -6,8 +6,10 @@ import {
   ManagedSignatureRequestState,
   ManagedSigningAlgorithm,
   ManagedSigningKeyPurpose,
+  ManagedSignatureProofStatus,
   SyntheticManagedSignatureRequestFixture,
   UserPresenceMethod,
+  defineManagedSignatureProof,
   defineManagedSignatureRequest,
 } from '../dist/index.js'
 
@@ -79,5 +81,51 @@ test('requires the reviewed ML-DSA-65 actor-signing key context', () => {
       signingKey: {...fixture.trustedContext.signingKey, purpose: 'comm-signing'},
     }),
     /actor-signing/i,
+  )
+})
+
+test('builds a verified proof only from the immutable request binding', () => {
+  const request = defineManagedSignatureRequest(
+    SyntheticManagedSignatureRequestFixture.draft,
+    SyntheticManagedSignatureRequestFixture.trustedContext,
+  )
+  const proof = defineManagedSignatureProof(request, {
+    proofId: 'urn:proof:synthetic-publication-v1',
+    signature: 'c3ludGhldGljLW1sLWRzYS02NS1zaWduYXR1cmU',
+    createdAt: '2026-10-18T20:01:00.000Z',
+    verified: true,
+  })
+
+  assert.equal(proof.status, ManagedSignatureProofStatus.Verified)
+  assert.equal(proof.manifest.digest, request.manifest.digest)
+  assert.equal(proof.relyingParty, request.relyingParty)
+  assert.equal(proof.purpose, request.purpose)
+  assert.equal(proof.algorithm, ManagedSigningAlgorithm.MlDsa65)
+  assert.equal('privateKey' in proof, false)
+})
+
+test('rejects unverified proof material and attempts to replace bound fields', () => {
+  const request = defineManagedSignatureRequest(
+    SyntheticManagedSignatureRequestFixture.draft,
+    SyntheticManagedSignatureRequestFixture.trustedContext,
+  )
+  assert.throws(
+    () => defineManagedSignatureProof(request, {
+      proofId: 'urn:proof:unverified',
+      signature: 'dW52ZXJpZmllZA',
+      createdAt: '2026-10-18T20:01:00.000Z',
+      verified: false,
+    }),
+    /must be verified/i,
+  )
+  assert.throws(
+    () => defineManagedSignatureProof(request, {
+      proofId: 'urn:proof:tampered',
+      signature: 'dGFtcGVyZWQ',
+      createdAt: '2026-10-18T20:01:00.000Z',
+      verified: true,
+      relyingParty: 'https://attacker.example',
+    }),
+    /request-bound proof field.*relyingParty/i,
   )
 })
