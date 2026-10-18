@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.4 - 2026-10-18
+
 - Add product-neutral DIDComm binary-attachment contracts for inline base64 and
   protected `links + multihash` delivery without changing the canonical
   Schema.org `DigitalDocument`/`MediaObject` business graph.
