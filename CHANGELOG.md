@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.1 - 2026-10-17
+
+- Add the canonical credential-issuance request, lifecycle, receipt wire
+  conversion and synthetic fixture shared by SDK Core, SDK Node and ICA.
 - Add a validated, product-neutral flat-claim projection for subject identity,
   subject relationships and age-over evidence targets.
 - Publish the canonical flat-claim name that binds an evidence target to its
