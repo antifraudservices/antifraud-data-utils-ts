@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 
 - Add a validated, product-neutral flat-claim projection for subject identity,
   subject relationships and age-over evidence targets.
+- Publish the canonical flat-claim name that binds an evidence target to its
+  verification check, so consumers do not invent product-local claim names.
 
 ### Added
 

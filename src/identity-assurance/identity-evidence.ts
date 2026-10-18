@@ -127,6 +127,10 @@ export const IdentityEvidenceTargetClaim = Object.freeze({
   Result: 'identity.evidence.target.result',
 } as const)
 
+export const IdentityEvidenceCheckClaim = Object.freeze({
+  Reference: 'identity.evidence.checkReference',
+} as const)
+
 export type AuthenticatedWorkforceEvidenceContext = Readonly<{
   actorReference: string
   assignmentReference: string
