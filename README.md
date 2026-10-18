@@ -33,6 +33,13 @@ import {
 const cryptography = new CryptographyService(runtimeCryptoHelper)
 ```
 
+`defineManagedSignatureRequest` creates only a pending request. It binds the
+immutable manifest digest to the trusted authenticated user, registered device,
+operation, signer, relying party, purpose and ML-DSA-65 actor-signing key.
+Login, review, delivery, read state and a successful local user-presence
+ceremony are deliberately not represented as signatures. SDK orchestration
+owns authorization, one-use session consumption and proof creation.
+
 ## Current API
 
 ```ts
