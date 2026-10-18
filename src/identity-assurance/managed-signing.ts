@@ -62,6 +62,32 @@ export type ManagedSignatureRequest = ManagedSignatureRequestDraft
   & ManagedSignatureTrustedContext
   & Readonly<{ state: typeof ManagedSignatureRequestState.Pending }>
 
+export const ManagedSignatureProofStatus = Object.freeze({
+  Verified: 'verified',
+} as const)
+
+export type ManagedSignatureProof = Readonly<{
+  proofId: string
+  requestId: string
+  operationId: string
+  manifest: ManagedSignatureManifestBinding
+  relyingParty: string
+  purpose: string
+  signerReference: string
+  algorithm: typeof ManagedSigningAlgorithm.MlDsa65
+  verificationMethod: string
+  createdAt: string
+  signature: string
+  status: typeof ManagedSignatureProofStatus.Verified
+}>
+
+export type ManagedSignatureProofResult = Readonly<{
+  proofId: string
+  signature: string
+  createdAt: string
+  verified: boolean
+}>
+
 const CLIENT_FORBIDDEN_AUTHORITY = Object.freeze([
   'authenticatedUserId',
   'registeredDeviceId',
@@ -70,6 +96,19 @@ const CLIENT_FORBIDDEN_AUTHORITY = Object.freeze([
   'signerReference',
   'signingKey',
   'verificationMethod',
+])
+
+const REQUEST_BOUND_PROOF_FIELDS = Object.freeze([
+  'requestId',
+  'operationId',
+  'manifest',
+  'manifestDigest',
+  'relyingParty',
+  'purpose',
+  'signerReference',
+  'algorithm',
+  'verificationMethod',
+  'status',
 ])
 
 function requireNonEmpty(value: string, path: string): string {
@@ -161,6 +200,49 @@ export function defineManagedSignatureRequest(
     ),
     signingKey,
     state: ManagedSignatureRequestState.Pending,
+  })
+}
+
+/**
+ * Projects verified wallet output into public proof metadata while copying all
+ * authority and manifest bindings from the immutable request.
+ */
+export function defineManagedSignatureProof(
+  request: ManagedSignatureRequest,
+  result: ManagedSignatureProofResult & Readonly<Record<string, unknown>>,
+): ManagedSignatureProof {
+  for (const property of REQUEST_BOUND_PROOF_FIELDS) {
+    if (Object.hasOwn(result, property)) {
+      throw new TypeError(`Wallet result contains request-bound proof field (${property})`)
+    }
+  }
+  if (result.verified !== true) {
+    throw new TypeError('Managed signature proof must be verified before projection')
+  }
+  const signature = requireNonEmpty(result.signature, 'signature')
+  if (!/^[A-Za-z0-9_-]+$/u.test(signature)) {
+    throw new TypeError('signature must be unpadded base64url')
+  }
+  const createdAt = requireIsoInstant(result.createdAt, 'proof.createdAt')
+  if (
+    Date.parse(createdAt) < Date.parse(request.createdAt)
+    || Date.parse(createdAt) > Date.parse(request.expiresAt)
+  ) {
+    throw new TypeError('proof.createdAt must fall within the signature request lifetime')
+  }
+  return Object.freeze({
+    proofId: requireNonEmpty(result.proofId, 'proofId'),
+    requestId: request.requestId,
+    operationId: request.operationId,
+    manifest: request.manifest,
+    relyingParty: request.relyingParty,
+    purpose: request.purpose,
+    signerReference: request.signerReference,
+    algorithm: ManagedSigningAlgorithm.MlDsa65,
+    verificationMethod: request.signingKey.verificationMethod,
+    createdAt,
+    signature,
+    status: ManagedSignatureProofStatus.Verified,
   })
 }
 

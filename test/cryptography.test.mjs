@@ -67,7 +67,7 @@ test('round-trips confidential bytes with the reviewed ML-KEM-768 CEK-wrap profi
   assert.equal(compact.includes(payload), false)
 
   const compactParts = compact.split('.')
-  compactParts[3] = `${compactParts[3].slice(0, -1)}${compactParts[3].endsWith('A') ? 'B' : 'A'}`
+  compactParts[3] = `${compactParts[3][0] === 'A' ? 'B' : 'A'}${compactParts[3].slice(1)}`
   await assert.rejects(
     service.decryptJwe(compactParts.join('.'), recipientPrivate),
   )
