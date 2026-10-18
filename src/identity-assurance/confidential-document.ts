@@ -43,6 +43,31 @@ export type SchemaOrgConfidentialDocumentGraphInput = Readonly<{
   ]
 }>
 
+/** Product-neutral fixture shared by downstream contract and journey tests. */
+export const SyntheticConfidentialDocumentFixture = Object.freeze({
+  manifest: Object.freeze({
+    id: 'urn:document-set:synthetic-agreement',
+    name: 'Synthetic agreement manifest',
+    additionalType: 'https://example.invalid/document-types/agreement-manifest',
+    version: '1',
+  }),
+  document: Object.freeze({
+    id: 'urn:document:synthetic-source',
+    name: 'Synthetic source document',
+    additionalType: 'https://example.invalid/document-types/source-document',
+    version: '1',
+  }),
+  attachment: Object.freeze({
+    id: 'urn:attachment:synthetic-opaque',
+    mediaType: 'application/pdf',
+    contentSize: 2048,
+    contentUrl: 'https://evidence.example/objects/synthetic-opaque',
+    digestAlgorithm: 'sha3-384',
+    digest: 'mJ+lnlA8LeEHHgH2qJjjCt1TmFJWDRmtelW8l7lXsSswcDcGahIuhvPVoXAvQ/PA',
+    contentId: 'zKYrhS8ZkySGc9pjHe8KE4bo1RjKKbjaxatf3zM16DD2hLGPvK3bqbSGvpNYA2qafoUeBYT',
+  } satisfies SchemaOrgEvidenceMediaAttachment),
+})
+
 function requireNonEmpty(value: string, field: string): string {
   const normalized = value.trim()
   if (!normalized) throw new TypeError(`${field} must not be empty`)
