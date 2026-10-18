@@ -1,5 +1,6 @@
 export * from './claim-proofs.js'
 export * from './converters.js'
+export * from './credential-issuance.js'
 export * from './identity-evidence.js'
 export * from './professional-qualification.js'
 export * from './schema-org-evidence.js'
