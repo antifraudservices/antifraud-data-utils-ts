@@ -9,6 +9,7 @@ import {
   ClearingHouseTenantCapability,
   EudiPidClaim,
   IdentityAttestationCapability,
+  IdentityEvidenceCheckClaim,
   IdentityEvidenceType,
   IdentityPredicateKind,
   OidcIdentityClaim,
@@ -168,6 +169,8 @@ test('accepts governed age-over thresholds while reserving the EUDI PID name for
 })
 
 test('projects animal, owner relationship and age-over targets to neutral flat claims', () => {
+  assert.equal(IdentityEvidenceCheckClaim.Reference, 'identity.evidence.checkReference')
+
   assert.deepEqual(toIdentityEvidenceTargetFlatClaims({
     subjectReference: 'did:web:person.example:owner',
     target: {
