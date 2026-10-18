@@ -64,7 +64,11 @@ export function assertSha3_384EvidenceContentId(contentId: string): void {
   }
 }
 
-function assertContentIdMatchesDigest(contentId: string, digest: string): void {
+export function assertSha3_384EvidenceContentIdMatchesDigest(
+  contentId: string,
+  digest: string,
+): void {
+  assertSha3_384EvidenceContentId(contentId)
   const cidBytes = decodeBase58btc(contentId.slice(1))
   let digestBytes: Uint8Array
   try {
@@ -224,7 +228,7 @@ function assertReferenceOnlyEvidence(evidence: IdentityEvidenceInput): void {
       if (attachment.digestAlgorithm !== 'sha3-384') {
         throw new TypeError('A SHA3-384 evidence contentId requires digestAlgorithm sha3-384')
       }
-      assertContentIdMatchesDigest(attachment.contentId, attachment.digest)
+      assertSha3_384EvidenceContentIdMatchesDigest(attachment.contentId, attachment.digest)
     }
   })
 }
