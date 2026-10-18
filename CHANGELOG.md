@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add product-neutral DIDComm binary-attachment contracts for inline base64 and
+  protected `links + multihash` delivery without changing the canonical
+  Schema.org `DigitalDocument`/`MediaObject` business graph.
+- Prove exact byte round-trip for a minimal synthetic PDF and reject empty or
+  incomplete attachments. No FHIR `DocumentReference` is introduced.
+
 ## 0.1.3 - 2026-10-17
 
 - Export one product-neutral confidential-document fixture so gateways, SDKs
