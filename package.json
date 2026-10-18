@@ -1,6 +1,6 @@
 {
   "name": "antifraud-data-utils-ts",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Product-neutral identity verification, evidence and attestation data contracts",
   "type": "module",
   "main": "./dist/index.js",
@@ -13,6 +13,10 @@
     "./identity-assurance": {
       "types": "./dist/identity-assurance/index.d.ts",
       "default": "./dist/identity-assurance/index.js"
+    },
+    "./cryptography": {
+      "types": "./dist/cryptography/index.d.ts",
+      "default": "./dist/cryptography/index.js"
     }
   },
   "files": [
@@ -35,6 +39,13 @@
     "url": "git+https://github.com/antifraudservices/antifraud-data-utils-ts.git"
   },
   "devDependencies": {
+    "@types/pako": "^2.0.4",
+    "gdc-common-utils-ts": "^2.9.30",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@noble/hashes": "^2.4.0",
+    "@noble/post-quantum": "^0.5.4",
+    "pako": "^2.2.0"
   }
 }

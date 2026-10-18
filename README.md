@@ -16,6 +16,23 @@ The package keeps three concerns separate:
 3. An attestation records that an authorized actor assessed a subject, claim
    or relationship; it never silently rewrites the assessed source data.
 
+It also exports the reviewed, stateless shared cryptography engine through
+`antifraud-data-utils-ts/cryptography`. The engine preserves the existing
+`gdc-common-utils-ts` confidential envelope: a fresh AES-256-GCM content key is
+wrapped for the recipient with ML-KEM-768, HKDF-SHA-256 and AES-256-GCM key
+wrap. ML-DSA-65 signs or verifies exact bytes. The engine never stores a private
+key, unlock secret or plaintext key; managed wallets and KMS adapters retain
+custody and authorization.
+
+```ts
+import {
+  CryptographyService,
+  type ICryptoHelper,
+} from 'antifraud-data-utils-ts/cryptography'
+
+const cryptography = new CryptographyService(runtimeCryptoHelper)
+```
+
 ## Current API
 
 ```ts
@@ -150,9 +167,10 @@ issues them; OpenID Identity Assurance describes verified claims and evidence.
 ## Repository boundary
 
 This package contains pure types, vocabulary, JSON Schemas, converters,
-validators and synthetic fixtures. It contains no user interface, role policy,
-HTTP client, persistence adapter, signing key, credential issuer, ledger
-connection or deployment configuration.
+validators, synthetic fixtures and stateless cryptographic primitives. It
+contains no user interface, role policy, HTTP client, persistence adapter,
+private-key custody, credential issuer, ledger connection or deployment
+configuration.
 
 See [Identity verification and attestation contract](docs/IDENTITY_VERIFICATION_AND_ATTESTATION.md)
 for the normative model and downstream acceptance requirements.

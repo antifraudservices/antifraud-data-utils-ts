@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.5 - 2026-10-18
+
+- Migrate the reviewed stateless `gdc-common-utils-ts` cryptography profile so
+  Antifraud SDKs can share ML-KEM-768 key generation, random AES-256-GCM
+  content keys, HKDF-derived per-recipient key encryption keys and the
+  `gdc-mlkem-cek-wrap-v1` JWE envelope without duplicating algorithms.
+- Export ML-DSA-44/65/87 byte and JWS signing/verification primitives while
+  leaving all private-key custody, persistence and user-presence authorization
+  to the calling managed wallet or KMS.
+- Prove bidirectional JWE compatibility with `gdc-common-utils-ts@2.9.30`, PDF
+  byte confidentiality, authenticated tamper rejection and ML-DSA-65 changed-
+  payload rejection.
+
 ## 0.1.4 - 2026-10-18
 
 - Add product-neutral DIDComm binary-attachment contracts for inline base64 and
