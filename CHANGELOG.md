@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.2 - 2026-10-17
+
+- Add the canonical strict JSON:API graph for Schema.org `DigitalDocument`
+  manifests, component documents and their encoded `MediaObject` resources.
+- Require complete CIDv1 raw SHA3-384 content identifiers under
+  `PropertyValue.propertyID` and `value`, with digest matching, unique resource
+  identifiers and no embedded document bytes.
+- Normalize the historical `identifier.additionalType` input convention while
+  emitting only canonical `identifier.propertyID`, and reject conflicting
+  legacy and canonical profiles.
+- Export reusable CID-to-digest validation for downstream confidential-document
+  boundaries.
+
 ## 0.1.1 - 2026-10-17
 
 - Add the canonical credential-issuance request, lifecycle, receipt wire

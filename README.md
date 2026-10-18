@@ -28,7 +28,10 @@ import {
   QualificationAuthorityKind,
   QualificationVerificationStatus,
   SchemaOrgIdentityClaim,
+  SchemaOrgContentIdentifierProfile,
+  SchemaOrgDocumentResourceType,
   SchemaOrgQualificationClaim,
+  buildSchemaOrgConfidentialDocumentGraph,
   buildQualificationLedgerAnchor,
   defineProfessionalQualification,
   defineAuthorizedWorkforceIdentityEvidenceStatement,
@@ -66,6 +69,23 @@ Schema.org `MediaObject` flat claims describe a scanned artifact and bind its
 protected URL, media type and size to a CIDv1(raw, SHA3-384) identifier encoded
 with multibase base58btc. OpenID Identity Assurance attachment metadata is a
 projection of that same artifact; it is not the canonical store.
+
+`buildSchemaOrgConfidentialDocumentGraph` produces a strict JSON:API 1.1
+primary document whose `data[]` contains direct Schema.org
+`DigitalDocument` and `MediaObject` resource objects. A manifest relates its
+documents through `hasPart`; each document relates its concrete file through
+`encoding`. The `MediaObject.identifier` is a `PropertyValue`: `propertyID` is
+`cidv1-raw-sha3-384` and `value` is the complete multibase base58btc CID. The
+builder verifies that the CID embeds a SHA3-384 digest matching the supplied
+digest, requires exact byte size, protected URL and media type, rejects
+duplicate resource identifiers and never accepts raw document bytes.
+
+Historical inputs may have used `identifier.additionalType` to name an
+identifier scheme. `normalizeSchemaOrgContentIdentifier` reads that legacy
+shape for migration, but canonical output uses `PropertyValue.propertyID`.
+Conflicting legacy and canonical values fail closed. Established external
+organization, person or animal identifier contracts are not silently renamed
+by this attachment-specific compatibility rule.
 
 A controller or authorized human-resources employee may use the same governed
 flow to record evidence about an employee's identity or qualifications. When a
