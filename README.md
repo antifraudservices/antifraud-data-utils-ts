@@ -40,6 +40,13 @@ Login, review, delivery, read state and a successful local user-presence
 ceremony are deliberately not represented as signatures. SDK orchestration
 owns authorization, one-use session consumption and proof creation.
 
+`buildSocialPublicationManifestDigest` and
+`defineSocialPublicationDemoRecord` close the bounded synthetic publication
+flow. The latter accepts only public content matching the immutable SHA3-384
+manifest, an already verified ML-DSA-65 managed-wallet proof, and an explicit
+in-memory Fabric Demo receipt. It never represents the simulated ledger as a
+real Fabric transaction or turns login and review into signatures.
+
 ## Current API
 
 ```ts

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add the canonical synthetic social-publication manifest digest and Demo
+  record. Public content must reproduce the signed SHA3-384 manifest, the
+  managed-wallet proof must already be verified with ML-DSA-65, and the
+  receipt remains explicitly bound to the simulated in-memory Fabric adapter.
 - Add the browser-neutral CIDv1 raw SHA3-384 builder for an already-computed
   48-byte evidence digest so BFFs and services do not duplicate multicodec or
   base58btc construction.
