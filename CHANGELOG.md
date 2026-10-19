@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.9 - 2026-10-19
+
 - Add the governed qualification-classification reference so portals and BFFs
   preserve canonical system, version, concept URI and code independently from
   localized presentation labels.
