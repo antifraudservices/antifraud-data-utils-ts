@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add the browser-neutral CIDv1 raw SHA3-384 builder for an already-computed
+  48-byte evidence digest so BFFs and services do not duplicate multicodec or
+  base58btc construction.
+
 ## 0.1.7 - 2026-10-18
 
 - Add the canonical verified managed-signature proof projection. Manifest,

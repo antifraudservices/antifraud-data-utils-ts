@@ -47,6 +47,32 @@ function decodeBase58btc(value: string): Uint8Array {
   return Uint8Array.from(bytes)
 }
 
+function encodeBase58btc(bytes: Uint8Array): string {
+  let value = 0n
+  for (const byte of bytes) value = (value << 8n) | BigInt(byte)
+
+  let encoded = ''
+  while (value > 0n) {
+    encoded = BASE58BTC_ALPHABET[Number(value % 58n)] + encoded
+    value /= 58n
+  }
+  for (const byte of bytes) {
+    if (byte !== 0) break
+    encoded = `1${encoded}`
+  }
+  return `z${encoded}`
+}
+
+/** Builds the canonical CIDv1(raw, SHA3-384) for already-hashed evidence bytes. */
+export function buildSha3_384EvidenceContentIdFromDigest(
+  digestBytes: Uint8Array,
+): string {
+  if (!(digestBytes instanceof Uint8Array) || digestBytes.byteLength !== 48) {
+    throw new TypeError('Evidence SHA3-384 digest must contain 48 bytes')
+  }
+  return encodeBase58btc(Uint8Array.from([0x01, 0x55, 0x15, 0x30, ...digestBytes]))
+}
+
 /** Validates CIDv1(raw, SHA3-384) encoded with multibase base58btc. */
 export function assertSha3_384EvidenceContentId(contentId: string): void {
   if (!/^z[1-9A-HJ-NP-Za-km-z]+$/u.test(contentId)) {
