@@ -1,6 +1,6 @@
 {
   "name": "antifraud-data-utils-ts",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Product-neutral identity verification, evidence and attestation data contracts",
   "type": "module",
   "main": "./dist/index.js",
