@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.8 - 2026-10-18
+
 - Add the canonical synthetic social-publication manifest digest and Demo
   record. Public content must reproduce the signed SHA3-384 manifest, the
   managed-wallet proof must already be verified with ML-DSA-65, and the
