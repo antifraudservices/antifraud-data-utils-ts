@@ -9,11 +9,36 @@ import {
   QualificationVerificationStatus,
   SchemaOrgQualificationClaim,
   buildQualificationLedgerAnchor,
+  defineQualificationClassificationReference,
   defineProfessionalQualification,
   deriveQualificationTrustBadges,
   projectProfessionalQualificationToSchemaOrg,
   toSchemaOrgQualificationFlatClaims,
 } from '../dist/identity-assurance/index.js'
+
+test('preserves the governed qualification classification identity independently from its label', () => {
+  assert.deepEqual(defineQualificationClassificationReference({
+    system: 'https://data.europa.eu/snb/education-level',
+    version: 'demo-2026-10',
+    uri: 'https://data.europa.eu/snb/education-level/synthetic-bachelor-001',
+    code: 'synthetic-bachelor-001',
+    display: 'Bachelor-level synthetic qualification',
+  }), {
+    system: 'https://data.europa.eu/snb/education-level',
+    version: 'demo-2026-10',
+    uri: 'https://data.europa.eu/snb/education-level/synthetic-bachelor-001',
+    code: 'synthetic-bachelor-001',
+    display: 'Bachelor-level synthetic qualification',
+  })
+})
+
+test('rejects a label without a governed qualification classification identity', () => {
+  assert.throws(() => defineQualificationClassificationReference({
+    system: '',
+    code: '',
+    display: 'Bachelor-level synthetic qualification',
+  }), /classification system must not be empty/i)
+})
 
 const qualificationFixture = Object.freeze({
   id: 'urn:qualification:opaque',
