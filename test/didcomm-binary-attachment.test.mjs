@@ -9,6 +9,7 @@ import {
   SyntheticConfidentialDocumentFixture,
   buildDidCommInlineBinaryAttachment,
   buildDidCommLinkedBinaryAttachment,
+  buildSha3_384EvidenceContentIdFromDigest,
 } from '../dist/identity-assurance/index.js'
 
 // The literal bytes are the behavior under test: a minimal synthetic PDF fixture.
@@ -32,6 +33,22 @@ const minimalPdfBytes = new TextEncoder().encode([
   '%%EOF',
   '',
 ].join('\n'))
+
+test('builds the canonical CIDv1 raw content identifier from a SHA3-384 digest', () => {
+  const digest = Buffer.from(
+    'mJ+lnlA8LeEHHgH2qJjjCt1TmFJWDRmtelW8l7lXsSswcDcGahIuhvPVoXAvQ/PA',
+    'base64',
+  )
+
+  assert.equal(
+    buildSha3_384EvidenceContentIdFromDigest(digest),
+    'zKYrhS8ZkySGc9pjHe8KE4bo1RjKKbjaxatf3zM16DD2hLGPvK3bqbSGvpNYA2qafoUeBYT',
+  )
+  assert.throws(
+    () => buildSha3_384EvidenceContentIdFromDigest(new Uint8Array(47)),
+    /48 bytes/i,
+  )
+})
 
 test('carries the exact bytes of a minimal PDF as an inline DIDComm attachment', () => {
   const attachment = buildDidCommInlineBinaryAttachment({
