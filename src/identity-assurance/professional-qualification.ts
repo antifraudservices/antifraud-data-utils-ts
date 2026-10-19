@@ -60,6 +60,36 @@ export type QualificationProof = Readonly<{
   proofReference: string
 }>
 
+/** Canonical terminology identity selected for a qualification classification. */
+export type QualificationClassificationReference = Readonly<{
+  system: string
+  version?: string
+  uri?: string
+  code: string
+  /** Presentation metadata only; never the concept identity. */
+  display?: string
+}>
+
+export function defineQualificationClassificationReference(
+  input: QualificationClassificationReference,
+): QualificationClassificationReference {
+  requireNonEmpty(input.system, 'classification system')
+  requireNonEmpty(input.code, 'classification code')
+  if (!URL.canParse(input.system)) {
+    throw new TypeError('classification system must be a canonical URI')
+  }
+  if (input.uri && !URL.canParse(input.uri)) {
+    throw new TypeError('classification uri must be canonical')
+  }
+  return Object.freeze({
+    system: input.system.trim(),
+    ...(input.version?.trim() ? { version: input.version.trim() } : {}),
+    ...(input.uri?.trim() ? { uri: input.uri.trim() } : {}),
+    code: input.code.trim(),
+    ...(input.display?.trim() ? { display: input.display.trim() } : {}),
+  })
+}
+
 export type ProfessionalQualification = Readonly<{
   id: string
   subjectReference: string
@@ -68,11 +98,7 @@ export type ProfessionalQualification = Readonly<{
     system?: string
     value: string
   }>
-  code: Readonly<{
-    system: string
-    code: string
-    display?: string
-  }>
+  code: QualificationClassificationReference
   issuer: QualificationOrganizationReference
   period?: Readonly<{
     start?: string
@@ -139,8 +165,7 @@ export function defineProfessionalQualification(
   requireNonEmpty(input.id, 'id')
   requireNonEmpty(input.subjectReference, 'subjectReference')
   requireNonEmpty(input.identifier.value, 'identifier.value')
-  requireNonEmpty(input.code.system, 'code.system')
-  requireNonEmpty(input.code.code, 'code.code')
+  const classification = defineQualificationClassificationReference(input.code)
   requireNonEmpty(input.issuer.organizationReference, 'issuer.organizationReference')
   requireNonEmpty(input.issuer.legalIdentifier, 'issuer.legalIdentifier')
   requireNonEmpty(input.issuer.jurisdiction, 'issuer.jurisdiction')
@@ -173,7 +198,7 @@ export function defineProfessionalQualification(
   return Object.freeze({
     ...input,
     identifier: Object.freeze({ ...input.identifier }),
-    code: Object.freeze({ ...input.code }),
+    code: classification,
     issuer: Object.freeze({ ...input.issuer }),
     ...(input.period ? { period: Object.freeze({ ...input.period }) } : {}),
     proofs: Object.freeze(proofs),

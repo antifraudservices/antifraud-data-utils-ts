@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add the governed qualification-classification reference so portals and BFFs
+  preserve canonical system, version, concept URI and code independently from
+  localized presentation labels.
+
 ## 0.1.8 - 2026-10-18
 
 - Add the canonical synthetic social-publication manifest digest and Demo
