@@ -1,7 +1,7 @@
 {
   "name": "antifraud-data-utils-ts",
   "version": "0.1.9",
-  "description": "Product-neutral identity verification, evidence and attestation data contracts",
+  "description": "Product-neutral identity, evidence and public organization catalog data contracts",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,6 +17,10 @@
     "./cryptography": {
       "types": "./dist/cryptography/index.d.ts",
       "default": "./dist/cryptography/index.js"
+    },
+    "./organization-service-catalog": {
+      "types": "./dist/organization-service-catalog.d.ts",
+      "default": "./dist/organization-service-catalog.js"
     }
   },
   "files": [
