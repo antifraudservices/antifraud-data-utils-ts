@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add the Schema.org-first public organization service catalog: explicit
+  Organization, department, Place and Service publication; flat claims; a DCAT
+  discovery descriptor; and fail-closed cache refresh, withdrawal and rollback
+  decisions. FHIR projection and scheduling remain outside this contract.
+
 ## 0.1.9 - 2026-10-19
 
 - Add the governed qualification-classification reference so portals and BFFs

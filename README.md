@@ -1,7 +1,7 @@
 # Antifraud Data Utilities
 
-Product-neutral TypeScript contracts for identity verification, evidence and
-attestations.
+Product-neutral TypeScript contracts for identity verification, evidence,
+attestations and public organization-service discovery.
 
 The central trust rule is provenance without authority substitution: every
 identity or qualification claim keeps who asserted it, under which authority
@@ -15,6 +15,18 @@ The package keeps three concerns separate:
 2. OpenID Identity Assurance `verified_claims` is an exchange projection.
 3. An attestation records that an authorized actor assessed a subject, claim
    or relationship; it never silently rewrites the assessed source data.
+
+The separate `organization-service-catalog` subpath defines a Schema.org-first
+public graph for the legal Organization, department Organizations, Places and
+client Services. Publication is explicit at every level. A public Service must
+reference at least one public Place in its own department; private and unknown
+relationships fail closed. Its DCAT descriptor supports bounded marketplace
+cache refresh, withdrawal and rollback detection without becoming proof that
+the publisher is trusted.
+
+Schedules, Slots, Appointments, subjects and research studies do not belong in
+that dataset. The builder emits no FHIR resources. A later sector adapter may
+translate the canonical Schema.org graph when required.
 
 It also exports the reviewed, stateless shared cryptography engine through
 `antifraud-data-utils-ts/cryptography`. The engine preserves the existing
@@ -48,6 +60,13 @@ in-memory Fabric Demo receipt. It never represents the simulated ledger as a
 real Fabric transaction or turns login and review into signatures.
 
 ## Current API
+
+```ts
+import {
+  buildPublicOrganizationServiceCatalog,
+  evaluateOrganizationCatalogCache,
+} from 'antifraud-data-utils-ts/organization-service-catalog'
+```
 
 ```ts
 import {
