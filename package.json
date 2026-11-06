@@ -1,6 +1,6 @@
 {
   "name": "antifraud-data-utils-ts",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Product-neutral identity, evidence and public organization catalog data contracts",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,11 +21,16 @@
     "./organization-service-catalog": {
       "types": "./dist/organization-service-catalog.d.ts",
       "default": "./dist/organization-service-catalog.js"
+    },
+    "./service-conversation": {
+      "types": "./dist/service-conversation.d.ts",
+      "default": "./dist/service-conversation.js"
     }
   },
   "files": [
     "dist",
     "README.md",
+    "docs",
     "LICENSE",
     "CHANGELOG.md"
   ],

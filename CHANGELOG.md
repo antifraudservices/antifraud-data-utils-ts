@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.1.11 - 2026-11-06
+
+- Add the neutral organization/service conversation event emitted after an
+  authorized EHR, CMS or other authoritative service updates a subject index.
+  The event carries governed HTTPS references only; it grants no access and
+  does not copy authoritative data into the index or UI.
+- Extract the domain-neutral `pqc:/` transport for RFC 7797 detached ML-DSA
+  proofs, including deterministic numeric multi-QR encoding. The external
+  signed payload remains separate and may be a health credential or an
+  Antifraud JSON:API/Schema.org credential.
+- Add the versioned non-health Antifraud Data Card profile and `afdc:/` transport.
+  Its VC subject is one canonical JSON:API primary document with Schema.org
+  resources; it never uses or masquerades as the SHC `fhirBundle` profile.
+
 ## 0.1.10 - 2026-10-21
 
 - Add the Schema.org-first public organization service catalog: explicit

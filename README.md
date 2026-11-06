@@ -1,5 +1,10 @@
 # Antifraud Data Utilities
 
+The executable draft for the non-health
+[Antifraud Data Card v1](docs/ANTIFRAUD_DATA_CARD_V1.md) defines the `afdc:/`
+JSON:API/Schema.org credential transport and its separate `pqc:/` detached
+ML-DSA companion proof.
+
 Product-neutral TypeScript contracts for identity verification, evidence,
 attestations and public organization-service discovery.
 
