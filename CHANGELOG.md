@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ## 0.1.11 - 2026-11-06
 
+- Clean generated output before every build so renamed ADC modules cannot ship
+  stale Smart Data Card artifacts.
+
 - Add the neutral organization/service conversation event emitted after an
   authorized EHR, CMS or other authoritative service updates a subject index.
   The event carries governed HTTPS references only; it grants no access and
