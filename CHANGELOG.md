@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add the product-neutral `organization-identity` entry point for explicit
+  email/phone contact normalization, the existing SHA3-256 stable actor URN
+  and the existing organization employee DID with a separate role/device.
+  Preserve normalized email identity bytes and the established phone actor
+  representation; reject malformed or wrong-channel contacts. These data
+  operations grant no account, organization, employee or licence authority.
+- Port the compatibility algorithm without a runtime dependency on frozen
+  common utilities; the published predecessor is a development-only test
+  oracle. Reuse one internal base58btc encoder for actor hashes, evidence
+  CIDs and DIDComm attachments. Complete phone-only admission/enrollment
+  remains a separate consumer and gateway migration.
+- Keep test files serial by default. On Node 26.13.0, the focused identity and
+  evidence/attachment cases pass (22 tests), the complete package suite passes
+  (66 tests, no skips), and typechecking passes. No version or publication
+  change is included in this functional batch.
+
 ## 0.1.11 - 2026-11-06
 
 - Clean generated output before every build so renamed ADC modules cannot ship

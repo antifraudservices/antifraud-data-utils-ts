@@ -22,6 +22,10 @@
       "types": "./dist/organization-service-catalog.d.ts",
       "default": "./dist/organization-service-catalog.js"
     },
+    "./organization-identity": {
+      "types": "./dist/organization-identity.d.ts",
+      "default": "./dist/organization-identity.js"
+    },
     "./service-conversation": {
       "types": "./dist/service-conversation.d.ts",
       "default": "./dist/service-conversation.js"
@@ -37,7 +41,7 @@
   "scripts": {
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "npm run clean && tsc -p tsconfig.json",
-    "test": "npm run build && node --test test/*.test.mjs",
+    "test": "npm run build && node --test --test-concurrency=1 test/*.test.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "engines": {
