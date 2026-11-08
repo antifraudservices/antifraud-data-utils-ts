@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.2.0 - 2026-11-08
+
+- Group the additive contact identity and reviewed organization credential
+  APIs in one minor release. Source validation passes all 75 serial package
+  tests and the consuming Node SDK's 67 tests with real-format employee UUID
+  fixtures. These checks do not establish completed portal/gateway lifecycle
+  acceptance; registry publication is verified separately.
+
+- Add contact-aware reviewed organization admission/domain credential drafts
+  and the existing proof-free canonicalization contract. Preserve normalized
+  email JSON/signing payloads while projecting a phone controller as telephone
+  and retaining stable actor hashes for both parties. Ambiguous contacts fail;
+  occupation and controller authority values come from the caller's governed
+  policy. Draft construction does not verify a signature, approve admission,
+  call ICA or complete gateway/SDK phone enrollment.
+- Reviewed credential validation on Node 26.13.0: 9 focused cases, all 75
+  package cases without skips and typechecking pass. Email admission/domain
+  JSON and proof-free payload bytes match the published predecessor; fully
+  phone-only and independently selected party contacts remain distinct.
+
+- Add the product-neutral `organization-identity` entry point for explicit
+  email/phone contact normalization, the existing SHA3-256 stable actor URN
+  and the existing organization employee DID with a separate role/device.
+  Preserve normalized email identity bytes and the established phone actor
+  representation; reject malformed or wrong-channel contacts. These data
+  operations grant no account, organization, employee or licence authority.
+- Port the compatibility algorithm without a runtime dependency on frozen
+  common utilities; the published predecessor is a development-only test
+  oracle. Reuse one internal base58btc encoder for actor hashes, evidence
+  CIDs and DIDComm attachments. Complete phone-only admission/enrollment
+  remains a separate consumer and gateway migration.
+- Keep test files serial by default. On Node 26.13.0, the focused identity and
+  evidence/attachment cases pass (22 tests), the complete package suite passes
+  (66 tests, no skips), and typechecking passes. The subsequent cumulative
+  credential/identity matrix passes 75 tests without skips.
+
 ## 0.1.11 - 2026-11-06
 
 - Clean generated output before every build so renamed ADC modules cannot ship

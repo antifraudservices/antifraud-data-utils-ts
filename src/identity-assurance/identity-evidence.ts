@@ -4,6 +4,7 @@ import {
   type IdentityAttestationCapabilityValue,
 } from './vocabulary.js'
 import { IdentityPredicateKind } from './claim-proofs.js'
+import { encodeBase58btc } from '../encoding/base58btc.js'
 
 /** Evidence types registered by OpenID Identity Assurance. */
 export const IdentityEvidenceType = Object.freeze({
@@ -45,22 +46,6 @@ function decodeBase58btc(value: string): Uint8Array {
     bytes.unshift(0)
   }
   return Uint8Array.from(bytes)
-}
-
-function encodeBase58btc(bytes: Uint8Array): string {
-  let value = 0n
-  for (const byte of bytes) value = (value << 8n) | BigInt(byte)
-
-  let encoded = ''
-  while (value > 0n) {
-    encoded = BASE58BTC_ALPHABET[Number(value % 58n)] + encoded
-    value /= 58n
-  }
-  for (const byte of bytes) {
-    if (byte !== 0) break
-    encoded = `1${encoded}`
-  }
-  return `z${encoded}`
 }
 
 /** Builds the canonical CIDv1(raw, SHA3-384) for already-hashed evidence bytes. */

@@ -1,6 +1,7 @@
 import {
   assertSha3_384EvidenceContentIdMatchesDigest,
 } from './identity-evidence.js'
+import { encodeBase58btc } from '../encoding/base58btc.js'
 import {
   projectEvidenceAttachmentToSchemaOrgMediaObject,
   type SchemaOrgEvidenceMediaAttachment,
@@ -35,8 +36,6 @@ export type DidCommInlineBinaryAttachmentInput = Readonly<{
   bytes: Uint8Array
 }>
 
-const BASE58BTC_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
-
 function requireNonEmpty(value: string, field: string): string {
   const normalized = value.trim()
   if (!normalized) throw new TypeError(`${field} must not be empty`)
@@ -63,23 +62,6 @@ function decodeBase64(value: string): Uint8Array {
   } catch {
     throw new TypeError('Schema.org MediaObject digest must be base64 encoded')
   }
-}
-
-function encodeBase58btc(bytes: Uint8Array): string {
-  let value = 0n
-  for (const byte of bytes) value = (value << 8n) | BigInt(byte)
-
-  let encoded = ''
-  while (value > 0n) {
-    const remainder = Number(value % 58n)
-    encoded = BASE58BTC_ALPHABET[remainder] + encoded
-    value /= 58n
-  }
-  for (const byte of bytes) {
-    if (byte !== 0) break
-    encoded = `1${encoded}`
-  }
-  return `z${encoded}`
 }
 
 /**
