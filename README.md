@@ -13,6 +13,9 @@ documents the `organization-identity` entry point. It accepts an explicit email
 or E.164 phone channel and preserves the established actor multihash and
 organization employee DID representation. These pure builders never verify a
 contact, assign a role or replace an organization licence or device grant.
+The related `organization-credentials` entry point builds compatible reviewed
+admission/domain drafts with email or telephone parties and explicitly supplied
+occupation/authority claims; signing and verification remain outside it.
 
 The central trust rule is provenance without authority substitution: every
 identity or qualification claim keeps who asserted it, under which authority

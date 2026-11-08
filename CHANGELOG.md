@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add contact-aware reviewed organization admission/domain credential drafts
+  and the existing proof-free canonicalization contract. Preserve normalized
+  email JSON/signing payloads while projecting a phone controller as telephone
+  and retaining stable actor hashes for both parties. Ambiguous contacts fail;
+  occupation and controller authority values come from the caller's governed
+  policy. Draft construction does not verify a signature, approve admission,
+  call ICA or complete gateway/SDK phone enrollment.
+- Reviewed credential validation on Node 26.13.0: 9 focused cases, all 75
+  package cases without skips and typechecking pass. Email admission/domain
+  JSON and proof-free payload bytes match the published predecessor; fully
+  phone-only and independently selected party contacts remain distinct.
+
 - Add the product-neutral `organization-identity` entry point for explicit
   email/phone contact normalization, the existing SHA3-256 stable actor URN
   and the existing organization employee DID with a separate role/device.

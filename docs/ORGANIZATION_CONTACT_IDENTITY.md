@@ -67,7 +67,47 @@ Do not substitute a generic organization telephone for an employee's verified
 contact.
 
 This entry point does not migrate an existing account, grant or credential.
-Reviewed organization credential builders, gateway employee creation and SDK
-enrollment must adopt the contact-aware contract separately before a complete
-phone-only organization lifecycle can be claimed. Existing email records are
-not rewritten automatically and no new wire-level contact object is introduced.
+Gateway employee creation and SDK enrollment must adopt the contact-aware
+contract separately before a complete phone-only organization lifecycle can be
+claimed. Existing email records are not rewritten automatically and no new
+wire-level contact object is introduced.
+
+## Reviewed organization credential drafts
+
+The separate `organization-credentials` entry point exports
+`buildOrganizationTestNetworkCredential` and
+`buildTestNetworkOrganizationCredentialSet`, together with their existing
+proof-free canonicalization helpers. The first builds the admission draft; the
+second builds the Organization, legal representative and Service controller
+domain drafts. They neither issue a trusted credential nor verify a signature.
+
+Supply exactly one of `controllerEmail` or `controllerTelephone`. For the domain
+set, independently supply exactly one of `legalRepresentativeEmail` or
+`legalRepresentativeTelephone`. A representative and controller may use the
+same verified phone account, or independently verified channels. Missing or
+ambiguous party contacts fail instead of selecting a channel silently.
+
+The admission projection preserves `credentialSubject.controller.email` for
+email, and uses Schema.org `telephone` for a phone. Domain Person/owner `sameAs`
+values preserve the established stable actor hash. There is no new wire contact
+object, invented email, DID representation or proof algorithm.
+
+The domain builder requires caller-governed `legalRepresentativeOccupation`,
+`controllerOccupation` and `controllerAuthorityRole`; it does not choose
+occupation or authority policy. The trusted domain layer supplies its governed
+values and the gateway verifies their legitimacy. Compatibility tests supply
+the predecessor's role values and compare the complete email JSON bytes.
+
+`canonicalizeOrganizationTestNetworkCredential` and
+`canonicalizeTestNetworkOrganizationCredential` retain the predecessor's exact
+recursive proof removal and object-key ordering. This is the existing signing
+payload contract, not a signature algorithm or evidence that a supplied proof
+is valid. The enclosing host/GW still checks the trusted issuer, signer,
+credential type/environment, PDF digest, party contact, controller key and
+validity period.
+
+On the reviewed technical-sector Test Network path, the host signs and the GW
+verifies these admission/domain credentials before Offer/Order continuation.
+That path legitimately need not invoke an external ICA. Real ICA issuance is a
+separate verification boundary and must not be claimed from constructing drafts
+or completing host-reviewed admission.
