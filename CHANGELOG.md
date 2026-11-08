@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-## 0.2.0 - release candidate
+## 0.2.0 - 2026-11-08
 
-- Prepare one cumulative minor version for the additive contact identity and
-  reviewed organization credential APIs. Functional source validation remains
-  the 75-test serial matrix below; this metadata step does not publish npm or
-  establish completed consumer/gateway lifecycle acceptance.
+- Group the additive contact identity and reviewed organization credential
+  APIs in one minor release. Source validation passes all 75 serial package
+  tests and the consuming Node SDK's 67 tests with real-format employee UUID
+  fixtures. These checks do not establish completed portal/gateway lifecycle
+  acceptance; registry publication is verified separately.
 
 - Add contact-aware reviewed organization admission/domain credential drafts
   and the existing proof-free canonicalization contract. Preserve normalized
@@ -36,8 +37,8 @@ All notable changes to this project will be documented in this file.
   remains a separate consumer and gateway migration.
 - Keep test files serial by default. On Node 26.13.0, the focused identity and
   evidence/attachment cases pass (22 tests), the complete package suite passes
-  (66 tests, no skips), and typechecking passes. No version or publication
-  change is included in this functional batch.
+  (66 tests, no skips), and typechecking passes. The subsequent cumulative
+  credential/identity matrix passes 75 tests without skips.
 
 ## 0.1.11 - 2026-11-06
 
