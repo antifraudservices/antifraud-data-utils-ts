@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.2.0 - release candidate
+
+- Prepare one cumulative minor version for the additive contact identity and
+  reviewed organization credential APIs. Functional source validation remains
+  the 75-test serial matrix below; this metadata step does not publish npm or
+  establish completed consumer/gateway lifecycle acceptance.
+
 - Add contact-aware reviewed organization admission/domain credential drafts
   and the existing proof-free canonicalization contract. Preserve normalized
   email JSON/signing payloads while projecting a phone controller as telephone
