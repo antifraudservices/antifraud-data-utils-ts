@@ -1,6 +1,25 @@
 // Copyright 2026 Antifraud Services Inc. under the Apache License, Version 2.0.
 import { sha3_256 } from '@noble/hashes/sha3.js'
-import { encodeBase58btc } from './encoding/base58btc.js'
+import { decodeBase58btc, encodeBase58btc } from './encoding/base58btc.js'
+
+/** Normalizes a full UUID representation; a short display identifier is never an identity. */
+export function normalizeUuid(input: string | undefined): string | undefined {
+  if (!input) return undefined
+  let value = String(input).trim().replace(/^urn:uuid:/u, '')
+  const slash = value.indexOf('/')
+  if (slash >= 0) value = value.slice(slash + 1)
+  if (value.startsWith('z')) {
+    try {
+      const bytes = decodeBase58btc(value)
+      if (bytes.length !== 16) return undefined
+      return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')
+    } catch {
+      return undefined
+    }
+  }
+  const hex = value.replaceAll('-', '').toLowerCase()
+  return /^[0-9a-f]{32}$/u.test(hex) ? hex : undefined
+}
 
 /** Host-only authority identity; paths, user information and transport credentials are excluded. */
 export function buildAuthorityDidWeb(input:Readonly<{authority:string}>):string{

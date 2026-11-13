@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add independent strict multibase base58btc decoding and full UUID
+  normalization for neutral identity consumers. Preserve leading zero bytes
+  and reject malformed or incorrectly sized encoded identities.
+
 - Own host-only authority DID normalization and the standard service category
   claim used by neutral organization verification contracts.
 

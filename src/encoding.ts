@@ -4,7 +4,7 @@ import {encodeBase58btc} from './encoding/base58btc.js'
 /** Raw base58btc digits, without the multibase prefix. */
 export const bytesToBase58 = (bytes:Uint8Array):string => encodeBase58btc(bytes).slice(1)
 export const bytesToHexString = (bytes:Uint8Array):string => Array.from(bytes,byte=>byte.toString(16).padStart(2,'0')).join('')
-export {encodeBase58btc}
+export {encodeBase58btc, decodeBase58btc} from './encoding/base58btc.js'
 
 export type Sha3DigestBits = 224|256|384|512
 export type MultihashProfile = Readonly<{
