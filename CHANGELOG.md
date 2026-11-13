@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own host-only authority DID normalization and the standard service category
+  claim used by neutral organization verification contracts.
+
 - Expose independent base58btc, hexadecimal, SHA3 multihash and raw CIDv1
   primitives for neutral identity/evidence consumers. Preserve leading zeroes
   and distinguish multihashes from CID envelopes.

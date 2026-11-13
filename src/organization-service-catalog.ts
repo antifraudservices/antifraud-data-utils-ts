@@ -20,6 +20,7 @@ export const SchemaOrgPlaceClaim = Object.freeze({
 } as const)
 
 export const SchemaOrgServiceClaim = Object.freeze({
+  Category: 'org.schema.Service.category',
   Identifier: 'org.schema.Service.identifier.value',
   Name: 'org.schema.Service.name',
   Description: 'org.schema.Service.description',
