@@ -2,6 +2,15 @@
 import { sha3_256 } from '@noble/hashes/sha3.js'
 import { encodeBase58btc } from './encoding/base58btc.js'
 
+/** Host-only authority identity; paths, user information and transport credentials are excluded. */
+export function buildAuthorityDidWeb(input:Readonly<{authority:string}>):string{
+  const raw=String(input.authority??'').trim()
+  if(!raw)throw new TypeError('did_authority_required')
+  const url=new URL(raw.includes('://')?raw:`https://${raw}`)
+  if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw new TypeError('did_authority_invalid')
+  return `did:web:${url.host.toLowerCase().replaceAll(':','%3A')}`
+}
+
 export const StableActorContactKinds = Object.freeze({ Email: 'email', Phone: 'phone' } as const)
 export type StableActorContactKind = typeof StableActorContactKinds[keyof typeof StableActorContactKinds]
 export type ActorContactInput = Readonly<{ contactKind: StableActorContactKind; contact: string }>
