@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own the shared ISCO-08 occupation catalog for health, education, legal and
+  administrative consumers. Export immutable standard codings and exact-code
+  lookup without sector eligibility, permission decisions or FHIR dependencies.
+- Validate the catalog with the complete 79-test package suite.
+
 ## 0.2.0 - 2026-11-08
 
 - Group the additive contact identity and reviewed organization credential
