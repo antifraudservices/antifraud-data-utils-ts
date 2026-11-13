@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./encoding": {
+      "types": "./dist/encoding.d.ts",
+      "default": "./dist/encoding.js"
+    },
     "./isco-08": {
       "types": "./dist/isco-08.d.ts",
       "default": "./dist/isco-08.js"
