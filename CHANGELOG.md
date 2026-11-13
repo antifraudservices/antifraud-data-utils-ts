@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Expose independent base58btc, hexadecimal, SHA3 multihash and raw CIDv1
+  primitives for neutral identity/evidence consumers. Preserve leading zeroes
+  and distinguish multihashes from CID envelopes.
+
 - Own the shared ISCO-08 occupation catalog for health, education, legal and
   administrative consumers. Export immutable standard codings and exact-code
   lookup without sector eligibility, permission decisions or FHIR dependencies.
