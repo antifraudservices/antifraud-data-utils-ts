@@ -1,9 +1,10 @@
 // Copyright 2026 Antifraud Services Inc. under the Apache License, Version 2.0.
 import type { JsonValue } from './identity-assurance/types.js'
 import { buildStableActorIdentifier, normalizeActorContact, type ActorContactInput } from './organization-identity.js'
+import { W3cCredentialContexts, W3cCredentialTypes } from './credential-contracts.js'
 
 export const ReviewedOrganizationCredentialTypes = Object.freeze({
-  VerifiableCredential: 'VerifiableCredential',
+  VerifiableCredential: W3cCredentialTypes.VerifiableCredential,
   Admission: 'OrganizationTestNetworkCredential',
   Organization: 'OrganizationCredential',
   Person: 'PersonCredential',
@@ -16,7 +17,7 @@ export const TestNetworkOrganizationCredentialTypes = Object.freeze([
   ReviewedOrganizationCredentialTypes.LegalRepresentative,
   ReviewedOrganizationCredentialTypes.ServiceController,
 ] as const)
-const CONTEXTS = ['https://www.w3.org/ns/credentials/v2', 'https://schema.org']
+const CONTEXTS = [W3cCredentialContexts.V2, 'https://schema.org']
 
 export type ReviewedOrganizationCredential = Readonly<{
   '@context': readonly string[]
