@@ -8,11 +8,25 @@ export const Isco08CodingSystem = 'http://www.ilo.org/public/english/bureau/stat
 export const Isco08Hl7CodingSystem = 'urn:oid:2.16.840.1.113883.2.9.6.2.7' as const
 
 /** Identifier equivalence only; this checks neither occupation membership nor authority. */
-export function isIsco08CodingSystem(input: unknown): input is string {
+export function isIsco08CodingSystem(input: unknown): boolean {
   if (typeof input !== 'string') return false
   const value = input.trim()
   return value === Isco08CodingSystem || value === Isco08Hl7CodingSystem
     || ['isco-08', 'org.ilo.isco', 'org.ilo.isco-08'].includes(value.toLowerCase())
+}
+
+/** Reads a classification token or native Coding-shaped value; membership and permissions remain separate checks. */
+export function readIsco08Code(input: unknown): string | undefined {
+  let system: unknown, code: unknown
+  if (typeof input === 'string') {
+    const parts = input.trim().split('|')
+    if (parts.length !== 2) return undefined
+    ;[system, code] = parts
+  } else if (input && typeof input === 'object' && !Array.isArray(input)
+    && Object.hasOwn(input, 'system') && Object.hasOwn(input, 'code')) {
+    ;({ system, code } = input as { system: unknown; code: unknown })
+  } else return undefined
+  return isIsco08CodingSystem(system) && typeof code === 'string' && /^[0-9]{1,4}$/u.test(code) ? code : undefined
 }
 
 /** ISCO-08 codings; ILO classification: https://isco.ilo.org/ */
