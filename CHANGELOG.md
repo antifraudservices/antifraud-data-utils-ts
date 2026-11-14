@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Align repository instructions and CI with the approved Node.js 26.13.0
+  workspace runtime while retaining the package consumer compatibility range.
+
 - Export the existing cross-sector identity-governance kind tags and a strict
   non-coercing validator. These tags do not establish occupation or authority.
 

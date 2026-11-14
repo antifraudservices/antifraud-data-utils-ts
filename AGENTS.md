@@ -9,6 +9,10 @@ deployment configuration or blockchain connectivity.
 
 ## Development contract
 
+- Use the approved workspace Node.js 26.13.0 runtime for installs, builds,
+  tests, packing and publication. The consumer `engines` range is compatibility
+  metadata and does not select another workspace runtime.
+
 - Use red-green-refactor test-driven development for every behavior change.
 - Begin every test file with the required flow-contract comment.
 - Use canonical Schema.org and OpenID Identity Assurance vocabulary before

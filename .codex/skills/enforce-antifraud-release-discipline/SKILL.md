@@ -69,7 +69,10 @@ These are hard release gates, not recommendations.
   comment. E2E files enumerate the journey plus authorization and persistence
   invariants.
 - Mocks may isolate units but never replace the real boundary being claimed.
-- Use Node.js 24 for installs, builds, tests, packing and releases.
+- Use the approved workspace Node.js 26.13.0 for installs, builds, tests,
+  packing and releases. Record the executable/version before the gate and run
+  `npm ci` before the complete package checks. Consumer engine compatibility
+  metadata never authorizes switching the workspace runtime.
 - Protect the developer workstation. Run heavy gates sequentially by default.
   Never run concurrent Next.js production builds, Playwright/browser suites,
   Docker or Fabric networks, package installs, image builds or full repository
