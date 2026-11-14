@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own the supported neutral credential/proof and JWT-presentation data profiles,
+  preserving current context/base-type identities and typed sector subjects.
+  Keep unvalidated subject/evidence data unknown and distinguish these profiles
+  from complete standards support, encoded tokens and verified authority.
 - Recognize stable actor identifier string syntax without coercing objects or
   claiming digest validation or actor authority. Keep false string branches
   usable through a boolean result.
