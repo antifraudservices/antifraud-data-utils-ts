@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own neutral person, organization, action, place and service flat claim catalogs
+  without changing existing public-catalog identifier values. Keep containing
+  identifier references explicit and retain identity-assurance mapper keys.
+- Expose the registration metadata subset, explicit device extensions, registered
+  JWT members and constrained client access-token profile needed by current
+  consumers. Compile public positive and negative fixtures; these data contracts
+  do not implement authentication, validation or sector authorization.
 - Include the registered embedded JWK parameter in decoded JWE header contracts,
   preserving the distinction between key import data and public-key validation.
 - Own neutral DID key-relationship and engine JWS serialization contracts. Keep

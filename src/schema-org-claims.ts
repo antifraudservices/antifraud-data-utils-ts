@@ -1,0 +1,116 @@
+/** Product-neutral flat claim identities. These describe data, not roles or authorization. */
+export const SchemaOrgOrganizationClaim = Object.freeze({
+  /** Existing public-catalog key: the PropertyValue value, not its containing reference. */
+  Identifier: 'org.schema.Organization.identifier.value',
+  IdentifierValue: 'org.schema.Organization.identifier.value',
+  IdentifierReference: 'org.schema.Organization.identifier',
+  IdentifierType: 'org.schema.Organization.identifier.additionalType',
+  Name: 'org.schema.Organization.name',
+  ParentOrganization: 'org.schema.Organization.parentOrganization.identifier',
+  AdditionalType: 'org.schema.Organization.additionalType',
+  SameAs: 'org.schema.Organization.sameAs',
+  AddressCountry: 'org.schema.Organization.address.addressCountry',
+  AddressRegion: 'org.schema.Organization.address.addressRegion',
+  AddressLocality: 'org.schema.Organization.address.addressLocality',
+  PostalCode: 'org.schema.Organization.address.postalCode',
+  StreetAddress: 'org.schema.Organization.address.streetAddress',
+  LegalName: 'org.schema.Organization.legalName',
+  AlternateName: 'org.schema.Organization.alternateName',
+  TaxId: 'org.schema.Organization.taxID',
+  Url: 'org.schema.Organization.url',
+  Duns: 'org.schema.Organization.duns',
+  Email: 'org.schema.Organization.email',
+  Telephone: 'org.schema.Organization.telephone',
+  HasCredentialMaterial: 'org.schema.Organization.hasCredential.material',
+  OwnerAlternateName: 'org.schema.Organization.owner.alternateName',
+  OwnerEmail: 'org.schema.Organization.owner.email',
+  OwnerTelephone: 'org.schema.Organization.owner.telephone',
+  OwnerIdentifierValue: 'org.schema.Organization.owner.identifier.value',
+  MemberAlternateName: 'org.schema.Organization.member.alternateName',
+  MemberName: 'org.schema.Organization.member.name',
+  MemberAdditionalType: 'org.schema.Organization.member.additionalType',
+  MemberGivenName: 'org.schema.Organization.member.givenName',
+  MemberFamilyName: 'org.schema.Organization.member.familyName',
+  MemberBirthDate: 'org.schema.Organization.member.birthDate',
+  MemberGender: 'org.schema.Organization.member.gender',
+  MemberEmail: 'org.schema.Organization.member.email',
+  MemberTelephone: 'org.schema.Organization.member.telephone',
+  MemberIdentifierType: 'org.schema.Organization.member.identifier.additionalType',
+  MemberIdentifierValue: 'org.schema.Organization.member.identifier.value',
+  MemberRole: 'org.schema.Organization.member.role',
+  NumberOfEmployees: 'org.schema.Organization.numberOfEmployees.value',
+} as const)
+export type SchemaOrgOrganizationClaimKey = typeof SchemaOrgOrganizationClaim[keyof typeof SchemaOrgOrganizationClaim]
+
+export const SchemaOrgPersonClaim = Object.freeze({
+  AdditionalType: 'org.schema.Person.additionalType',
+  AdditionalName: 'org.schema.Person.additionalName',
+  AlternateName: 'org.schema.Person.alternateName',
+  AddressCountry: 'org.schema.Person.address.addressCountry',
+  AddressRegion: 'org.schema.Person.address.addressRegion',
+  BirthDate: 'org.schema.Person.birthDate',
+  Email: 'org.schema.Person.email',
+  FamilyName: 'org.schema.Person.familyName',
+  Gender: 'org.schema.Person.gender',
+  GivenName: 'org.schema.Person.givenName',
+  HasOccupation: 'org.schema.Person.hasOccupation',
+  OccupationalCategory: 'org.schema.Person.hasOccupation.occupationalCategory',
+  OccupationIdentifierValue: 'org.schema.Person.hasOccupation.identifier.value',
+  OccupationIdentifierSystem: 'org.schema.Person.hasOccupation.identifier.additionalType',
+  HasCredentialMaterial: 'org.schema.Person.hasCredential.material',
+  Identifier: 'org.schema.Person.identifier',
+  IdentifierType: 'org.schema.Person.identifier.additionalType',
+  IdentifierValue: 'org.schema.Person.identifier.value',
+  SameAs: 'org.schema.Person.sameAs',
+  Name: 'org.schema.Person.name',
+  MemberOf: 'org.schema.Person.memberOf',
+  MemberOfTaxId: 'org.schema.Person.memberOf.taxID',
+  Telephone: 'org.schema.Person.telephone',
+  WorksFor: 'org.schema.Person.worksFor',
+} as const)
+export type SchemaOrgPersonClaimKey = typeof SchemaOrgPersonClaim[keyof typeof SchemaOrgPersonClaim]
+
+export const SchemaOrgActionClaim = Object.freeze({
+  AgentIdentifier: 'org.schema.Action.agent.identifier',
+  AgentLegalName: 'org.schema.Action.agent.legalName',
+  ParticipantIdentifier: 'org.schema.Action.participant.identifier',
+  ProviderIdentifier: 'org.schema.Action.provider.identifier',
+  ProviderName: 'org.schema.Action.provider.name',
+  StartTime: 'org.schema.Action.startTime',
+} as const)
+export type SchemaOrgActionClaimKey = typeof SchemaOrgActionClaim[keyof typeof SchemaOrgActionClaim]
+
+export const SchemaOrgPlaceClaim = Object.freeze({
+  Identifier: 'org.schema.Place.identifier.value',
+  Name: 'org.schema.Place.name',
+  Department: 'org.schema.Place.department.identifier',
+  ContainedInPlace: 'org.schema.Place.containedInPlace.identifier',
+  Latitude: 'org.schema.Place.geo.latitude',
+  Longitude: 'org.schema.Place.geo.longitude',
+  Elevation: 'org.schema.Place.geo.elevation',
+  AddressCountry: 'org.schema.Place.address.addressCountry',
+  AddressRegion: 'org.schema.Place.address.addressRegion',
+  AddressLocality: 'org.schema.Place.address.addressLocality',
+  PostalCode: 'org.schema.Place.address.postalCode',
+  StreetAddress: 'org.schema.Place.address.streetAddress',
+} as const)
+export type SchemaOrgPlaceClaimKey = typeof SchemaOrgPlaceClaim[keyof typeof SchemaOrgPlaceClaim]
+
+export const SchemaOrgServiceClaim = Object.freeze({
+  Category: 'org.schema.Service.category',
+  /** Existing public-catalog key retains its exact wire value. */
+  Identifier: 'org.schema.Service.identifier.value',
+  IdentifierValue: 'org.schema.Service.identifier.value',
+  IdentifierReference: 'org.schema.Service.identifier',
+  Name: 'org.schema.Service.name',
+  Description: 'org.schema.Service.description',
+  ServiceType: 'org.schema.Service.serviceType',
+  Provider: 'org.schema.Service.provider.identifier',
+  Department: 'org.schema.Service.department.identifier',
+  AvailableAtOrFrom: 'org.schema.Service.availableAtOrFrom.identifier',
+  AreaServed: 'org.schema.Service.areaServed',
+  AdditionalType: 'org.schema.Service.additionalType',
+  TermsOfService: 'org.schema.Service.termsOfService',
+  Url: 'org.schema.Service.url',
+} as const)
+export type SchemaOrgServiceClaimKey = typeof SchemaOrgServiceClaim[keyof typeof SchemaOrgServiceClaim]

@@ -1,34 +1,5 @@
-export const SchemaOrgOrganizationClaim = Object.freeze({
-  Identifier: 'org.schema.Organization.identifier.value',
-  Name: 'org.schema.Organization.name',
-  ParentOrganization: 'org.schema.Organization.parentOrganization.identifier',
-} as const)
-
-export const SchemaOrgPlaceClaim = Object.freeze({
-  Identifier: 'org.schema.Place.identifier.value',
-  Name: 'org.schema.Place.name',
-  Department: 'org.schema.Place.department.identifier',
-  ContainedInPlace: 'org.schema.Place.containedInPlace.identifier',
-  Latitude: 'org.schema.Place.geo.latitude',
-  Longitude: 'org.schema.Place.geo.longitude',
-  Elevation: 'org.schema.Place.geo.elevation',
-  AddressCountry: 'org.schema.Place.address.addressCountry',
-  AddressRegion: 'org.schema.Place.address.addressRegion',
-  AddressLocality: 'org.schema.Place.address.addressLocality',
-  PostalCode: 'org.schema.Place.address.postalCode',
-  StreetAddress: 'org.schema.Place.address.streetAddress',
-} as const)
-
-export const SchemaOrgServiceClaim = Object.freeze({
-  Category: 'org.schema.Service.category',
-  Identifier: 'org.schema.Service.identifier.value',
-  Name: 'org.schema.Service.name',
-  Description: 'org.schema.Service.description',
-  ServiceType: 'org.schema.Service.serviceType',
-  Provider: 'org.schema.Service.provider.identifier',
-  Department: 'org.schema.Service.department.identifier',
-  AvailableAtOrFrom: 'org.schema.Service.availableAtOrFrom.identifier',
-} as const)
+import { SchemaOrgOrganizationClaim, SchemaOrgPlaceClaim, SchemaOrgServiceClaim } from './schema-org-claims.js'
+export { SchemaOrgOrganizationClaim, SchemaOrgPlaceClaim, SchemaOrgServiceClaim } from './schema-org-claims.js'
 
 export const DcatDatasetClaim = Object.freeze({
   Identifier: 'org.w3.dcat.Dataset.identifier',

@@ -1,3 +1,5 @@
+import { SchemaOrgPersonClaim } from '../schema-org-claims.js'
+
 export const IdentityAttestationCapability = Object.freeze({
   CreateSubject: 'identity.subject.create',
   UpdateSubject: 'identity.subject.update',
@@ -12,13 +14,13 @@ export type IdentityAttestationCapabilityValue =
 
 /** Canonical Schema.org flat claims currently mapped to registered OpenID claims. */
 export const SchemaOrgIdentityClaim = Object.freeze({
-  PersonName: 'org.schema.Person.name',
-  PersonGivenName: 'org.schema.Person.givenName',
-  PersonFamilyName: 'org.schema.Person.familyName',
-  PersonBirthDate: 'org.schema.Person.birthDate',
-  PersonGender: 'org.schema.Person.gender',
-  PersonEmail: 'org.schema.Person.email',
-  PersonTelephone: 'org.schema.Person.telephone',
+  PersonName: SchemaOrgPersonClaim.Name,
+  PersonGivenName: SchemaOrgPersonClaim.GivenName,
+  PersonFamilyName: SchemaOrgPersonClaim.FamilyName,
+  PersonBirthDate: SchemaOrgPersonClaim.BirthDate,
+  PersonGender: SchemaOrgPersonClaim.Gender,
+  PersonEmail: SchemaOrgPersonClaim.Email,
+  PersonTelephone: SchemaOrgPersonClaim.Telephone,
 } as const)
 
 export type SchemaOrgIdentityClaimValue =
