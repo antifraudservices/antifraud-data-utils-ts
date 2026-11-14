@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.0
+
 - Align repository instructions and CI with the approved Node.js 26.13.0
   workspace runtime while retaining the package consumer compatibility range.
 
