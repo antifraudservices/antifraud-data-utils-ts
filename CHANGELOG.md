@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Parse unverified raw JSON, compact payloads and plain credential/presentation
+  objects through explicit neutral helpers. Reject malformed encodings and
+  inherited/accessor containers without adding issuer, signature or role policy;
+  keep nested data unknown and preserve valid serialized payloads.
 - Own the supported neutral credential/proof and JWT-presentation data profiles,
   preserving current context/base-type identities and typed sector subjects.
   Keep unvalidated subject/evidence data unknown and distinguish these profiles
