@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add the neutral Offer, Order and IndividualProduct flat claim fields actually
+  consumed by current hosting/order and product-search flows. Preserve indexed
+  wire identities and keep pricing, payments and licensing policy caller-owned.
 - Own neutral person, organization, action, place and service flat claim catalogs
   without changing existing public-catalog identifier values. Keep containing
   identifier references explicit and retain identity-assurance mapper keys.

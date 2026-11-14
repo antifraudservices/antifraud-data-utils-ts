@@ -114,3 +114,38 @@ export const SchemaOrgServiceClaim = Object.freeze({
   Url: 'org.schema.Service.url',
 } as const)
 export type SchemaOrgServiceClaimKey = typeof SchemaOrgServiceClaim[keyof typeof SchemaOrgServiceClaim]
+
+/** Offer data only. Eligibility and payment fields are assertions, not an entitlement decision. */
+export const SchemaOrgOfferClaim = Object.freeze({
+  AcceptedPaymentMethod: 'org.schema.Offer.acceptedPaymentMethod',
+  Category: 'org.schema.Offer.category',
+  CheckoutPageUrlTemplate: 'org.schema.Offer.checkoutPageURLTemplate',
+  EligibleCustomerType: 'org.schema.Offer.eligibleCustomerType',
+  EligibleQuantityValue: 'org.schema.Offer.eligibleQuantity.value',
+  Identifier: 'org.schema.Offer.identifier',
+  ItemOfferedName: 'org.schema.Offer.itemOffered.name',
+  ItemOfferedSku: 'org.schema.Offer.itemOffered.sku',
+  OfferedBy: 'org.schema.Offer.offeredBy',
+  Price: 'org.schema.Offer.price',
+  PriceCurrency: 'org.schema.Offer.priceCurrency',
+  SerialNumber: 'org.schema.Offer.serialNumber',
+} as const)
+export type SchemaOrgOfferClaimKey = typeof SchemaOrgOfferClaim[keyof typeof SchemaOrgOfferClaim]
+
+export const SchemaOrgOrderClaim = Object.freeze({
+  AcceptedOfferIdentifier: 'org.schema.Order.acceptedOffer.identifier',
+  ConfirmationNumber: 'org.schema.Order.confirmationNumber',
+  PartOfInvoice: 'org.schema.Order.partOfInvoice',
+  PaymentMethod: 'org.schema.Order.paymentMethod',
+  PaymentUrl: 'org.schema.Order.paymentUrl',
+  OrderedItemServiceType: 'org.schema.Order.orderedItem.serviceType',
+} as const)
+export type SchemaOrgOrderClaimKey = typeof SchemaOrgOrderClaim[keyof typeof SchemaOrgOrderClaim]
+
+/** An individual product's declared category or serial does not establish a software licence. */
+export const SchemaOrgIndividualProductClaim = Object.freeze({
+  AdditionalType: 'org.schema.IndividualProduct.additionalType',
+  Category: 'org.schema.IndividualProduct.category',
+  SerialNumber: 'org.schema.IndividualProduct.serialNumber',
+} as const)
+export type SchemaOrgIndividualProductClaimKey = typeof SchemaOrgIndividualProductClaim[keyof typeof SchemaOrgIndividualProductClaim]

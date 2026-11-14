@@ -54,6 +54,20 @@ TypeScript does not enforce these protocols at runtime. JSON decoding, assigning
 a type, accepting JWK import data or receiving device metadata does not verify a
 signature, establish trust, enforce replay protection or grant a licence.
 
+## Commerce data used by existing consumers
+
+`SchemaOrgOfferClaim`, `SchemaOrgOrderClaim` and
+`SchemaOrgIndividualProductClaim` contain the generic flat fields already read
+by `HostingOfferOrderService`, `process-order-entry`, `payment-confirmation`,
+`FamilyManager`, `license-search` and related hosting handlers in the Gateway
+source linked above. These fields include offer quantity and price, accepted
+offer references, order confirmation/payment references and product serials.
+They preserve the exact existing indexed wire identities. Host-specific pricing,
+payment verification, role entitlements, device limits and licence decisions
+remain outside these neutral vocabularies. A product category or serial is data,
+not authorization. No unused SoftwareApplication vocabulary is added merely to
+reproduce a larger historical catalog.
+
 ## Validation
 
 Public consumer fixtures compile the positive shapes and reject missing client
