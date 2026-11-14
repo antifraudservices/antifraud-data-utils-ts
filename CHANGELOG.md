@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Share the existing submitted document-review method codes across identity
+  evidence consumers. A selected review method remains separate from trusted
+  verification, authorization and credential signing.
+
 - Own the neutral record identity, exact-field query input and four-method vault
   repository contracts without depending on a product SDK. Preserve public
   shapes while leaving storage adapters, scoped authorization, transactions and

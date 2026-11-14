@@ -8,6 +8,11 @@ ML-DSA companion proof.
 Product-neutral TypeScript contracts for identity verification, evidence,
 attestations and public organization-service discovery.
 
+`IdentityEvidenceReviewMethods` and `IdentityEvidenceReviewMethod` are exported
+from the root and `identity-assurance` entry points. They preserve the submitted
+document-review codes `pipp`, `sripp`, `eid` and `uripp`. Selecting a method does
+not establish trusted verification, authorization or a credential signature.
+
 The [organization contact identity guide](docs/ORGANIZATION_CONTACT_IDENTITY.md)
 documents the `organization-identity` entry point. It accepts an explicit email
 or E.164 phone channel and preserves the established actor multihash and
