@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Expose the stateless cryptography engine contract, required public-key
+  parameter shapes, generic JOSE import keys and raw AES-GCM component types.
+  Keep private-key custody with the caller and distinguish raw bytes from
+  encoded envelopes. Compile an external consumer through the public subpath.
+
 - Add independent strict multibase base58btc decoding and full UUID
   normalization for neutral identity consumers. Preserve leading zero bytes
   and reject malformed or incorrectly sized encoded identities.

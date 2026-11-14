@@ -36,6 +36,40 @@ export interface ClassicPublicJwk {
 
 export type PublicJwk = MlkemPublicJwk | MldsaPublicJwk | ClassicPublicJwk
 
+/** Required public parameters used by the existing key/thumbprint profiles. */
+export type MlkemBaseJwk = Pick<MlkemPublicJwk, 'kty' | 'crv' | 'x'>
+export type MldsaBaseJwk = Pick<MldsaPublicJwk, 'kty' | 'alg' | 'pub'>
+export type EcBaseJwk = Pick<ClassicPublicJwk, 'kty' | 'crv' | 'x' | 'y'>
+export type BaseJwk = MlkemBaseJwk | MldsaBaseJwk | EcBaseJwk
+
+/** Generic JOSE import data; this shape is not a public-key publication filter. */
+export interface JWK {
+  alg?: string
+  key_ops?: string[]
+  kid?: string
+  kty?: string
+  use?: string
+  crv?: string
+  d?: string
+  x?: string
+  y?: string
+  pub?: string
+  priv?: string
+  k?: string
+  [name: string]: unknown
+}
+
+export interface JwkSet {
+  keys: JWK[]
+}
+
+/** Raw in-memory bytes, distinct from the encoded ProtectedDataAES envelope. */
+export interface AesGcmComponents {
+  ciphertext: Uint8Array
+  iv: Uint8Array
+  authTag: Uint8Array
+}
+
 export interface MlkemPrivateJwk extends MlkemPublicJwk {
   /** Private material. It must remain in the caller-owned wallet or KMS. */
   dBytes: Uint8Array
