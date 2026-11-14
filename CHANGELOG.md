@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Recognize the HL7-endorsed ISCO-08 OID URI, the WHO SMART Base system URI,
+  and existing compact/reverse-DNS aliases through an exact identifier guard.
+  Keep their profile-specific provenance explicit; no authority or occupation
+  membership is inferred from an identifier match.
 - Expose the stateless cryptography engine contract, required public-key
   parameter shapes, generic JOSE import keys and raw AES-GCM component types.
   Keep private-key custody with the caller and distinguish raw bytes from
