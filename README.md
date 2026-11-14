@@ -8,6 +8,10 @@ ML-DSA companion proof.
 Product-neutral TypeScript contracts for identity verification, evidence,
 attestations and public organization-service discovery.
 
+The `actor-kinds` entry point exports `ActorKinds`, `ActorKind` and
+`isActorKind` for existing persisted identity-governance tags. A kind identifies
+the record category; it does not establish an occupation or authorization.
+
 `IdentityEvidenceReviewMethods` and `IdentityEvidenceReviewMethod` are exported
 from the root and `identity-assurance` entry points. They preserve the submitted
 document-review codes `pipp`, `sripp`, `eid` and `uripp`. Selecting a method does

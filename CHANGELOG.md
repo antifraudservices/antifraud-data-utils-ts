@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Export the existing cross-sector identity-governance kind tags and a strict
+  non-coercing validator. These tags do not establish occupation or authority.
+
 - Share the existing submitted document-review method codes across identity
   evidence consumers. A selected review method remains separate from trusted
   verification, authorization and credential signing.

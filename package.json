@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./actor-kinds": {
+      "types": "./dist/actor-kinds.d.ts",
+      "default": "./dist/actor-kinds.js"
+    },
     "./vault-repository": {
       "types": "./dist/vault-repository.d.ts",
       "default": "./dist/vault-repository.js"
