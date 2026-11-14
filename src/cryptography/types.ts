@@ -90,6 +90,8 @@ export interface ProtectedHeadersJWE {
   alg?: string
   enc?: string
   cty?: string
+  /** Registered JWE embedded-key parameter (RFC 7516 section 4.1.5); import shape is not publication validation. */
+  jwk?: JWK
   typ?: string
   kid?: string
   skid?: string

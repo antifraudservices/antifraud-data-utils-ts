@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Include the registered embedded JWK parameter in decoded JWE header contracts,
+  preserving the distinction between key import data and public-key validation.
 - Own neutral DID key-relationship and engine JWS serialization contracts. Keep
   encoded signature fields distinct from decoded headers, support explicit
   structured service endpoint types, and leave resolution and trust to callers.
