@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
   parameter shapes, generic JOSE import keys and raw AES-GCM component types.
   Keep private-key custody with the caller and distinguish raw bytes from
   encoded envelopes. Compile an external consumer through the public subpath.
+  Include the caller-owned ML-DSA signing-key byte shape alongside ML-KEM keys.
 
 - Add independent strict multibase base58btc decoding and full UUID
   normalization for neutral identity consumers. Preserve leading zero bytes

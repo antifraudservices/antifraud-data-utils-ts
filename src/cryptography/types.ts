@@ -75,6 +75,11 @@ export interface MlkemPrivateJwk extends MlkemPublicJwk {
   dBytes: Uint8Array
 }
 
+export interface MldsaPrivateJwk extends MldsaPublicJwk {
+  /** Private material remains in the caller-owned wallet or KMS. */
+  privBytes: Uint8Array
+}
+
 export interface ProtectedDataAES {
   ciphertext: string
   tag: string
