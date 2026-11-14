@@ -50,6 +50,12 @@ wrap. ML-DSA-65 signs or verifies exact bytes. The engine never stores a private
 key, unlock secret or plaintext key; managed wallets and KMS adapters retain
 custody and authorization.
 
+`ICryptography` describes that stateless engine boundary. `BaseJwk` contains
+required public parameters for the supported profiles, while `JWK`/`JwkSet`
+represent generic JOSE import data and do not filter private material for
+publication. `AesGcmComponents` carries raw bytes; `ProtectedDataAES` carries
+encoded envelope strings. These declarations do not validate key material.
+
 ```ts
 import {
   CryptographyService,

@@ -6,6 +6,7 @@ import * as pako from 'pako'
 
 import { AesManager } from './aes-manager.js'
 import { Content } from './content.js'
+import type { ICryptography } from './cryptography-contract.js'
 import type {
   ClassicPublicJwk,
   DataCompactJWT,
@@ -34,7 +35,7 @@ const RECIPIENT_ALGORITHM = 'ML-KEM-768+HKDF-SHA256+A256GCMKW'
  * This class never persists or owns private keys. Wallet and KMS callers retain
  * custody and supply private material only for the duration of an operation.
  */
-export class CryptographyService {
+export class CryptographyService implements ICryptography {
   private readonly aesManager: AesManager
 
   constructor(private readonly cryptoHelper: ICryptoHelper) {
