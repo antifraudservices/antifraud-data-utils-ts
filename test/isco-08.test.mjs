@@ -35,3 +35,12 @@ test('recognizes exact WHO and HL7 system identifiers alongside existing compact
  for(const system of ['',null,undefined,{},'unknown-isco-08',`${catalog.Isco08CodingSystem}extra`,catalog.Isco08CodingSystem.slice(0,-1),`${catalog.Isco08Hl7CodingSystem}.1`]) assert.equal(catalog.isIsco08CodingSystem(system),false)
  assert.equal(catalog.Isco08Occupations.Dentist.system,catalog.Isco08CodingSystem)
 })
+
+test('reads exact occupation codes from token searches and native Coding values without inventing a coding system',()=>{
+ assert.equal(typeof catalog.readIsco08Code,'function')
+ for(const system of [catalog.Isco08CodingSystem,catalog.Isco08Hl7CodingSystem,'ISCO-08','org.ilo.isco','org.ilo.isco-08']) {
+  assert.equal(catalog.readIsco08Code(`${system}|2261`),'2261')
+  assert.equal(catalog.readIsco08Code({system,code:'2261'}),'2261')
+ }
+ for(const value of ['2261','unknown|2261',`${catalog.Isco08Hl7CodingSystem}|2261|extra`,{system:catalog.Isco08Hl7CodingSystem,code:'2261-extra'},{system:catalog.Isco08Hl7CodingSystem,code:2261},{code:'2261'},null,undefined,{},Object.create({system:catalog.Isco08Hl7CodingSystem,code:'2261'})]) assert.equal(catalog.readIsco08Code(value),undefined)
+})

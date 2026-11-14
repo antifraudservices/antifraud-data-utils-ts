@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Read ISCO codes from explicit `system|code` tokens and native Coding-shaped
+  data, rejecting unknown systems, malformed codes and inherited fields.
+  Prove public alias-predicate typing in both matching and nonmatching branches.
 - Recognize the HL7-endorsed ISCO-08 OID URI, the WHO SMART Base system URI,
   and existing compact/reverse-DNS aliases through an exact identifier guard.
   Keep their profile-specific provenance explicit; no authority or occupation
