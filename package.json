@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./did-document": {
+      "types": "./dist/did-document.d.ts",
+      "default": "./dist/did-document.js"
+    },
     "./encoding": {
       "types": "./dist/encoding.d.ts",
       "default": "./dist/encoding.js"

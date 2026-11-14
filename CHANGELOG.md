@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own neutral DID key-relationship and engine JWS serialization contracts. Keep
+  encoded signature fields distinct from decoded headers, support explicit
+  structured service endpoint types, and leave resolution and trust to callers.
 - Read ISCO codes from explicit `system|code` tokens and native Coding-shaped
   data, rejecting unknown systems, malformed codes and inherited fields.
   Prove public alias-predicate typing in both matching and nonmatching branches.
