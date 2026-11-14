@@ -31,6 +31,12 @@ export function buildAuthorityDidWeb(input:Readonly<{authority:string}>):string{
 }
 
 export const StableActorContactKinds = Object.freeze({ Email: 'email', Phone: 'phone' } as const)
+
+/** Prefix/alphabet syntax only: no multihash decoding, digest validation or actor authority is established. */
+export function isStableActorIdentifier(value: unknown): boolean {
+  return typeof value === 'string' && /^urn:multibase:z[1-9A-HJ-NP-Za-km-z]+$/u.test(value.trim())
+}
+
 export type StableActorContactKind = typeof StableActorContactKinds[keyof typeof StableActorContactKinds]
 export type ActorContactInput = Readonly<{ contactKind: StableActorContactKind; contact: string }>
 export type OrganizationEmployeeIdentityInput = ActorContactInput & Readonly<{
