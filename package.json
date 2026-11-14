@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./vault-repository": {
+      "types": "./dist/vault-repository.d.ts",
+      "default": "./dist/vault-repository.js"
+    },
     "./credential-decoding": {
       "types": "./dist/credential-decoding.d.ts",
       "default": "./dist/credential-decoding.js"

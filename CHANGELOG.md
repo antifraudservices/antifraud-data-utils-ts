@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own the neutral record identity, exact-field query input and four-method vault
+  repository contracts without depending on a product SDK. Preserve public
+  shapes while leaving storage adapters, scoped authorization, transactions and
+  any future protected-index query dialect with their explicit owners.
 - Parse unverified raw JSON, compact payloads and plain credential/presentation
   objects through explicit neutral helpers. Reject malformed encodings and
   inherited/accessor containers without adding issuer, signature or role policy;
