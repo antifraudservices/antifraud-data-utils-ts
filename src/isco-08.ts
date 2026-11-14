@@ -1,4 +1,19 @@
+/** WHO SMART Base's ISCO-08 system URI; this is not a universal ILO-assigned identifier.
+ * https://smart.who.int/base/1.0.0/CodeSystem-ISCO08.html
+ */
 export const Isco08CodingSystem = 'http://www.ilo.org/public/english/bureau/stat/isco/isco08/' as const
+/** HL7 Terminology's endorsed ISCO-08 identifier, distinct from the WHO profile URI.
+ * https://terminology.hl7.org/en/NamingSystem-ISCO08.xml.html
+ */
+export const Isco08Hl7CodingSystem = 'urn:oid:2.16.840.1.113883.2.9.6.2.7' as const
+
+/** Identifier equivalence only; this checks neither occupation membership nor authority. */
+export function isIsco08CodingSystem(input: unknown): input is string {
+  if (typeof input !== 'string') return false
+  const value = input.trim()
+  return value === Isco08CodingSystem || value === Isco08Hl7CodingSystem
+    || ['isco-08', 'org.ilo.isco', 'org.ilo.isco-08'].includes(value.toLowerCase())
+}
 
 /** ISCO-08 codings; ILO classification: https://isco.ilo.org/ */
 function occupation<const Code extends string>(code:Code,display:string){

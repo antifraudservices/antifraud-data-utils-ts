@@ -27,3 +27,11 @@ test('serves education, legal and administrative consumers from the same catalog
  assert.equal(catalog.Isco08Occupations?.Lawyer?.code,'2611')
  assert.equal(catalog.Isco08Occupations?.GeneralOfficeClerk?.code,'4110')
 })
+
+test('recognizes exact WHO and HL7 system identifiers alongside existing compact and reverse-DNS aliases',()=>{
+ assert.equal(typeof catalog.isIsco08CodingSystem,'function')
+ assert.equal(catalog.Isco08Hl7CodingSystem,'urn:oid:2.16.840.1.113883.2.9.6.2.7')
+ for(const system of [catalog.Isco08CodingSystem,catalog.Isco08Hl7CodingSystem,'ISCO-08','isco-08','org.ilo.isco','org.ilo.isco-08']) assert.equal(catalog.isIsco08CodingSystem(system),true)
+ for(const system of ['',null,undefined,{},'unknown-isco-08',`${catalog.Isco08CodingSystem}extra`,catalog.Isco08CodingSystem.slice(0,-1),`${catalog.Isco08Hl7CodingSystem}.1`]) assert.equal(catalog.isIsco08CodingSystem(system),false)
+ assert.equal(catalog.Isco08Occupations.Dentist.system,catalog.Isco08CodingSystem)
+})
