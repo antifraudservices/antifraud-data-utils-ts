@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./credential-decoding": {
+      "types": "./dist/credential-decoding.d.ts",
+      "default": "./dist/credential-decoding.js"
+    },
     "./credential-contracts": {
       "types": "./dist/credential-contracts.d.ts",
       "default": "./dist/credential-contracts.js"
