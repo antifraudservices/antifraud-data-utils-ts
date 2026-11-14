@@ -6,6 +6,14 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./schema-org-claims": {
+      "types": "./dist/schema-org-claims.d.ts",
+      "default": "./dist/schema-org-claims.js"
+    },
+    "./openid-contracts": {
+      "types": "./dist/openid-contracts.d.ts",
+      "default": "./dist/openid-contracts.js"
+    },
     "./did-document": {
       "types": "./dist/did-document.d.ts",
       "default": "./dist/did-document.js"
