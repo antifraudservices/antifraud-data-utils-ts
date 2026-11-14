@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./didcomm-contracts": {
+      "types": "./dist/didcomm-contracts.d.ts",
+      "default": "./dist/didcomm-contracts.js"
+    },
     "./schema-org-claims": {
       "types": "./dist/schema-org-claims.d.ts",
       "default": "./dist/schema-org-claims.js"

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Recognize stable actor identifier string syntax without coercing objects or
+  claiming digest validation or actor authority. Keep false string branches
+  usable through a boolean result.
+- Expose a typed plaintext DIDComm envelope, the existing attachment consumer
+  profile and plaintext media type. Reuse immutable binary attachment outputs;
+  keep business bodies and message verification separate from data projection.
 - Add the neutral Offer, Order and IndividualProduct flat claim fields actually
   consumed by current hosting/order and product-search flows. Preserve indexed
   wire identities and keep pricing, payments and licensing policy caller-owned.
