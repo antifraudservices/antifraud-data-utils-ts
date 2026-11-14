@@ -44,8 +44,9 @@ employee DID retains the existing organization `did:web` root followed by
 is separate from the stable actor; two roles for one phone do not require two
 phone accounts. Neither clear contact is embedded in the generated identifier.
 
-The algorithm and representation are ported from the published predecessor
-`gdc-common-utils-ts@2.9.30` actor identifier and employee DID helpers. Tests use
+The algorithm and representation preserve the actor identifier and employee
+DID helpers in [the original source repository](https://github.com/Global-DataCare/gdc-common-utils-ts).
+Tests use
 that existing **development dependency only** as a compatibility oracle for
 email case, plus-addresses, URI/format normalization, phone hashes, employee
 DIDs and device suffixes. Email DID compatibility is defined on normalized
