@@ -36,6 +36,9 @@ documents the `organization-identity` entry point. It accepts an explicit email
 or E.164 phone channel and preserves the established actor multihash and
 organization employee DID representation. These pure builders never verify a
 contact, assign a role or replace an organization licence or device grant.
+`stableActorIdentifierFromDidWeb` extracts the unchanged opaque employee actor
+component from bare-host and tenant forms, including existing trailing paths.
+It does not validate the DID's authority, role, hash material or contact ownership.
 The related `organization-credentials` entry point builds compatible reviewed
 admission/domain drafts with email or telephone parties and explicitly supplied
 occupation/authority claims; signing and verification remain outside it.

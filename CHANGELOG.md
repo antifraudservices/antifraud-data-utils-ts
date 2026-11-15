@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Extract the existing opaque actor component from bare-host and tenant employee
+  DIDs without changing actor bytes or treating extraction as authority,
+  role validation or contact-hash reversal.
+
 ## 0.3.1
 
 - Add nine immutable canonical Schema.org Organization class IRIs and their
