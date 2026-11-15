@@ -1,4 +1,8 @@
 import {sha3_224,sha3_256,sha3_384,sha3_512} from '@noble/hashes/sha3.js'
+import {sha256} from '@noble/hashes/sha2.js'
+import * as dagJson from '@ipld/dag-json'
+import {CID} from 'multiformats/cid'
+import {create as createDigest} from 'multiformats/hashes/digest'
 import {encodeBase58btc} from './encoding/base58btc.js'
 
 /** Raw base58btc digits, without the multibase prefix. */
@@ -38,4 +42,18 @@ export function encodeMultibaseSha3(input:string|Uint8Array,bits:Sha3DigestBits=
 /** CIDv1 raw codec over exact UTF-8 bytes; callers own input canonicalization. */
 export function buildRawCidV1FromUtf8String(value:string,profile:MultihashProfile=SHA3_384_MULTIHASH_PROFILE):string {
   return encodeBase58btc(Uint8Array.of(1,0x55,...multihash(value,profile)))
+}
+
+/**
+ * Fixed CIDv1(DAG-JSON, SHA2-256), encoded as multibase base58btc.
+ * The caller owns JSON canonicalization and semantic field selection. Validate
+ * the supplied DAG-JSON bytes, then hash those exact bytes without reserializing.
+ * This profile is independent from the existing raw/SHA3 evidence profile.
+ */
+export function buildDagJsonCidV1FromUtf8String(value:string):string {
+  if(typeof value!=='string')throw new TypeError('dag_json_string_required')
+  const bytes=new TextEncoder().encode(value)
+  try{dagJson.decode(bytes)}catch{throw new TypeError('invalid_dag_json')}
+  const digest=createDigest(0x12,sha256(bytes))
+  return encodeBase58btc(CID.createV1(dagJson.code,digest).bytes)
 }

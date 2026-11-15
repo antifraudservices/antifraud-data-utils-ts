@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add a neutral fixed DAG-JSON/SHA2-256 CIDv1 encoding primitive that validates
+  and hashes exact caller-supplied UTF-8 bytes. Preserve the existing raw/SHA3
+  profiles and leave semantic canonicalization with the owning caller.
+
 ## 0.3.0
 
 - Align repository instructions and CI with the approved Node.js 26.13.0
