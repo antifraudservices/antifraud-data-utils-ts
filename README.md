@@ -1,5 +1,12 @@
 # Antifraud Data Utilities
 
+The `encoding` entry point exposes `buildDagJsonCidV1FromUtf8String` for the
+fixed CIDv1 DAG-JSON (`0x129`), SHA2-256 and base58btc profile. It validates
+supplied DAG-JSON and hashes its exact UTF-8 bytes without normalization or
+reserialization. Callers own canonicalization and semantic field selection;
+the primitive neither strips business identifiers nor verifies any claim.
+The existing raw (`0x55`), SHA3-384 evidence profile remains independent.
+
 The executable draft for the non-health
 [Antifraud Data Card v1](docs/ANTIFRAUD_DATA_CARD_V1.md) defines the `afdc:/`
 JSON:API/Schema.org credential transport and its separate `pqc:/` detached

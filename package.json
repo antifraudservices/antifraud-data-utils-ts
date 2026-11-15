@@ -102,8 +102,10 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@ipld/dag-json": "11.0.1",
     "@noble/hashes": "^2.4.0",
     "@noble/post-quantum": "^0.5.4",
+    "multiformats": "14.0.0",
     "pako": "^2.2.0"
   }
 }
