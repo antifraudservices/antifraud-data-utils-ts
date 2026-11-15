@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.3.1
 
 - Add nine immutable canonical Schema.org Organization class IRIs and their
   literal union through the root and `schema-org-types` entry. Keep sectors,
