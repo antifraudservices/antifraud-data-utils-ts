@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./jwk-thumbprints": {
+      "types": "./dist/jwk-thumbprints.d.ts",
+      "default": "./dist/jwk-thumbprints.js"
+    },
     "./public-aliases": {
       "types": "./dist/public-aliases.d.ts",
       "default": "./dist/public-aliases.js"

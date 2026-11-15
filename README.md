@@ -267,6 +267,8 @@ user-interface acceptance boundary.
 
 Node.js 26.13.0 is required. See [public and contact exchange aliases](docs/PUBLIC_ALIASES.md)
 for the distinction between opaque alias lists and strict contact validation.
+See [public JWK thumbprints](docs/JWK_THUMBPRINTS.md) for exact public-member
+hashing and URI framing without a key-possession or authority claim.
 
 ```bash
 npm ci

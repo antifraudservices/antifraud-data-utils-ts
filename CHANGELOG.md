@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own neutral public JWK SHA-256 thumbprints and RFC9278 URI framing, preserving
+  EC/RSA/OKP and the established AKP public-member wire profiles.
+
 - Own opaque public alias splitting and controller/telephone exchange alias
   normalization while preserving strict contact validation and existing actor
   hash bytes. Reject unsupported object coercion and accessor/inherited array
