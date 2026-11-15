@@ -1,5 +1,12 @@
 # Antifraud Data Utilities
 
+`schema-org-types` exposes nine immutable canonical Schema.org Organization
+class IRIs. `Dentist` is the published class; no `DentalClinic` class is
+invented. `ResearchOrganization` is published in Schema.org's new area.
+Consumers own presentation labels and selection policy; these classes confer
+no identity, occupation or authority. Each value links to its official class
+definition, for example [Dentist](https://schema.org/Dentist).
+
 The `encoding` entry point exposes `buildDagJsonCidV1FromUtf8String` for the
 fixed CIDv1 DAG-JSON (`0x129`), SHA2-256 and base58btc profile. It validates
 supplied DAG-JSON and hashes its exact UTF-8 bytes without normalization or

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add nine immutable canonical Schema.org Organization class IRIs and their
+  literal union through the root and `schema-org-types` entry. Keep sectors,
+  presentation labels and eligibility policy outside the neutral catalog.
+
 - Own neutral public JWK SHA-256 thumbprints and RFC9278 URI framing, preserving
   EC/RSA/OKP and the established AKP public-member wire profiles.
 

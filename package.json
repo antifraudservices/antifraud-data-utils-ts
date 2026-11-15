@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./schema-org-types": {
+      "types": "./dist/schema-org-types.d.ts",
+      "default": "./dist/schema-org-types.js"
+    },
     "./jwk-thumbprints": {
       "types": "./dist/jwk-thumbprints.d.ts",
       "default": "./dist/jwk-thumbprints.js"
