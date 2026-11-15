@@ -265,7 +265,8 @@ user-interface acceptance boundary.
 
 ## Development
 
-Node.js 24 is required.
+Node.js 26.13.0 is required. See [public and contact exchange aliases](docs/PUBLIC_ALIASES.md)
+for the distinction between opaque alias lists and strict contact validation.
 
 ```bash
 npm ci

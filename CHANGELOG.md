@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Own opaque public alias splitting and controller/telephone exchange alias
+  normalization while preserving strict contact validation and existing actor
+  hash bytes. Reject unsupported object coercion and accessor/inherited array
+  entries without claiming contact possession or authorization.
+
 - Add a neutral fixed DAG-JSON/SHA2-256 CIDv1 encoding primitive that validates
   and hashes exact caller-supplied UTF-8 bytes. Preserve the existing raw/SHA3
   profiles and leave semantic canonicalization with the owning caller.

@@ -1,6 +1,6 @@
 // Copyright 2026 Antifraud Services Inc. under the Apache License, Version 2.0.
-import { sha3_256 } from '@noble/hashes/sha3.js'
-import { decodeBase58btc, encodeBase58btc } from './encoding/base58btc.js'
+import { decodeBase58btc } from './encoding/base58btc.js'
+import { hashCanonicalActorContact } from './encoding/actor-contact-hash.js'
 
 /** Normalizes a full UUID representation; a short display identifier is never an identity. */
 export function normalizeUuid(input: string | undefined): string | undefined {
@@ -71,8 +71,7 @@ export function buildStableActorIdentifier(input: ActorContactInput): string {
   // Existing actor contract: multihash(SHA3-256), code 0x16, digest size 0x20.
   // Compatibility is checked against the published predecessor in tests only;
   // the runtime does not depend on that frozen package.
-  const digest = sha3_256(new TextEncoder().encode(contact))
-  return `urn:multibase:${encodeBase58btc(Uint8Array.from([0x16, 0x20, ...digest]))}`
+  return hashCanonicalActorContact(contact)
 }
 
 /** Builds the existing organization employee DID, keeping role and actor separate. */

@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./public-aliases": {
+      "types": "./dist/public-aliases.d.ts",
+      "default": "./dist/public-aliases.js"
+    },
     "./actor-kinds": {
       "types": "./dist/actor-kinds.d.ts",
       "default": "./dist/actor-kinds.js"
