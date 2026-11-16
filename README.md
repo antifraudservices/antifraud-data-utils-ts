@@ -1,5 +1,9 @@
 # Antifraud Data Utilities
 
+`jwk-thumbprints` also exposes `isJwkThumbprintSha256Urn` for the existing trimmed
+RFC 9278 SHA-256 URI shape. This syntax predicate does not verify a digest,
+public-key material or its ownership.
+
 `schema-org-types` exposes nine immutable canonical Schema.org Organization
 class IRIs. `Dentist` is the published class; no `DentalClinic` class is
 invented. `ResearchOrganization` is published in Schema.org's new area.
