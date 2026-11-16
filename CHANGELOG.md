@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.3.2
 
 - Extract the existing opaque actor component from bare-host and tenant employee
   DIDs without changing actor bytes or treating extraction as authority,
