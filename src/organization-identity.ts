@@ -74,6 +74,13 @@ export function buildStableActorIdentifier(input: ActorContactInput): string {
   return hashCanonicalActorContact(contact)
 }
 
+/** Extracts an existing opaque employee actor component, without validating DID authority, role or hash material. */
+export function stableActorIdentifierFromDidWeb(didWeb: string): string {
+  const match = /:employee:(z[^:]+):[^:]+(?:[:]|$)/u.exec(String(didWeb || '').trim())
+  if (!match) throw new TypeError('DID does not contain an employee actor binding')
+  return `urn:multibase:${match[1]}`
+}
+
 /** Builds the existing organization employee DID, keeping role and actor separate. */
 export function buildOrganizationEmployeeDidWeb(input: OrganizationEmployeeIdentityInput): string {
   const organizationDidWeb = String(input.organizationDidWeb || '').trim()
