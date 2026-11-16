@@ -1,5 +1,6 @@
 // Copyright 2026 Antifraud Services Inc. under the Apache License, Version 2.0.
 import type { JsonValue } from './identity-assurance/types.js'
+import type { VerifiableCredentialV2 } from './credential-contracts.js'
 import { buildStableActorIdentifier, normalizeActorContact, type ActorContactInput } from './organization-identity.js'
 import { W3cCredentialContexts, W3cCredentialTypes } from './credential-contracts.js'
 
@@ -186,12 +187,12 @@ function canonicalizeValue(value: unknown): unknown {
     .map(([key, nested]) => [key, canonicalizeValue(nested)]))
 }
 
-export function canonicalizeOrganizationTestNetworkCredential(credential: ReviewedOrganizationCredential): string {
+export function canonicalizeOrganizationTestNetworkCredential(credential: ReviewedOrganizationCredential | VerifiableCredentialV2): string {
   if (!credential.type.includes(ReviewedOrganizationCredentialTypes.Admission)) throw new TypeError('Credential is not an organization Test Network admission')
   return JSON.stringify(canonicalizeValue(credential))
 }
 
-export function canonicalizeTestNetworkOrganizationCredential(credential: ReviewedOrganizationCredential): string {
+export function canonicalizeTestNetworkOrganizationCredential(credential: ReviewedOrganizationCredential | VerifiableCredentialV2): string {
   if (!TestNetworkOrganizationCredentialTypes.some(type => credential.type.includes(type))) throw new TypeError('Credential is not a Test Network organization credential')
   if (!credential.type.includes(ReviewedOrganizationCredentialTypes.TestNetwork)) throw new TypeError('Test Network credential marker is required')
   return JSON.stringify(canonicalizeValue(credential))
