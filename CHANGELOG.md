@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Add immutable cross-sector identifier-input tags and their public literal
+  union. The tags do not normalize, hash, verify or authorize identifier inputs.
+
 ## 0.3.3
 
 - Accept the neutral credential consumer profile in existing organization

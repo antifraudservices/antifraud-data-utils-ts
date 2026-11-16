@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./identifier-input-kinds": {
+      "types": "./dist/identifier-input-kinds.d.ts",
+      "default": "./dist/identifier-input-kinds.js"
+    },
     "./schema-org-types": {
       "types": "./dist/schema-org-types.d.ts",
       "default": "./dist/schema-org-types.js"
