@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add a neutral case/whitespace comparison key with explicit nullish handling
+  and non-string rejection, preserving punctuation and accent distinctions.
+
 - Add immutable cross-sector identifier-input tags and their public literal
   union. The tags do not normalize, hash, verify or authorize identifier inputs.
 
