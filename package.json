@@ -86,6 +86,10 @@
       "types": "./dist/organization-credentials.d.ts",
       "default": "./dist/organization-credentials.js"
     },
+    "./text-comparison": {
+      "types": "./dist/text-comparison.d.ts",
+      "default": "./dist/text-comparison.js"
+    },
     "./service-conversation": {
       "types": "./dist/service-conversation.d.ts",
       "default": "./dist/service-conversation.js"

@@ -1,5 +1,10 @@
 # Antifraud Data Utilities
 
+`text-comparison` exports `normalizeComparisonText` through its leaf and the
+root. It trims and folds whitespace, then uppercases text while preserving
+punctuation, diacritics and Unicode normalization form. Nullish text produces
+an empty key; other non-string inputs are rejected. Original text is unchanged.
+
 `identifier-input-kinds` exports the frozen `IdentifierInputKinds` catalog and
 `IdentifierInputKind` union for the nonstandard input tags `UUID`, `EMAIL` and
 `PHONE`. These cross-sector tags select private identifier inputs; they do not
