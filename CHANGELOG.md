@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Own neutral Gaia-X credential/media contracts, Schema.org-to-credential draft
+  projections and the shared Gateway/SDK verification submission/result types.
+  Draft construction does not grant trust or replace signed result verification.
+
+- Add the neutral `clearing-house` entry point for pinned JWT and detached JWS
+  verification, including injected ML-DSA engines, canonical request digests,
+  signed receipt bindings and caller-owned tenant/verifier trust validation.
+- Reject unsupported algorithms and extensions, private or ambiguous pinned
+  keys, expired or mismatched JWTs, stale receipt nonces and altered requested
+  bindings. Transport, replay custody and domain policy remain application-owned.
+
 ## 0.3.3
 
 - Accept the neutral credential consumer profile in existing organization
