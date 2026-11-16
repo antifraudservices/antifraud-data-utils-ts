@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Accept the neutral credential consumer profile in existing organization
+  canonicalizers while preserving their marker checks and proof-free transcript
+  bytes; complete credential and authority validation remain caller-owned.
+
 - Recognize the existing trimmed RFC 9278 SHA-256 thumbprint URI syntax without
   coercion, digest verification or an assertion of key ownership.
 

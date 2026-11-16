@@ -46,6 +46,9 @@ It does not validate the DID's authority, role, hash material or contact ownersh
 The related `organization-credentials` entry point builds compatible reviewed
 admission/domain drafts with email or telephone parties and explicitly supplied
 occupation/authority claims; signing and verification remain outside it.
+Its canonicalizers accept the neutral credential consumer profile as well as
+reviewed drafts and preserve the existing recursive proof-free transcript.
+Validate the complete credential and current authority before accepting it.
 
 The central trust rule is provenance without authority substitution: every
 identity or qualification claim keeps who asserted it, under which authority
