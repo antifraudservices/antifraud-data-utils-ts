@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.3.3
 
 - Accept the neutral credential consumer profile in existing organization
   canonicalizers while preserving their marker checks and proof-free transcript
