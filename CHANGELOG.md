@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.4
+
 - Remove executable predecessor imports from the package tests and its
   development manifest. Retain synthetic, source-hashed recorded identity,
   credential and cryptographic vectors, cross-implementation decrypt evidence
