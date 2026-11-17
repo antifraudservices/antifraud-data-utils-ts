@@ -352,3 +352,13 @@ status and external rules-engine verification.
 for credential presentations and standard-compliance checks. These are data
 contracts; only the runtime verifier can authenticate a request or return a
 positive current-state decision.
+
+### Public registry search
+
+The `public-registry-search` leaf defines public-source projections and combined
+address, municipality, postal-code, text and optional exact-identifier filters.
+Identifier indexes are injected separately and never returned. Radius search
+accepts reviewed latitude/longitude only, sorts by straight-line distance
+before limiting and explicitly rejects sources with no reviewed coordinates.
+These contracts are product-neutral and do not establish membership or an
+available service.

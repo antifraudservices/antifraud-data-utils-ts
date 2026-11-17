@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 0.3.4
+## 0.4.0
 
 - Own neutral Gaia-X credential/media contracts, Schema.org-to-credential draft
   projections and the shared Gateway/SDK verification submission/result types.
@@ -14,6 +14,21 @@ All notable changes to this project will be documented in this file.
 - Reject unsupported algorithms and extensions, private or ambiguous pinned
   keys, expired or mismatched JWTs, stale receipt nonces and altered requested
   bindings. Transport, replay custody and domain policy remain application-owned.
+
+## 0.3.4
+
+- Remove executable predecessor imports from the package tests and its
+  development manifest. Retain synthetic, source-hashed recorded identity,
+  credential and cryptographic vectors, cross-implementation decrypt evidence
+  and ciphertext/AAD tamper checks. Preserve the existing wire profile and
+  document its wrap-object ordering difference without changing cryptography.
+  Guard production, tests, tools and the complete dependency graph against
+  frozen client dependencies.
+
+- Add product-neutral public-registry search contracts, exact private identifier
+  matching, accent-insensitive address/locality filters and bounded nearest-first
+  radius searches over reviewed geographic coordinates. Discovery never grants
+  organization membership or service capabilities.
 
 - Add a neutral case/whitespace comparison key with explicit nullish handling
   and non-string rejection, preserving punctuation and accent distinctions.

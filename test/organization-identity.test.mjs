@@ -1,48 +1,15 @@
 // Flow contract: normalize an actual email or E.164 phone, derive the established stable actor and organization employee DID, preserve published email bytes and reject wrong-channel or malformed inputs without treating contact data as authority.
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import {readFileSync} from 'node:fs'
+const recorded=JSON.parse(readFileSync(new URL('./fixtures/predecessor-vectors.json',import.meta.url),'utf8')).identity
 import { normalizeActorContact, buildStableActorIdentifier, buildOrganizationEmployeeDidWeb } from '../dist/organization-identity.js'
-
-// Golden wire vectors captured from released gdc-common-utils-ts@2.9.30
-// using only the synthetic fixtures below. Baseline npm tarball integrity:
-// sha512-+ZJLEp/AfmCm4ZwJRU5wKTmWJPevlJ8Wa82EepyoGz0BE3sKBA2JjVbh4ML5+e+RIzstwoJnk4vWE4E44UhTqg==
-// The published package exposes no source commit. Captured bytes are the oracle;
-// no predecessor package is loaded at test time.
-const reviewedWire = Object.freeze({
-  "actors": [
-    "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK",
-    "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK",
-    "urn:multibase:zW1kzKhP6Z6uTKEomsbXitSJVWbrW2HUmyqRAcFynSHQ7mD",
-    "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK",
-    "urn:multibase:zW1pQiLt7MP8e7TmU95v91yp9S3Jc8feM2hbN7by1jYaXyN",
-    "urn:multibase:zW1pQiLt7MP8e7TmU95v91yp9S3Jc8feM2hbN7by1jYaXyN"
-  ],
-  "employees": [
-    [
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359",
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359:example-device"
-    ],
-    [
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359",
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359:example-device"
-    ],
-    [
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1kzKhP6Z6uTKEomsbXitSJVWbrW2HUmyqRAcFynSHQ7mD:ISCO-08|2359",
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1kzKhP6Z6uTKEomsbXitSJVWbrW2HUmyqRAcFynSHQ7mD:ISCO-08|2359:example-device"
-    ],
-    [
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359",
-      "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359:example-device"
-    ]
-  ],
-  "phoneEmployee": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1pQiLt7MP8e7TmU95v91yp9S3Jc8feM2hbN7by1jYaXyN:ISCO-08|2359"
-})
 
 const fixture = Object.freeze({
   organizationDidWeb: 'did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech',
   role: 'ISCO-08|2359',
   email: 'Employee@Example.Invalid',
-  phone: '+16505550111',
+  phone: recorded.fixture.phone,
   deviceId: 'example-device',
 })
 const vectors = [
@@ -51,7 +18,7 @@ const vectors = [
   { contactKind: 'email', contact: fixture.email.replace('Employee', 'Employee+Tag') },
   { contactKind: 'email', contact: fixture.email.toLowerCase() },
   { contactKind: 'phone', contact: fixture.phone },
-  { contactKind: 'phone', contact: ` tel:${fixture.phone.slice(0, 2)} (650) 555-0111 ` },
+  { contactKind: 'phone', contact: recorded.vectors.at(-1).input.contact },
 ]
 
 test('normalizes contact values with an explicit channel', () => {
@@ -60,24 +27,29 @@ test('normalizes contact values with an explicit channel', () => {
 })
 
 test('preserves published actor hashes for email and phone, including formatted inputs', () => {
-  for (const [index, vector] of vectors.entries()) assert.equal(buildStableActorIdentifier(vector), reviewedWire.actors[index])
+  assert.deepEqual(fixture,recorded.fixture)
+  for (const vector of vectors) assert.equal(buildStableActorIdentifier(vector), recorded.vectors.find(row=>JSON.stringify(row.input)===JSON.stringify(vector)).actor)
   assert.notEqual(buildStableActorIdentifier(vectors[0]), buildStableActorIdentifier(vectors.at(-1)))
   assert.equal(buildStableActorIdentifier(vectors[0]), buildStableActorIdentifier(vectors[3]))
   assert.notEqual(buildStableActorIdentifier(vectors[0]), buildStableActorIdentifier(vectors[2]))
 })
 
 test('preserves exact published organization employee DID bytes for email', () => {
-  for (const [index, vector] of vectors.filter(vector => vector.contactKind === 'email').entries()) {
-    for (const [deviceIndex, deviceId] of [undefined, fixture.deviceId].entries()) {
+  for (const vector of vectors.filter(vector => vector.contactKind === 'email')) {
+    for (const deviceId of [undefined, fixture.deviceId]) {
       const actual = buildOrganizationEmployeeDidWeb({ ...fixture, ...vector, deviceId })
-      assert.equal(actual, reviewedWire.employees[index][deviceIndex])
+      const expected=recorded.employees.find(row=>row.input.contact===vector.contact&&row.input.deviceId===(deviceId??null))
+      assert.ok(expected)
+      assert.equal(actual, expected.expected)
     }
   }
 })
 
 test('uses the already established employee DID representation for a phone actor', () => {
+  const actorIdentifier = recorded.vectors.find(row=>row.input.contactKind==='phone'&&row.input.contact===fixture.phone).actor
   const actual = buildOrganizationEmployeeDidWeb({ ...fixture, contactKind: 'phone', contact: fixture.phone, deviceId: undefined })
-  assert.equal(actual, reviewedWire.phoneEmployee)
+  assert.equal(actual, recorded.phoneEmployee)
+  assert.equal(buildStableActorIdentifier({contactKind:'phone',contact:fixture.phone}),actorIdentifier)
   assert.equal(actual.includes(fixture.phone), false)
   assert.equal(actual.includes(fixture.email), false)
   assert.equal(actual.includes(':employee:'), true)
