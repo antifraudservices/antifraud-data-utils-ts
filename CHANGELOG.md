@@ -15,6 +15,12 @@ All notable changes to this project will be documented in this file.
   keys, expired or mismatched JWTs, stale receipt nonces and altered requested
   bindings. Transport, replay custody and domain policy remain application-owned.
 
+- Add a neutral case/whitespace comparison key with explicit nullish handling
+  and non-string rejection, preserving punctuation and accent distinctions.
+
+- Add immutable cross-sector identifier-input tags and their public literal
+  union. The tags do not normalize, hash, verify or authorize identifier inputs.
+
 ## 0.3.3
 
 - Accept the neutral credential consumer profile in existing organization

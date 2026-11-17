@@ -32,6 +32,17 @@ The `clearing-house` entry point provides pure verification primitives:
 These helpers own signature and request-binding mechanics. Applications retain
 identity, consent, role, ledger, transport, persistence and deployment policy.
 
+`text-comparison` exports `normalizeComparisonText` through its leaf and the
+root. It trims and folds whitespace, then uppercases text while preserving
+punctuation, diacritics and Unicode normalization form. Nullish text produces
+an empty key; other non-string inputs are rejected. Original text is unchanged.
+
+`identifier-input-kinds` exports the frozen `IdentifierInputKinds` catalog and
+`IdentifierInputKind` union for the nonstandard input tags `UUID`, `EMAIL` and
+`PHONE`. These cross-sector tags select private identifier inputs; they do not
+define normalization, hash profiles, clinical identifier codes or authority.
+They remain distinct from lowercase stable-actor contact kinds.
+
 `jwk-thumbprints` also exposes `isJwkThumbprintSha256Urn` for the existing trimmed
 RFC 9278 SHA-256 URI shape. This syntax predicate does not verify a digest,
 public-key material or its ownership.
