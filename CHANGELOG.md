@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.3.4
 
 - Own neutral Gaia-X credential/media contracts, Schema.org-to-credential draft
   projections and the shared Gateway/SDK verification submission/result types.
