@@ -13,7 +13,7 @@ export interface ICryptography {
   decapsulate(encapsulatedBytes: Uint8Array, secretKeyBytes: Uint8Array): Promise<Uint8Array>
   signBytes(payloadBytes: Uint8Array, secretKeyBytes: Uint8Array, alg: MldsaAlg): Promise<Uint8Array>
   verifyBytes(signatureBytes: Uint8Array, dataBytes: Uint8Array, publicKey: PublicJwk): Promise<boolean>
-  encryptJwe(payload: object, protectedHeader: object, secretKey: MlkemPrivateJwk, recipients: MlkemPublicJwk[]): Promise<JweObject>
+  encryptJwe(payload: object | string, protectedHeader: object, secretKey: MlkemPrivateJwk, recipients: MlkemPublicJwk[]): Promise<JweObject>
   encryptJweToCompact(payload: object | string, protectedHeader: object, secretKey: MlkemPrivateJwk, recipient: MlkemPublicJwk): Promise<string>
   decryptJwe(jwe: JweObject | string, secretKey: MlkemPrivateJwk): Promise<{ decryptedBytes: Uint8Array; protectedHeader: object }>
   getRecipientKidsFromJwe(jwe: JweObject | string): string[]

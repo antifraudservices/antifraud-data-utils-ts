@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## 0.4.0
 
+- Preserve exact signed text bytes in general JWE envelopes, including compressed
+  envelopes, using the same public payload contract as compact JWE. Recipient
+  isolation and nested signature verification remain unchanged.
+
 - Own neutral Gaia-X credential/media contracts, Schema.org-to-credential draft
   projections and the shared Gateway/SDK verification submission/result types.
   Draft construction does not grant trust or replace signed result verification.
