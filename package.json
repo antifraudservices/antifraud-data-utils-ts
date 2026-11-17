@@ -6,6 +6,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
+    "./public-registry-search": {
+      "types": "./dist/public-registry-search.d.ts",
+      "default": "./dist/public-registry-search.js"
+    },
     "./identifier-input-kinds": {
       "types": "./dist/identifier-input-kinds.d.ts",
       "default": "./dist/identifier-input-kinds.js"

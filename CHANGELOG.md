@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add product-neutral public-registry search contracts, exact private identifier
+  matching, accent-insensitive address/locality filters and bounded nearest-first
+  radius searches over reviewed geographic coordinates. Discovery never grants
+  organization membership or service capabilities.
+
 - Add a neutral case/whitespace comparison key with explicit nullish handling
   and non-string rejection, preserving punctuation and accent distinctions.
 
