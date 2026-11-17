@@ -1,14 +1,8 @@
 // Flow contract: build the existing reviewed admission and three domain credential drafts from explicit email/phone parties and caller-governed roles; preserve email/proof payload bytes, keep phone out of email, and never treat draft construction or canonicalization as signature verification or host admission.
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import {
-  buildOrganizationTestNetworkCredential as admissionOracle,
-  canonicalizeOrganizationTestNetworkCredential as admissionCanonicalOracle,
-} from 'gdc-common-utils-ts/utils/organization-test-network-credential'
-import {
-  buildTestNetworkOrganizationCredentialSet as domainOracle,
-  canonicalizeTestNetworkOrganizationCredential as domainCanonicalOracle,
-} from 'gdc-common-utils-ts/utils/test-network-organization-credentials'
+import {readFileSync} from 'node:fs'
+const recorded=JSON.parse(readFileSync(new URL('./fixtures/predecessor-vectors.json',import.meta.url),'utf8')).credentials
 import { buildStableActorIdentifier } from '../dist/organization-identity.js'
 import {
   buildOrganizationTestNetworkCredential,
@@ -32,20 +26,20 @@ const phone = '+16505550111'
 const phoneController = { ...base, controllerEmail: undefined, controllerTelephone: phone }
 
 test('preserves the exact published admission credential JSON for email', () => {
-  assert.equal(JSON.stringify(buildOrganizationTestNetworkCredential(base)), JSON.stringify(admissionOracle(base)))
+  assert.deepEqual(base,recorded.input)
+  assert.equal(JSON.stringify(buildOrganizationTestNetworkCredential(base)), JSON.stringify(recorded.admission))
 })
 
 test('preserves the exact published three domain credential JSONs for caller-supplied legacy roles', () => {
-  assert.equal(JSON.stringify(buildTestNetworkOrganizationCredentialSet(base)), JSON.stringify(domainOracle(base)))
+  assert.equal(JSON.stringify(buildTestNetworkOrganizationCredentialSet(base)), JSON.stringify(recorded.domains))
 })
 
 test('preserves proof-free canonicalization bytes and does not count a proof as verified', () => {
-  const admission = { ...admissionOracle(base), proof: { jws: 'unverified-example' } }
-  assert.equal(canonicalizeOrganizationTestNetworkCredential(admission), admissionCanonicalOracle(admission))
-  const domains = domainOracle(base)
-  for (const credential of domains) {
+  const admission = { ...recorded.admission, proof: { jws: 'unverified-example' } }
+  assert.equal(canonicalizeOrganizationTestNetworkCredential(admission), recorded.admissionCanonical)
+  for (const [index,credential] of recorded.domains.entries()) {
     const candidate = { ...credential, proof: [{ jws: 'unverified-example' }], evidence: [{ ...credential.evidence[0], proof: { test: true } }] }
-    assert.equal(canonicalizeTestNetworkOrganizationCredential(candidate), domainCanonicalOracle(candidate))
+    assert.equal(canonicalizeTestNetworkOrganizationCredential(candidate), recorded.domainCanonical[index])
   }
 })
 
@@ -93,7 +87,7 @@ test('requires caller-governed occupations and controller authority instead of a
 })
 
 test('rejects canonicalization under the wrong credential type or without domain Test Network marker', () => {
-  assert.throws(() => canonicalizeOrganizationTestNetworkCredential({ ...admissionOracle(base), type: ['VerifiableCredential'] }))
-  const domain = domainOracle(base)[0]
+  assert.throws(() => canonicalizeOrganizationTestNetworkCredential({ ...recorded.admission, type: ['VerifiableCredential'] }))
+  const domain = recorded.domains[0]
   assert.throws(() => canonicalizeTestNetworkOrganizationCredential({ ...domain, type: ['VerifiableCredential', 'OrganizationCredential'] }))
 })

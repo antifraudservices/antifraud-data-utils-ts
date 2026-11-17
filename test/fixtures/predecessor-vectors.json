@@ -1,0 +1,673 @@
+{
+  "schema": "antifraud-recorded-predecessor-vectors/v1",
+  "syntheticOnly": true,
+  "provenance": [
+    {
+      "module": "CryptographyService",
+      "version": "2.9.30",
+      "emittedSha256": "f3335f9f699eb5c57829d00eddd713ccd9dba1b9136ce3e2cc0e62664b1b0af3",
+      "sourceUrl": "https://github.com/Global-DataCare/gdc-common-utils-ts/blob/f4031b221216cacd9917d1d20c5ff0b03bed7045/src/CryptographyService.ts",
+      "sourceSha256": "f5110e674a7fe8a258da9d973efe5f9d96da95e2bc4c158597b16fda53c6342f"
+    },
+    {
+      "module": "utils/organization-test-network-credential",
+      "version": "2.9.30",
+      "emittedSha256": "7ed1b7746f3b8cf509f5242070f12822b3387e0d0cb8e0b560c938e63dbfbb15",
+      "sourceUrl": "https://github.com/Global-DataCare/gdc-common-utils-ts/blob/f4031b221216cacd9917d1d20c5ff0b03bed7045/src/utils/organization-test-network-credential.ts",
+      "sourceSha256": "15e160fe97e072fe1e12851715ea60ec744743125717b9e5686789fc497de597"
+    },
+    {
+      "module": "utils/test-network-organization-credentials",
+      "version": "2.9.30",
+      "emittedSha256": "8e2df8bd41fac0d88ff758b5427f8bc4e413362309c122cd88f89b822a8ea608",
+      "sourceUrl": "https://github.com/Global-DataCare/gdc-common-utils-ts/blob/f4031b221216cacd9917d1d20c5ff0b03bed7045/src/utils/test-network-organization-credentials.ts",
+      "sourceSha256": "0539d52a4699dbc54d5ffb0f559f60475c3beb67ca569427b8c28753c08097c8"
+    },
+    {
+      "module": "utils/actor-identifier",
+      "version": "2.9.30",
+      "emittedSha256": "19c0eec47e06650ae872bf47f0c11858cff9d1b26658d130710db36305a13e74",
+      "sourceUrl": "https://github.com/Global-DataCare/gdc-common-utils-ts/blob/f4031b221216cacd9917d1d20c5ff0b03bed7045/src/utils/actor-identifier.ts",
+      "sourceSha256": "a603883159899e9d6ed4c1827affa2c208a8d3bb38a0117dac8d95d97dff3de8"
+    },
+    {
+      "module": "utils/did",
+      "version": "2.9.30",
+      "emittedSha256": "c79f3365861fcb1468e2d1a334d32b6e7f85b1f1dbd322b4a1768931914bf891",
+      "sourceUrl": "https://github.com/Global-DataCare/gdc-common-utils-ts/blob/f4031b221216cacd9917d1d20c5ff0b03bed7045/src/utils/did.ts",
+      "sourceSha256": "4b4e50c3c285e49dafb9242565a3b10433087818020f12089fa9b8a3e31d1379"
+    }
+  ],
+  "credentials": {
+    "input": {
+      "issuerDid": "did:web:example.invalid:host",
+      "subjectDid": "did:web:example.invalid:organization",
+      "organizationDid": "did:web:example.invalid:organization",
+      "applicationId": "00000000-0000-4000-8000-000000000001",
+      "credentialId": "urn:uuid:00000000-0000-4000-8000-000000000001",
+      "validFrom": "2026-11-08T00:00:00.000Z",
+      "validUntil": "2026-11-09T00:00:00.000Z",
+      "legalName": "Example organization",
+      "organizationIdentifier": "EXAMPLE-ORG",
+      "controllerEmail": "Controller@Example.Invalid",
+      "legalRepresentativeEmail": "Representative@Example.Invalid",
+      "controllerKeyMaterial": "urn:jwk-thumbprint:sha-256:example",
+      "accessPath": "test-network",
+      "pdfSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "documentVersion": "example-v1",
+      "identifierType": "taxID",
+      "addressCountry": "ca",
+      "serviceCategory": "education-tech",
+      "legalRepresentativeFullName": "Example representative",
+      "legalRepresentativeOccupation": "ISCO-08|1120",
+      "controllerOccupation": "ISCO-08|1330",
+      "controllerAuthorityRole": "RESPRSN"
+    },
+    "admission": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://schema.org"
+      ],
+      "id": "urn:uuid:00000000-0000-4000-8000-000000000001",
+      "type": [
+        "VerifiableCredential",
+        "OrganizationTestNetworkCredential"
+      ],
+      "issuer": "did:web:example.invalid:host",
+      "credentialSubject": {
+        "id": "did:web:example.invalid:organization",
+        "applicationId": "00000000-0000-4000-8000-000000000001",
+        "accessPath": "test-network",
+        "organization": {
+          "legalName": "Example organization",
+          "identifier": "EXAMPLE-ORG"
+        },
+        "controller": {
+          "email": "controller@example.invalid",
+          "hasCredential": {
+            "material": "urn:jwk-thumbprint:sha-256:example"
+          }
+        }
+      },
+      "validFrom": "2026-11-08T00:00:00.000Z",
+      "validUntil": "2026-11-09T00:00:00.000Z"
+    },
+    "domains": [
+      {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://schema.org"
+        ],
+        "issuer": "did:web:example.invalid:host",
+        "validFrom": "2026-11-08T00:00:00.000Z",
+        "validUntil": "2026-11-09T00:00:00.000Z",
+        "evidence": [
+          {
+            "type": "DocumentVerification",
+            "id": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "documentVersion": "example-v1",
+            "applicationId": "00000000-0000-4000-8000-000000000001"
+          }
+        ],
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000001:organization",
+        "type": [
+          "VerifiableCredential",
+          "OrganizationCredential",
+          "TestNetworkCredential"
+        ],
+        "credentialSubject": {
+          "id": "did:web:example.invalid:organization",
+          "@type": "Organization",
+          "legalName": "Example organization",
+          "identifier": {
+            "additionalType": "taxID",
+            "value": "EXAMPLE-ORG"
+          },
+          "taxID": "EXAMPLE-ORG",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "CA"
+          },
+          "makesOffer": {
+            "@type": "Offer",
+            "category": "education-tech"
+          }
+        }
+      },
+      {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://schema.org"
+        ],
+        "issuer": "did:web:example.invalid:host",
+        "validFrom": "2026-11-08T00:00:00.000Z",
+        "validUntil": "2026-11-09T00:00:00.000Z",
+        "evidence": [
+          {
+            "type": "DocumentVerification",
+            "id": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "documentVersion": "example-v1",
+            "applicationId": "00000000-0000-4000-8000-000000000001"
+          }
+        ],
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000001:legal-representative",
+        "type": [
+          "VerifiableCredential",
+          "PersonCredential",
+          "LegalRepresentativeCredential",
+          "TestNetworkCredential"
+        ],
+        "credentialSubject": {
+          "id": "urn:multibase:zW1mHES95kTPVFXoZCRnuZK9J9XhR1b2eZCy3UsqkpQozgz",
+          "@type": "Person",
+          "name": "Example representative",
+          "sameAs": "urn:multibase:zW1mHES95kTPVFXoZCRnuZK9J9XhR1b2eZCy3UsqkpQozgz",
+          "hasOccupation": {
+            "@type": "Occupation",
+            "occupationalCategory": "ISCO-08|1120"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "legalName": "Example organization",
+            "taxID": "EXAMPLE-ORG"
+          }
+        }
+      },
+      {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://schema.org"
+        ],
+        "issuer": "did:web:example.invalid:host",
+        "validFrom": "2026-11-08T00:00:00.000Z",
+        "validUntil": "2026-11-09T00:00:00.000Z",
+        "evidence": [
+          {
+            "type": "DocumentVerification",
+            "id": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "documentVersion": "example-v1",
+            "applicationId": "00000000-0000-4000-8000-000000000001"
+          }
+        ],
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000001:service-controller",
+        "type": [
+          "VerifiableCredential",
+          "ServiceCredential",
+          "ServiceControllerCredential",
+          "TestNetworkCredential"
+        ],
+        "credentialSubject": {
+          "id": "did:web:example.invalid:organization",
+          "@type": "Service",
+          "serviceType": "OrganizationControllerService",
+          "provider": {
+            "@type": "Organization",
+            "legalName": "Example organization",
+            "taxID": "EXAMPLE-ORG"
+          },
+          "owner": {
+            "@type": "Person",
+            "additionalType": "RESPRSN",
+            "sameAs": "urn:multibase:zW1nnqssJhQ5d6rrncEKkCkkr3FTYHNN5TVYoiAMTm9HWBj",
+            "hasOccupation": {
+              "@type": "Occupation",
+              "occupationalCategory": "ISCO-08|1330"
+            },
+            "hasCredential": {
+              "material": "urn:jwk-thumbprint:sha-256:example"
+            }
+          }
+        }
+      }
+    ],
+    "admissionCandidate": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://schema.org"
+      ],
+      "id": "urn:uuid:00000000-0000-4000-8000-000000000001",
+      "type": [
+        "VerifiableCredential",
+        "OrganizationTestNetworkCredential"
+      ],
+      "issuer": "did:web:example.invalid:host",
+      "credentialSubject": {
+        "id": "did:web:example.invalid:organization",
+        "applicationId": "00000000-0000-4000-8000-000000000001",
+        "accessPath": "test-network",
+        "organization": {
+          "legalName": "Example organization",
+          "identifier": "EXAMPLE-ORG"
+        },
+        "controller": {
+          "email": "controller@example.invalid",
+          "hasCredential": {
+            "material": "urn:jwk-thumbprint:sha-256:example"
+          }
+        }
+      },
+      "validFrom": "2026-11-08T00:00:00.000Z",
+      "validUntil": "2026-11-09T00:00:00.000Z",
+      "proof": {
+        "jws": "unverified-example"
+      }
+    },
+    "admissionCanonical": "{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://schema.org\"],\"credentialSubject\":{\"accessPath\":\"test-network\",\"applicationId\":\"00000000-0000-4000-8000-000000000001\",\"controller\":{\"email\":\"controller@example.invalid\",\"hasCredential\":{\"material\":\"urn:jwk-thumbprint:sha-256:example\"}},\"id\":\"did:web:example.invalid:organization\",\"organization\":{\"identifier\":\"EXAMPLE-ORG\",\"legalName\":\"Example organization\"}},\"id\":\"urn:uuid:00000000-0000-4000-8000-000000000001\",\"issuer\":\"did:web:example.invalid:host\",\"type\":[\"VerifiableCredential\",\"OrganizationTestNetworkCredential\"],\"validFrom\":\"2026-11-08T00:00:00.000Z\",\"validUntil\":\"2026-11-09T00:00:00.000Z\"}",
+    "domainCandidates": [
+      {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://schema.org"
+        ],
+        "issuer": "did:web:example.invalid:host",
+        "validFrom": "2026-11-08T00:00:00.000Z",
+        "validUntil": "2026-11-09T00:00:00.000Z",
+        "evidence": [
+          {
+            "type": "DocumentVerification",
+            "id": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "documentVersion": "example-v1",
+            "applicationId": "00000000-0000-4000-8000-000000000001",
+            "proof": {
+              "test": true
+            }
+          }
+        ],
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000001:organization",
+        "type": [
+          "VerifiableCredential",
+          "OrganizationCredential",
+          "TestNetworkCredential"
+        ],
+        "credentialSubject": {
+          "id": "did:web:example.invalid:organization",
+          "@type": "Organization",
+          "legalName": "Example organization",
+          "identifier": {
+            "additionalType": "taxID",
+            "value": "EXAMPLE-ORG"
+          },
+          "taxID": "EXAMPLE-ORG",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "CA"
+          },
+          "makesOffer": {
+            "@type": "Offer",
+            "category": "education-tech"
+          }
+        },
+        "proof": [
+          {
+            "jws": "unverified-example"
+          }
+        ]
+      },
+      {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://schema.org"
+        ],
+        "issuer": "did:web:example.invalid:host",
+        "validFrom": "2026-11-08T00:00:00.000Z",
+        "validUntil": "2026-11-09T00:00:00.000Z",
+        "evidence": [
+          {
+            "type": "DocumentVerification",
+            "id": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "documentVersion": "example-v1",
+            "applicationId": "00000000-0000-4000-8000-000000000001",
+            "proof": {
+              "test": true
+            }
+          }
+        ],
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000001:legal-representative",
+        "type": [
+          "VerifiableCredential",
+          "PersonCredential",
+          "LegalRepresentativeCredential",
+          "TestNetworkCredential"
+        ],
+        "credentialSubject": {
+          "id": "urn:multibase:zW1mHES95kTPVFXoZCRnuZK9J9XhR1b2eZCy3UsqkpQozgz",
+          "@type": "Person",
+          "name": "Example representative",
+          "sameAs": "urn:multibase:zW1mHES95kTPVFXoZCRnuZK9J9XhR1b2eZCy3UsqkpQozgz",
+          "hasOccupation": {
+            "@type": "Occupation",
+            "occupationalCategory": "ISCO-08|1120"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "legalName": "Example organization",
+            "taxID": "EXAMPLE-ORG"
+          }
+        },
+        "proof": [
+          {
+            "jws": "unverified-example"
+          }
+        ]
+      },
+      {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://schema.org"
+        ],
+        "issuer": "did:web:example.invalid:host",
+        "validFrom": "2026-11-08T00:00:00.000Z",
+        "validUntil": "2026-11-09T00:00:00.000Z",
+        "evidence": [
+          {
+            "type": "DocumentVerification",
+            "id": "urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "documentVersion": "example-v1",
+            "applicationId": "00000000-0000-4000-8000-000000000001",
+            "proof": {
+              "test": true
+            }
+          }
+        ],
+        "id": "urn:uuid:00000000-0000-4000-8000-000000000001:service-controller",
+        "type": [
+          "VerifiableCredential",
+          "ServiceCredential",
+          "ServiceControllerCredential",
+          "TestNetworkCredential"
+        ],
+        "credentialSubject": {
+          "id": "did:web:example.invalid:organization",
+          "@type": "Service",
+          "serviceType": "OrganizationControllerService",
+          "provider": {
+            "@type": "Organization",
+            "legalName": "Example organization",
+            "taxID": "EXAMPLE-ORG"
+          },
+          "owner": {
+            "@type": "Person",
+            "additionalType": "RESPRSN",
+            "sameAs": "urn:multibase:zW1nnqssJhQ5d6rrncEKkCkkr3FTYHNN5TVYoiAMTm9HWBj",
+            "hasOccupation": {
+              "@type": "Occupation",
+              "occupationalCategory": "ISCO-08|1330"
+            },
+            "hasCredential": {
+              "material": "urn:jwk-thumbprint:sha-256:example"
+            }
+          }
+        },
+        "proof": [
+          {
+            "jws": "unverified-example"
+          }
+        ]
+      }
+    ],
+    "domainCanonical": [
+      "{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://schema.org\"],\"credentialSubject\":{\"@type\":\"Organization\",\"address\":{\"@type\":\"PostalAddress\",\"addressCountry\":\"CA\"},\"id\":\"did:web:example.invalid:organization\",\"identifier\":{\"additionalType\":\"taxID\",\"value\":\"EXAMPLE-ORG\"},\"legalName\":\"Example organization\",\"makesOffer\":{\"@type\":\"Offer\",\"category\":\"education-tech\"},\"taxID\":\"EXAMPLE-ORG\"},\"evidence\":[{\"applicationId\":\"00000000-0000-4000-8000-000000000001\",\"documentVersion\":\"example-v1\",\"id\":\"urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"type\":\"DocumentVerification\"}],\"id\":\"urn:uuid:00000000-0000-4000-8000-000000000001:organization\",\"issuer\":\"did:web:example.invalid:host\",\"type\":[\"VerifiableCredential\",\"OrganizationCredential\",\"TestNetworkCredential\"],\"validFrom\":\"2026-11-08T00:00:00.000Z\",\"validUntil\":\"2026-11-09T00:00:00.000Z\"}",
+      "{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://schema.org\"],\"credentialSubject\":{\"@type\":\"Person\",\"hasOccupation\":{\"@type\":\"Occupation\",\"occupationalCategory\":\"ISCO-08|1120\"},\"id\":\"urn:multibase:zW1mHES95kTPVFXoZCRnuZK9J9XhR1b2eZCy3UsqkpQozgz\",\"memberOf\":{\"@type\":\"Organization\",\"legalName\":\"Example organization\",\"taxID\":\"EXAMPLE-ORG\"},\"name\":\"Example representative\",\"sameAs\":\"urn:multibase:zW1mHES95kTPVFXoZCRnuZK9J9XhR1b2eZCy3UsqkpQozgz\"},\"evidence\":[{\"applicationId\":\"00000000-0000-4000-8000-000000000001\",\"documentVersion\":\"example-v1\",\"id\":\"urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"type\":\"DocumentVerification\"}],\"id\":\"urn:uuid:00000000-0000-4000-8000-000000000001:legal-representative\",\"issuer\":\"did:web:example.invalid:host\",\"type\":[\"VerifiableCredential\",\"PersonCredential\",\"LegalRepresentativeCredential\",\"TestNetworkCredential\"],\"validFrom\":\"2026-11-08T00:00:00.000Z\",\"validUntil\":\"2026-11-09T00:00:00.000Z\"}",
+      "{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://schema.org\"],\"credentialSubject\":{\"@type\":\"Service\",\"id\":\"did:web:example.invalid:organization\",\"owner\":{\"@type\":\"Person\",\"additionalType\":\"RESPRSN\",\"hasCredential\":{\"material\":\"urn:jwk-thumbprint:sha-256:example\"},\"hasOccupation\":{\"@type\":\"Occupation\",\"occupationalCategory\":\"ISCO-08|1330\"},\"sameAs\":\"urn:multibase:zW1nnqssJhQ5d6rrncEKkCkkr3FTYHNN5TVYoiAMTm9HWBj\"},\"provider\":{\"@type\":\"Organization\",\"legalName\":\"Example organization\",\"taxID\":\"EXAMPLE-ORG\"},\"serviceType\":\"OrganizationControllerService\"},\"evidence\":[{\"applicationId\":\"00000000-0000-4000-8000-000000000001\",\"documentVersion\":\"example-v1\",\"id\":\"urn:sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"type\":\"DocumentVerification\"}],\"id\":\"urn:uuid:00000000-0000-4000-8000-000000000001:service-controller\",\"issuer\":\"did:web:example.invalid:host\",\"type\":[\"VerifiableCredential\",\"ServiceCredential\",\"ServiceControllerCredential\",\"TestNetworkCredential\"],\"validFrom\":\"2026-11-08T00:00:00.000Z\",\"validUntil\":\"2026-11-09T00:00:00.000Z\"}"
+    ]
+  },
+  "identity": {
+    "fixture": {
+      "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+      "role": "ISCO-08|2359",
+      "email": "Employee@Example.Invalid",
+      "phone": "+12025550123",
+      "deviceId": "example-device"
+    },
+    "vectors": [
+      {
+        "input": {
+          "contactKind": "email",
+          "contact": "Employee@Example.Invalid"
+        },
+        "actor": "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK"
+      },
+      {
+        "input": {
+          "contactKind": "email",
+          "contact": " mailto:Employee@Example.Invalid "
+        },
+        "actor": "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK"
+      },
+      {
+        "input": {
+          "contactKind": "email",
+          "contact": "Employee+Tag@Example.Invalid"
+        },
+        "actor": "urn:multibase:zW1kzKhP6Z6uTKEomsbXitSJVWbrW2HUmyqRAcFynSHQ7mD"
+      },
+      {
+        "input": {
+          "contactKind": "email",
+          "contact": "employee@example.invalid"
+        },
+        "actor": "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK"
+      },
+      {
+        "input": {
+          "contactKind": "phone",
+          "contact": "+12025550123"
+        },
+        "actor": "urn:multibase:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp"
+      },
+      {
+        "input": {
+          "contactKind": "phone",
+          "contact": " tel:+1 (202) 555-0123 "
+        },
+        "actor": "urn:multibase:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp"
+      }
+    ],
+    "employees": [
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": null,
+          "contactKind": "email",
+          "contact": "Employee@Example.Invalid"
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": "example-device",
+          "contactKind": "email",
+          "contact": "Employee@Example.Invalid"
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359:example-device"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": null,
+          "contactKind": "email",
+          "contact": " mailto:Employee@Example.Invalid "
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": "example-device",
+          "contactKind": "email",
+          "contact": " mailto:Employee@Example.Invalid "
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359:example-device"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": null,
+          "contactKind": "email",
+          "contact": "Employee+Tag@Example.Invalid"
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1kzKhP6Z6uTKEomsbXitSJVWbrW2HUmyqRAcFynSHQ7mD:ISCO-08|2359"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": "example-device",
+          "contactKind": "email",
+          "contact": "Employee+Tag@Example.Invalid"
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1kzKhP6Z6uTKEomsbXitSJVWbrW2HUmyqRAcFynSHQ7mD:ISCO-08|2359:example-device"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": null,
+          "contactKind": "email",
+          "contact": "employee@example.invalid"
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359"
+      },
+      {
+        "input": {
+          "organizationDidWeb": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech",
+          "role": "ISCO-08|2359",
+          "email": "Employee@Example.Invalid",
+          "phone": "+12025550123",
+          "deviceId": "example-device",
+          "contactKind": "email",
+          "contact": "employee@example.invalid"
+        },
+        "expected": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08|2359:example-device"
+      }
+    ],
+    "phoneEmployee": "did:web:example.invalid:tenant:example-organization:cds-CA-BC:v1:education-tech:employee:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp:ISCO-08|2359"
+  },
+  "extraction": [
+    {
+      "input": "did:web:example.invalid:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:RESPRSN",
+      "expected": "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK"
+    },
+    {
+      "input": "did:web:example.invalid:example-tenant:cds-es-md:v1:health-care:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:ISCO-08%7C2261",
+      "expected": "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK"
+    },
+    {
+      "input": " did:web:example.invalid:employee:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK:RESPRSN:device:synthetic-device ",
+      "expected": "urn:multibase:zW1hfu3K7j9WfUqGTnxJ6FwDX4AQnzAqQM9x9pZ8gQLmwZK"
+    },
+    {
+      "input": "did:web:example.invalid:employee:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp:RESPRSN",
+      "expected": "urn:multibase:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp"
+    },
+    {
+      "input": "did:web:example.invalid:example-tenant:cds-es-md:v1:health-care:employee:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp:ISCO-08%7C2261",
+      "expected": "urn:multibase:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp"
+    },
+    {
+      "input": " did:web:example.invalid:employee:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp:RESPRSN:device:synthetic-device ",
+      "expected": "urn:multibase:zW1giLKJrjrNjHVQVR15bMZUu8AgojUEUW2BL66v1Z6Fojp"
+    }
+  ],
+  "invalidExtraction": [
+    {
+      "input": "",
+      "rejected": true
+    },
+    {
+      "input": "did:web:example.invalid",
+      "rejected": true
+    },
+    {
+      "input": "did:web:example.invalid:individual:zSynthetic:RESPRSN",
+      "rejected": true
+    },
+    {
+      "input": "did:web:example.invalid:employee::RESPRSN",
+      "rejected": true
+    },
+    {
+      "input": "did:web:example.invalid:employee:zSynthetic:",
+      "rejected": true
+    },
+    {
+      "input": "did:web:example.invalid:employee:urn%3Amultibase%3AzSynthetic:RESPRSN",
+      "rejected": true
+    }
+  ],
+  "cryptography": {
+    "profile": "ML-KEM-768+HKDF-SHA256+A256GCMKW",
+    "randomTranscript": [
+      {
+        "length": 64,
+        "hex": "325039790e9ad50f8ee662cecc1be491c4360dcd03ee63c3822086d12b1227539093025269d5d1e8738df485e95bd2a073ece59fb02f740bcbe563a428f364d3"
+      },
+      {
+        "length": 32,
+        "hex": "133c10c451aca3faa815919d4199762de18aba0f72c2b33ebbb972cbf1c9e564"
+      },
+      {
+        "length": 32,
+        "hex": "8bc3a55cf348d17347571a62e05b96cd4626598c852bb7df68c8dd851ac2032f"
+      },
+      {
+        "length": 12,
+        "hex": "dab70345aa313afbf2d7cc17",
+        "source": "actual-predecessor-envelope-iv"
+      },
+      {
+        "length": 12,
+        "hex": "7fc84cd0bbd5c895038aaa69",
+        "source": "actual-predecessor-envelope-iv"
+      }
+    ],
+    "payload": "cross-package confidential bytes",
+    "protectedHeader": {
+      "typ": "application/antifraud-confidential-artifact+jwe",
+      "enc": "A256GCM",
+      "gdc_pq_profile": "confidential-pqc-v1",
+      "gdc_key_purpose": "document-at-rest",
+      "gdc_owner_binding": "sha3-384:cross-package-owner"
+    },
+    "publicJwk": {
+      "kty": "OKP",
+      "crv": "ML-KEM-768",
+      "x": "RHFz0AHLHOdlCdM9S1squpxdxPxB3ACWMUixLgqVjps5hCJG9WXNcsi3V0Nv1OkEreKExxyIWulKQ_g4hfIY6Kd22RhLg0omuSO0vqUfPmwfNygBCILAAGVgnTijPzOZrjtR4BcWIslBeQCntOVNDUguD0STA5h0CXA8xdiJ0CgUlwYwqMAZAjs25-RIjDrNTgYYA8cx7wAFBdomX8IL8BNf2EurymUenjh3RQO25WFhvHWdfQpn7qU6PhO4_NMwSSxTnAEAhOZB0kQqCtwIvgKKfqDPSmWTM6oOgvYT7sDBbtXFuFg6MUBNy-km5vxLCeGEHWdgNCBbgnKuaQQU0-ykxTZoOhNMo4SGtYqK69kUr5EQKluFvDksFBc6qNMKCFYHIVAB-MPPzAUFBLF2ouM5NagGyUiahffOKrCJVUc9mzls7dN1fqkKiUFSn5JSM-u5PdA4JOdLG6OsB0aMaZQaRfojpQQbrfOckPg9o5Ab-ny3hEjCH4dYEirFSWDM_osGsxhlQutXvAstW-ozcXG6uVlFo8tBkde_SqCCq3WchEfEPnZ27IOYKsNictKry0UptYo5S1sxSyEOKcmd2MW3qBe0V_OgsZWuJPlkjhJFZkGGoai4NlFuhlIeiXFSE9J3h7ehdBFse2BCDDNOElMmtUAdR6aEewPB2naxCUFocDmFT1MY8ao3aaWPfmlXB3OrVfaixHsmM-NFiKmGSWsW66Za4USEDqi3RTww6tSeJhw2YPx1VQub1XR99yYGkFsWyKMLXyAOt3Q29cRbwAILouhG2AIfNvoSWZR2E-KjvjuJHqeUZRyUVjmCnKifzAqkuPudKUgv6BEkD_KfMpwgY-OrKGZ8IuA2pVMJz9xfJERXbBVVt-Ncx1AdGBWA4tRfO3q8X7Bw6jJTygVHapWlHmaDieE-LBE75VdoN6sBJtx18tTPsJKIfsFPWcZxo0BeDQYca3MPZUuOgTMQB-Fs5-sAAVaZaTEqiFaAj_JLyrolltUtM0rGtytBnRwc6st7kiJ59EZnGmMtSGKU61sHQYp90YisLjXI0LK3ssJTtOk8IHBYU9U9Z4Z_EwxpCop8L-o2xfXFCkAHMiCm9TfLMZjNXNoGnfok45p4b8iXITI1PlA22iSUBQlBucBWIPJp3CeQ5QGNDdudT_VwqyWNj8pWuyC7exmLqwigVkASUAVaxWOPl4nM2aLNyulUC2wFWNkFJzPMSjsCNkQumhmEsbV5UlY3bwiUVRdD7nQ_kESEt4C4lES8evJLhUuUtgN9HaefacokS_pqDgJB9tqQsnVsP1WmiWgDN2Qp2lwP3jkyazStk7orG1Wz7IRSh4tGqcS3TkpaN5jFRfyRqgk1PGPEeQqLiteUiIGBYIsxcNYdqNdisEXAh2twvtA9eJIJwVSLYsKOGWgKWTSJ1aV18dJWmPAWhUNNY7fF4iBCYbWKwKmANXwPDDu_sZCpKkszOjgxKTp0j6h0JHPHO6JxPek-kuOMYLuZQSCj3zqNQhSc20QRQfS1qbXOjDAZoy5mF732489XwhXxamcdVnb20F_ieRV22x6jPVbZYyw",
+      "kid": "m4106BYzgkaLZyjlMe9eCxrIQe3qTufxstgKtiTN2bk"
+    },
+    "compact": "eyJ0eXAiOiJhcHBsaWNhdGlvbi9hbnRpZnJhdWQtY29uZmlkZW50aWFsLWFydGlmYWN0K2p3ZSIsImVuYyI6IkEyNTZHQ00iLCJnZGNfcHFfcHJvZmlsZSI6ImNvbmZpZGVudGlhbC1wcWMtdjEiLCJnZGNfa2V5X3B1cnBvc2UiOiJkb2N1bWVudC1hdC1yZXN0IiwiZ2RjX293bmVyX2JpbmRpbmciOiJzaGEzLTM4NDpjcm9zcy1wYWNrYWdlLW93bmVyIiwiYWxnIjoiTUwtS0VNLTc2OCtIS0RGLVNIQTI1NitBMjU2R0NNS1ciLCJraWQiOiJtNDEwNkJZemdrYUxaeWpsTWU5ZUN4cklRZTNxVHVmeHN0Z0t0aVROMmJrIn0.eyJ2IjoiZ2RjLW1sa2VtLWNlay13cmFwLXYxIiwia2VtIjoiTUwtS0VNLTc2OCIsImtkZiI6IkhLREYtU0hBLTI1NiIsIndyYXAiOiJBMjU2R0NNIiwia2VtQ2lwaGVydGV4dCI6IjdPVU1lMDBrYXItVHo0MzFWbHUxektSUGFTWFcxOHZNTWs3d19iLTRDYk1adFd1ZGhvbGVMaEs4Q0g0eDZPS2lBeTNaMkMwYm91QjZ3S01HQlllUmZqSkVEMEhwMVhvQnlCSjVBLXR1YjR3SGJlTnRabF92VFJueGotR3VnOHpNck11cHpuSU9JZncwMWptdnNGaWJGcE9XRmpURTVBUVZBMVBwUFcwSlNodUdBVVBueGZlMkhSWk5WeHphX3ZyeGRkTm53cGJlQldocm11VFBtQUVNZkpSNUVyeHJWSUgxTzdNVzN1YmtFLW5ROVhTenQxZmFUZWpGcHBVMV9YYTl2V3Q1QmlyUllXSnJfa2R5NWR6YUZ1LUd4cnFERVV2TGk1MUZ2b3V3SzZEaFB4SEpZMF9KZHZxMXFIdW5TYXBVb3VXYnNwQkNzLTVmMGo2UENiWWg0MjZud3RabGdQQUdVazNid0ZpdGo4V0JRdGJheHZUQ2JsY2ZrY0RuMmx1bjNOWTVWVC1tVm1ldi1zSHQySXNXU1RFVk1YQ1ZKMGxoRlJXWDJ3N0haSDUyeUtIYUJrbWVlbUg4dWxaQXlPSWUyTHZIbU9FOFd4YzVmazBzdXI2TTF1clBCZURINWRkZWxFb3dpVjhOUWpfODNyS29XR0xyUWZ4UURLRVJzdHZHcVRfZk8tRnZoQXJBTUtFaFo5M1hjSVVVX1ZjX0JXb3NCcG1taTJTakVXTmtyWnRtU0UzVHZLWUJQQUNWM1B4aWZpbkpUQlhTcjZ4b0V5bjRxbElVWEpZTU9xdkZvaGVhUERsZVFRU0dyN2U3c1g0V2hRNkdEOHBZTDRxOWxmVmU2ZGRMM2dIU1BfRTV3ZEN6S0UydlBsamk2N2JiSHloa3VBb21hOXM0WWtTYmxjVnNveXMyOXNmSzNjeXdlcV9OQWlJNlZzYjBYZ3V2TFFPTm5VOFJmX1BYSEVzbnlmYzN0Qy0xS0JtdFY3UHFULWt3TVVwOTRMWlpITWFkalZ5SEFYdkg2MlpMdm5VbGpWbFdGTW1TeFdqMWJBWDJvdU8xVzk1OTFIN3oteUtpV0M4UTFWV0FFTTVLT0dRZ0tJY2h6UXJHQlJ5Y29JelZXVHBMeGlvekcyOHl6enVHbTc5UFJmUE02VnBTUjNYTm5ieUN2MjE2ZGIzTUo5WFo2UnBXTG9nMmQwckREQ3VNTkJGaVpXOGRIbnNuX2VTeU5lN2JOY19qREJmeXUtSVJsYnA3LWVwRHBxbjE0Qi1wSWVNempON0lMdEp1N2MyNzhSbmZZT1VBLXJrYjRQcWdsODI2eHZ3TjNTZEJMaWROOFVWT205SVRJczJ6bXRZaDRlMHVyRHBQcjhfcmVGNWVJZEhma2VjN0ZSVExsME0tdmtVUmlmUEp0UU10Umxxb0Nhc1NvY0taRzNGWmVWQXUtems5bUo3bUNJMFlIYkhtQ3BlMEllNzE1NXRUdzZ5N20yeDJvaUpJVTZ5azNNbzlVbTRyZnBDMWdjaVlBRXdZaEx4elVzbjVmTkNqazdmMDNaWXhrOHR1WUhfWUFZV0NLaXdiMjR4OXNNUHNUTTU1UTdReWhLdWkyUUhUSFoyNEk3RXdSVHFUOGNLUG15LTdlQTAtaGJVbXNyYU91VnhLVnRsdTNiNnltZEpRbTc0LUF5QjNiOEZvb1JERXEwSzlqbmo4T1h0cklKSDVvcU1Wd3FuZzV2d0tTbHFJUk5PbG1WUndIWU04NGhWRS11cWtNNFJ0dXJ1bEhrRjlmSE8ycnZ5al8yeV9pTms0SmJhbk1zZ0g0dWdYTnhUS0pvdVdhS2Q1TmNlcXB3MXJfOE9TSW5Nc0ZNUHN1bTVpYVM0QmxaX3dCOEt2cldaWG0yLTNxV0hrZFNObXp2SU43a3Zjb3B5bEx4QnlROEJpQ2RZIiwiaXYiOiIycmNEUmFveE92dnkxOHdYIiwiY2lwaGVydGV4dCI6ImRZQW9fekloblFral9QZjNDNWhlZ0RRemowOGdRMktCbGh4ZTIwZS12bE9lUTZfcGJNMURqSldGMFEiLCJ0YWciOiJfcDhyeGlxUThGQWNXQ3RwLWdNSTZRIn0.f8hM0LvVyJUDiqpp.u5sKj29N6KjlRR4tXkl_BZTvuYLbT8BwA8c1LkVXvuk.I4uYyJ9WboginDAiDGSScA",
+    "ownedCompact": "eyJ0eXAiOiJhcHBsaWNhdGlvbi9hbnRpZnJhdWQtY29uZmlkZW50aWFsLWFydGlmYWN0K2p3ZSIsImVuYyI6IkEyNTZHQ00iLCJnZGNfcHFfcHJvZmlsZSI6ImNvbmZpZGVudGlhbC1wcWMtdjEiLCJnZGNfa2V5X3B1cnBvc2UiOiJkb2N1bWVudC1hdC1yZXN0IiwiZ2RjX293bmVyX2JpbmRpbmciOiJzaGEzLTM4NDpjcm9zcy1wYWNrYWdlLW93bmVyIiwiYWxnIjoiTUwtS0VNLTc2OCtIS0RGLVNIQTI1NitBMjU2R0NNS1ciLCJraWQiOiJtNDEwNkJZemdrYUxaeWpsTWU5ZUN4cklRZTNxVHVmeHN0Z0t0aVROMmJrIn0.eyJ2IjoiZ2RjLW1sa2VtLWNlay13cmFwLXYxIiwia2VtIjoiTUwtS0VNLTc2OCIsImtkZiI6IkhLREYtU0hBLTI1NiIsIndyYXAiOiJBMjU2R0NNIiwia2VtQ2lwaGVydGV4dCI6IjdPVU1lMDBrYXItVHo0MzFWbHUxektSUGFTWFcxOHZNTWs3d19iLTRDYk1adFd1ZGhvbGVMaEs4Q0g0eDZPS2lBeTNaMkMwYm91QjZ3S01HQlllUmZqSkVEMEhwMVhvQnlCSjVBLXR1YjR3SGJlTnRabF92VFJueGotR3VnOHpNck11cHpuSU9JZncwMWptdnNGaWJGcE9XRmpURTVBUVZBMVBwUFcwSlNodUdBVVBueGZlMkhSWk5WeHphX3ZyeGRkTm53cGJlQldocm11VFBtQUVNZkpSNUVyeHJWSUgxTzdNVzN1YmtFLW5ROVhTenQxZmFUZWpGcHBVMV9YYTl2V3Q1QmlyUllXSnJfa2R5NWR6YUZ1LUd4cnFERVV2TGk1MUZ2b3V3SzZEaFB4SEpZMF9KZHZxMXFIdW5TYXBVb3VXYnNwQkNzLTVmMGo2UENiWWg0MjZud3RabGdQQUdVazNid0ZpdGo4V0JRdGJheHZUQ2JsY2ZrY0RuMmx1bjNOWTVWVC1tVm1ldi1zSHQySXNXU1RFVk1YQ1ZKMGxoRlJXWDJ3N0haSDUyeUtIYUJrbWVlbUg4dWxaQXlPSWUyTHZIbU9FOFd4YzVmazBzdXI2TTF1clBCZURINWRkZWxFb3dpVjhOUWpfODNyS29XR0xyUWZ4UURLRVJzdHZHcVRfZk8tRnZoQXJBTUtFaFo5M1hjSVVVX1ZjX0JXb3NCcG1taTJTakVXTmtyWnRtU0UzVHZLWUJQQUNWM1B4aWZpbkpUQlhTcjZ4b0V5bjRxbElVWEpZTU9xdkZvaGVhUERsZVFRU0dyN2U3c1g0V2hRNkdEOHBZTDRxOWxmVmU2ZGRMM2dIU1BfRTV3ZEN6S0UydlBsamk2N2JiSHloa3VBb21hOXM0WWtTYmxjVnNveXMyOXNmSzNjeXdlcV9OQWlJNlZzYjBYZ3V2TFFPTm5VOFJmX1BYSEVzbnlmYzN0Qy0xS0JtdFY3UHFULWt3TVVwOTRMWlpITWFkalZ5SEFYdkg2MlpMdm5VbGpWbFdGTW1TeFdqMWJBWDJvdU8xVzk1OTFIN3oteUtpV0M4UTFWV0FFTTVLT0dRZ0tJY2h6UXJHQlJ5Y29JelZXVHBMeGlvekcyOHl6enVHbTc5UFJmUE02VnBTUjNYTm5ieUN2MjE2ZGIzTUo5WFo2UnBXTG9nMmQwckREQ3VNTkJGaVpXOGRIbnNuX2VTeU5lN2JOY19qREJmeXUtSVJsYnA3LWVwRHBxbjE0Qi1wSWVNempON0lMdEp1N2MyNzhSbmZZT1VBLXJrYjRQcWdsODI2eHZ3TjNTZEJMaWROOFVWT205SVRJczJ6bXRZaDRlMHVyRHBQcjhfcmVGNWVJZEhma2VjN0ZSVExsME0tdmtVUmlmUEp0UU10Umxxb0Nhc1NvY0taRzNGWmVWQXUtems5bUo3bUNJMFlIYkhtQ3BlMEllNzE1NXRUdzZ5N20yeDJvaUpJVTZ5azNNbzlVbTRyZnBDMWdjaVlBRXdZaEx4elVzbjVmTkNqazdmMDNaWXhrOHR1WUhfWUFZV0NLaXdiMjR4OXNNUHNUTTU1UTdReWhLdWkyUUhUSFoyNEk3RXdSVHFUOGNLUG15LTdlQTAtaGJVbXNyYU91VnhLVnRsdTNiNnltZEpRbTc0LUF5QjNiOEZvb1JERXEwSzlqbmo4T1h0cklKSDVvcU1Wd3FuZzV2d0tTbHFJUk5PbG1WUndIWU04NGhWRS11cWtNNFJ0dXJ1bEhrRjlmSE8ycnZ5al8yeV9pTms0SmJhbk1zZ0g0dWdYTnhUS0pvdVdhS2Q1TmNlcXB3MXJfOE9TSW5Nc0ZNUHN1bTVpYVM0QmxaX3dCOEt2cldaWG0yLTNxV0hrZFNObXp2SU43a3Zjb3B5bEx4QnlROEJpQ2RZIiwiY2lwaGVydGV4dCI6ImRZQW9fekloblFral9QZjNDNWhlZ0RRemowOGdRMktCbGh4ZTIwZS12bE9lUTZfcGJNMURqSldGMFEiLCJpdiI6IjJyY0RSYW94T3Z2eTE4d1giLCJ0YWciOiJfcDhyeGlxUThGQWNXQ3RwLWdNSTZRIn0.f8hM0LvVyJUDiqpp.u5sKj29N6KjlRR4tXkl_BZTvuYLbT8BwA8c1LkVXvuk.I4uYyJ9WboginDAiDGSScA",
+    "serializationDifference": "Existing AES wrap object property order differs; decoded fields and cryptographic bytes agree. No production change.",
+    "crossImplementation": {
+      "legacyDecryptOwnedCiphertext": true,
+      "ownedDecryptLegacyCiphertext": true,
+      "protectedIvCiphertextTagEquality": true,
+      "decodedWrappedKeyEquality": true,
+      "serializedCompactEquality": false,
+      "ciphertextTamperBothRejected": true,
+      "ownerAadTamperBothRejected": true
+    },
+    "ownedCompiledSha256": "b276d1f2e955a50a84e5684f8cb31b437d02222b05d9550c0668f7151b3364cf",
+    "predecessorAesCompiledSha256": "a3c022c7ac2c31c0ddcb8bcc44cd68d102500994f0eef6996094a02e4ba9b9c3"
+  }
+}

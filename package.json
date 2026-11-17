@@ -122,7 +122,6 @@
   },
   "devDependencies": {
     "@types/pako": "^2.0.4",
-    "gdc-common-utils-ts": "^2.9.30",
     "typescript": "^5.9.3"
   },
   "dependencies": {

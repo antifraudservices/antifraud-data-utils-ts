@@ -2,12 +2,13 @@
 import assert from 'node:assert/strict'
 import { createHash, randomBytes, randomUUID } from 'node:crypto'
 import { test } from 'node:test'
+import { readFileSync } from 'node:fs'
 
 import {
   Content,
   CryptographyService,
 } from '../dist/index.js'
-import { CryptographyService as SharedCryptographyService } from 'gdc-common-utils-ts/CryptographyService'
+const recorded = JSON.parse(readFileSync(new URL('./fixtures/predecessor-vectors.json', import.meta.url), 'utf8'))
 
 const cryptoHelper = {
   async getRandomBytes(byteCount) {
@@ -120,46 +121,36 @@ test('rejects invalid AES keys and multiple JWE recipients', async () => {
   )
 })
 
-test('remains byte-compatible with the reviewed gdc-common-utils envelope', async () => {
-  const antifraud = new CryptographyService(cryptoHelper)
-  const shared = new SharedCryptographyService(cryptoHelper)
-  const recipient = await shared.generateKeyPairMlKem(undefined, 'ML-KEM-768')
-  const recipientPrivate = {
-    ...recipient.publicJWKey,
-    dBytes: recipient.secretKeyBytes,
+test('retains the recorded cross-implementation envelope and rejects changed ciphertext or owner AAD', async () => {
+  const vector=recorded.cryptography
+  let position=0
+  const antifraud=new CryptographyService({...cryptoHelper,async getRandomBytes(length){
+    const row=vector.randomTranscript[position++]
+    assert.equal(row.length,length)
+    return new Uint8Array(Buffer.from(row.hex,'hex'))
+  }})
+  const recipient=await antifraud.generateKeyPairMlKem(undefined,'ML-KEM-768')
+  assert.deepEqual(recipient.publicJWKey,vector.publicJwk)
+  const recipientPrivate={...recipient.publicJWKey,dBytes:recipient.secretKeyBytes}
+  assert.equal(Content.bytesToStringUTF8((await antifraud.decryptJwe(vector.compact,recipientPrivate)).decryptedBytes),vector.payload)
+  const actual=await antifraud.encryptJweToCompact(vector.payload,vector.protectedHeader,recipientPrivate,recipient.publicJWKey)
+  assert.equal(actual,vector.ownedCompact)
+  assert.equal(position,vector.randomTranscript.length)
+  assert.equal(vector.crossImplementation.legacyDecryptOwnedCiphertext,true)
+  assert.equal(vector.crossImplementation.ownedDecryptLegacyCiphertext,true)
+  // The unchanged implementations order wrap JSON members differently. Preserve
+  // actual cryptographic fields without claiming full compact serialization parity.
+  const oldParts=vector.compact.split('.'),parts=actual.split('.')
+  for(const index of [0,2,3,4])assert.equal(parts[index],oldParts[index])
+  assert.deepEqual(Content.base64UrlSafeToJSON(parts[1]),Content.base64UrlSafeToJSON(oldParts[1]))
+  assert.equal(vector.crossImplementation.serializedCompactEquality,false)
+  for(const envelope of [vector.compact,actual]){
+    const changed=envelope.split('.')
+    changed[3]=(changed[3][0]==='A'?'B':'A')+changed[3].slice(1)
+    await assert.rejects(antifraud.decryptJwe(changed.join('.'),recipientPrivate))
+    const aad=envelope.split('.'),header=Content.base64UrlSafeToJSON(aad[0])
+    header.gdc_owner_binding='sha3-384:changed-owner'
+    aad[0]=Content.objectToRawBase64UrlSafe(header)
+    await assert.rejects(antifraud.decryptJwe(aad.join('.'),recipientPrivate))
   }
-  const payload = 'cross-package confidential bytes'
-  const protectedHeader = {
-    typ: 'application/antifraud-confidential-artifact+jwe',
-    enc: 'A256GCM',
-    gdc_pq_profile: 'confidential-pqc-v1',
-    gdc_key_purpose: 'document-at-rest',
-    gdc_owner_binding: 'sha3-384:cross-package-owner',
-  }
-
-  const sharedEnvelope = await shared.encryptJweToCompact(
-    payload,
-    protectedHeader,
-    recipientPrivate,
-    recipient.publicJWKey,
-  )
-  assert.equal(
-    Content.bytesToStringUTF8(
-      (await antifraud.decryptJwe(sharedEnvelope, recipientPrivate)).decryptedBytes,
-    ),
-    payload,
-  )
-
-  const antifraudEnvelope = await antifraud.encryptJweToCompact(
-    payload,
-    protectedHeader,
-    recipientPrivate,
-    recipient.publicJWKey,
-  )
-  assert.equal(
-    Content.bytesToStringUTF8(
-      (await shared.decryptJwe(antifraudEnvelope, recipientPrivate)).decryptedBytes,
-    ),
-    payload,
-  )
 })
