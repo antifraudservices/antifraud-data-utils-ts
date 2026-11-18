@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.4.1
+
 - Add neutral ISCO-08 occupations for pharmacists (2262) and pharmaceutical
   technicians and assistants (3213). Office administration continues to reuse
   General Office Clerks (4110); occupation metadata grants no permissions.
