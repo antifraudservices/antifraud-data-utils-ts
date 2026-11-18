@@ -1,5 +1,37 @@
 # Antifraud Data Utilities
 
+## Pinned credential verification
+
+The `clearing-house` entry point provides pure verification primitives:
+
+- `verifyPinnedJwt(compact, jwks, issuer, now, options)` checks a signed JWT
+  against caller-pinned public keys, the expected issuer, optional audience and
+  its validity period. Bearer JWTs require issued-at, expiry and a nonempty
+  string identifier. Set `requireJwtTimes: false` only for a credential profile
+  that does not carry bearer times. The explicit `allowMissingKid` option still
+  requires one uniquely matching pinned key.
+- `verifyPinnedDetachedJws(payloadBytes, jws, publicKey, cryptography?)` checks
+  the exact payload bytes, including RFC 7797 unencoded detached proofs.
+- ML-DSA verification requires the caller's injected `ICryptography` engine.
+  Classical JOSE signatures use `jose`. Private pinned keys, unsupported
+  algorithms, ambiguous keys and unsupported critical extensions are rejected.
+  Embedded JWT keys and URLs never establish trust.
+- `canonicalRequestDigest(value)` returns the SHA-256 hexadecimal digest of
+  canonical JSON using browser-compatible primitives.
+- `assertSignedReceiptBinding(verifiedPayload, expectation)` binds an already
+  verified receipt to the current `nonce`, optional `requestDigest`, optional
+  `acceptedAssurance`, and caller-required wire claims in `requiredClaims`.
+  It does not verify a signature or decide authorization. The caller owns nonce
+  generation, replay consumption and current-state policy.
+- `assertTenantClearingHouseTrust(trust, tenantDid)` validates caller-owned
+  tenant/verifier trust, explicit recognition of a federated source, pinned
+  keys and its HTTPS endpoint. Its third boolean argument permits loopback HTTP
+  only when an owning test-environment wrapper explicitly enables it. This pure
+  module reads no environment variables and provides no HTTP client.
+
+These helpers own signature and request-binding mechanics. Applications retain
+identity, consent, role, ledger, transport, persistence and deployment policy.
+
 `text-comparison` exports `normalizeComparisonText` through its leaf and the
 root. It trims and folds whitespace, then uppercases text while preserving
 punctuation, diacritics and Unicode normalization form. Nullish text produces
@@ -308,6 +340,19 @@ npm pack --dry-run
 ## License
 
 Apache-2.0.
+
+## Credential descriptions and wire contracts
+
+`gaia-x` contains the credential and media-type contracts. `gaia-x-projection`
+builds legal-person and service-description drafts from canonical Schema.org
+claims, without Node-specific encoding. Callers retain signing, issuer trust,
+status and external rules-engine verification.
+
+`verification-contracts` defines the typed Gateway/SDK request and result shapes
+for credential presentations and standard-compliance checks. These are data
+contracts; only the runtime verifier can authenticate a request or return a
+positive current-state decision.
+
 ### Public registry search
 
 The `public-registry-search` leaf defines public-source projections and combined

@@ -99,7 +99,7 @@ export class CryptographyService implements ICryptography {
   }
 
   async encryptJwe(
-    payload: object,
+    payload: object | string,
     protectedHeader: object,
     secretJWKey: MlkemPrivateJwk,
     recipientsJWKeys: MlkemPublicJwk[],
@@ -117,7 +117,9 @@ export class CryptographyService implements ICryptography {
       Content.base64ToBytes(recipient.x),
     )
     const protectedValue = Content.objectToRawBase64UrlSafe(protectedHeader)
-    const payloadBytes = Content.objectToBytes(payload)
+    const payloadBytes = typeof payload === 'string'
+      ? Content.stringToBytesUTF8(payload)
+      : Content.objectToBytes(payload)
     const payloadString = (protectedHeader as ProtectedHeadersJWE).zip === 'DEF'
       ? Content.bytesToRawBase64UrlSafe(pako.deflate(payloadBytes))
       : Content.bytesToStringUTF8(payloadBytes)

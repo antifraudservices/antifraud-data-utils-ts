@@ -26,6 +26,7 @@ test('public extraction preserves the historical bare-host, tenant, role and tra
   const expected=recorded.extraction.find(row=>row.input===did)
   assert.ok(expected)
   assert.equal(identity.stableActorIdentifierFromDidWeb(did),expected.expected)
+  assert.equal(publicApi.stableActorIdentifierFromDidWeb(did),expected.expected)
  }
 })
 
@@ -35,6 +36,7 @@ test('missing employee marker, opaque component or role cannot yield an actor bi
   'did:web:example.invalid:employee::RESPRSN','did:web:example.invalid:employee:zSynthetic:',
   'did:web:example.invalid:employee:urn%3Amultibase%3AzSynthetic:RESPRSN']){
   assert.throws(()=>identity.stableActorIdentifierFromDidWeb(value))
+  assert.throws(()=>publicApi.stableActorIdentifierFromDidWeb(value))
   assert.equal(recorded.invalidExtraction.find(row=>row.input===value)?.rejected,true)
  }
 })

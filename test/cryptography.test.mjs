@@ -10,6 +10,18 @@ import {
 } from '../dist/index.js'
 const recorded = JSON.parse(readFileSync(new URL('./fixtures/predecessor-vectors.json', import.meta.url), 'utf8'))
 
+// Golden wire vectors captured from released gdc-common-utils-ts@2.9.30
+// using only the synthetic fixtures below. Baseline npm tarball integrity:
+// sha512-+ZJLEp/AfmCm4ZwJRU5wKTmWJPevlJ8Wa82EepyoGz0BE3sKBA2JjVbh4ML5+e+RIzstwoJnk4vWE4E44UhTqg==
+// The published package exposes no source commit. Captured bytes are the oracle;
+// no predecessor package is loaded at test time.
+// Fixed entropy and key seed are synthetic test vectors, never production randomness.
+const reviewedEnvelope = Object.freeze({
+  "seedHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f",
+  "compact": "eyJ0eXAiOiJhcHBsaWNhdGlvbi9hbnRpZnJhdWQtY29uZmlkZW50aWFsLWFydGlmYWN0K2p3ZSIsImVuYyI6IkEyNTZHQ00iLCJnZGNfcHFfcHJvZmlsZSI6ImNvbmZpZGVudGlhbC1wcWMtdjEiLCJnZGNfa2V5X3B1cnBvc2UiOiJkb2N1bWVudC1hdC1yZXN0IiwiZ2RjX293bmVyX2JpbmRpbmciOiJzaGEzLTM4NDpjcm9zcy1wYWNrYWdlLW93bmVyIiwiYWxnIjoiTUwtS0VNLTc2OCtIS0RGLVNIQTI1NitBMjU2R0NNS1ciLCJraWQiOiJxeV84d3hvQVI4RTFveDNTUFdRUVhoamJ6bVRIbFh1TW9PZWZIMFFfcExrIn0.eyJ2IjoiZ2RjLW1sa2VtLWNlay13cmFwLXYxIiwia2VtIjoiTUwtS0VNLTc2OCIsImtkZiI6IkhLREYtU0hBLTI1NiIsIndyYXAiOiJBMjU2R0NNIiwia2VtQ2lwaGVydGV4dCI6InZrTW5zUlZqQnZEcElaRWFyd2s0SnlkMG9uWGhRMjFBc1VVdlRhOU5XUWt6REhld0RmUnRORFNISEZRRThyRnZnVU93cXhrdkJDN2w2Q2s0QWxoaGx2dkVqM1hRbnJZQTM2RTRTZFZZV3FhZkJpZ0h4dWRwTlhZUXRLdk1sTTluMkwta1l0MmZqMjlEX09RZXg1WVcwejdBOUJEZjBHdVJrbE1iaEk5VERjUVFja1JsOU1aMDRPWndOeVBJdkdkYmRweGtyNWVET1dWb0NwcXRBOGZuUFVyaDlJam40VmlIM05xeVp4M3hfMlZZeW1tZ3ZRZGlQUEpfV0lGeWhVbUdmZVJITGdTZmVzSjZURlRvSERZYkdFTnltcjNxMThZeERQWUlCSUU3eGNRM0p3aG1xYUxnRHBFY1NDUGIzWWNaN09ZZzRVTktTQXFFVWJsYWoybG9iZFVVbl9HT0Y4aGxlWUdjMGxZWkFGM2dkaW1ZSDJFSkhWdUk3MTd2Y1JTd3pJQXViRVNNMW11am1xM1JzYld2aGg4eUhNaGJfVXpEOHQtUUlqNzlDTnhyRndVYkRseUtZMkNsMk5ESkNEb1gxV2ZxaGxYT3JkaGJPWDQtUWdsS3RwTGtZbXB1SGFzdUpScndiSGNpUGVrVGlqY2lXYWdtRENLaW91dVpTLU40SHJLampCNDRnTXpaVFdjakNQRE1CcUpudGtxQWhqQnkyQ2FsNmtvSW5sTFVtal9BSVZFOUhBS1hucVgzTnNOR3N5ODdBLW5RYmRWREhJYXQ3NU5VU0RXRHI4blBWYkFqdFQzc21YQUo4VHJDYWxJTm5hNlVUOUVmbkFzZXJQdkxhZ3lyWE5rTjlaWUNtWWdGb3Ria0d5MXRSTDhqZGVyR2hGTUs2TzRSdlJSTl9rc2k0clZGeVRselBKZExyZ2Nnak9vQXJrYW1Ucld1cE1WckplZFJFMEhIMHZXV0t4U2VkSjNTLUpNVkxidWxrSTQycmNpNmNxMlpYeldUcnJqY29rNlB2WU5CZTh2SlBWVG80T2lJc2VlaEZGV3dDOVotVXJMWlBSQUU5OVdjYXlRS1FWdkQ0UmtPUDVMNm43UXM1V1QtWjljVlY2akhrdmVVc19DTS1FVWQ1Z2xYVnRnRVNBZXNHQjRSZXVsNndHY3Q2SWJzeUZENlV0Zzh1UkhxcmhUUTJjdzY2aXotUnYzQXNJY2lINEVTTmV6ZlZBemNYc3gwMURTcjRqalFxbm15ekRyek1uVm53aTdsUUphaFZ6SWJTYWlHd1dLSEhXQWVhV3ROWlhzeDd4bHlBbzNjS1duVDRsMG1FaHNHRGJJMHB6YkZxX3E3SjlwUzZnQnVENDM4eFB6bzdQZkhJT0hHNGNPekpvaTZmdVFsSERPTnlSUHhDUHFvcFBZMXFXTDN6MjUtMkZVMkJHcUZvQUptbmZ1c29wbzdLWmp1VGt3V1pqYkN3SGVoQWpYak5tZWtDN0tBVTQ3TlR1dzRZdTZNVmdFV05MQUF6RHotSlVONGRjR0x1QjR2Skx5TkZSNi11WFd3NEdRRGZCeG5GTFRPY1N1aVprU2dISHdfNlhXZlBiU0ZXX3hDa1V1cXRjaXdoeEJlRGxLT2piR1JMX2lXS1F0NVVrajFBRkVENzg1V29RUUdqdERPakFKUnRXNk5ZZnltenFPOEd3akVST3A4X3dLaE1CS2hBZUU0UURObjFpbFZkUzE3aDVlU0pOTlh0QksyckRuV0k1RTduSXc5cVVBYy1LYnE5SG9GbnRVN0Y1T01ISVc4eXRmeExGTl9mQzdKVURRZHFTYmJLM3BxZFNjYnJxZTM2aV9KbzdORG1mSlBlN2wzVnZtNVptLVJsSTlGWW85eXpTSWZiMnB2dnBhNTFyeUNaWnlVUlV4N0dQUzRkNHFlalhrIiwiaXYiOiJRRUZDUTBSRlJrZElTVXBMIiwiY2lwaGVydGV4dCI6ImlTQlpRTkpZM3l1RDdnU0ZKbmFuc3NoU3k0eng1cVIzNWxkS3F0ZEVTMTA2bW1pU2ZvUGp4aTVMT3ciLCJ0YWciOiJrZTIxb1VEVm9KVlBuTjRkbkVWeGFBIn0.TE1OT1BRUlNUVVZX.ccCDrNpWsN7KHDuccPHSweYhtFyC-5BT3KZvmi42gPQ.woicaA18kgtkZSyBll2MdA",
+  "recipientKid": "qy_8wxoAR8E1ox3SPWQQXhjbzmTHlXuMoOefH0Q_pLk"
+})
+
 const cryptoHelper = {
   async getRandomBytes(byteCount) {
     return randomBytes(byteCount)
@@ -153,4 +165,64 @@ test('retains the recorded cross-implementation envelope and rejects changed cip
     aad[0]=Content.objectToRawBase64UrlSafe(header)
     await assert.rejects(antifraud.decryptJwe(aad.join('.'),recipientPrivate))
   }
+})
+
+test('reads the reviewed envelope and preserves its cryptographic bytes with fixed synthetic entropy', async () => {
+  let offset = 0
+  const vectorHelper = {
+    ...cryptoHelper,
+    async getRandomBytes(byteCount) {
+      return Uint8Array.from({ length: byteCount }, () => offset++ % 251)
+    },
+  }
+  const antifraud = new CryptographyService(vectorHelper)
+  const recipient = await antifraud.generateKeyPairMlKem(
+    Buffer.from(reviewedEnvelope.seedHex, 'hex'), 'ML-KEM-768',
+  )
+  assert.equal(recipient.publicJWKey.kid, reviewedEnvelope.recipientKid)
+  const recipientPrivate = {
+    ...recipient.publicJWKey,
+    dBytes: recipient.secretKeyBytes,
+  }
+  const payload = 'cross-package confidential bytes'
+  const protectedHeader = {
+    typ: 'application/antifraud-confidential-artifact+jwe',
+    enc: 'A256GCM',
+    gdc_pq_profile: 'confidential-pqc-v1',
+    gdc_key_purpose: 'document-at-rest',
+    gdc_owner_binding: 'sha3-384:cross-package-owner',
+  }
+
+  const sharedEnvelope = reviewedEnvelope.compact
+  assert.equal(
+    Content.bytesToStringUTF8(
+      (await antifraud.decryptJwe(sharedEnvelope, recipientPrivate)).decryptedBytes,
+    ),
+    payload,
+  )
+
+  const antifraudEnvelope = await antifraud.encryptJweToCompact(
+    payload,
+    protectedHeader,
+    recipientPrivate,
+    recipient.publicJWKey,
+  )
+  const actualParts = antifraudEnvelope.split('.')
+  const reviewedParts = reviewedEnvelope.compact.split('.')
+  // Recipient-wrap JSON member order is not a cryptographic field. Compare its
+  // decoded fields independently; header, IV, ciphertext and tag remain exact.
+  assert.deepEqual(
+    Content.base64UrlSafeToJSON(actualParts[1]),
+    Content.base64UrlSafeToJSON(reviewedParts[1]),
+  )
+  assert.deepEqual(
+    actualParts.filter((_, index) => index !== 1),
+    reviewedParts.filter((_, index) => index !== 1),
+  )
+  assert.equal(
+    Content.bytesToStringUTF8(
+      (await antifraud.decryptJwe(antifraudEnvelope, recipientPrivate)).decryptedBytes,
+    ),
+    payload,
+  )
 })

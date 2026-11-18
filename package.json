@@ -1,6 +1,6 @@
 {
   "name": "antifraud-data-utils-ts",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Product-neutral identity, evidence and public organization catalog data contracts",
   "type": "module",
   "main": "./dist/index.js",
@@ -97,6 +97,22 @@
     "./service-conversation": {
       "types": "./dist/service-conversation.d.ts",
       "default": "./dist/service-conversation.js"
+    },
+    "./clearing-house": {
+      "types": "./dist/clearing-house.d.ts",
+      "default": "./dist/clearing-house.js"
+    },
+    "./gaia-x": {
+      "types": "./dist/gaia-x.d.ts",
+      "default": "./dist/gaia-x.js"
+    },
+    "./gaia-x-projection": {
+      "types": "./dist/gaia-x-projection.d.ts",
+      "default": "./dist/gaia-x-projection.js"
+    },
+    "./verification-contracts": {
+      "types": "./dist/verification-contracts.d.ts",
+      "default": "./dist/verification-contracts.js"
     }
   },
   "files": [
@@ -128,6 +144,8 @@
     "@ipld/dag-json": "11.0.1",
     "@noble/hashes": "^2.4.0",
     "@noble/post-quantum": "^0.5.4",
+    "canonicalize": "2.1.0",
+    "jose": "4.15.9",
     "multiformats": "14.0.0",
     "pako": "^2.2.0"
   }
