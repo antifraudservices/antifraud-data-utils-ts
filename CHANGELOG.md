@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Add neutral ISCO-08 occupations for pharmacists (2262) and pharmaceutical
+  technicians and assistants (3213). Office administration continues to reuse
+  General Office Clerks (4110); occupation metadata grants no permissions.
+
 ## 0.4.0
 
 - Preserve exact signed text bytes in general JWE envelopes, including compressed
