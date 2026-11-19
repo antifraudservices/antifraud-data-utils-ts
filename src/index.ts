@@ -22,5 +22,6 @@ export * from './jwk-thumbprints.js'
 export * from './clearing-house.js'
 
 export * from './public-registry-search.js'
+export * from './public-offering-catalog.js'
 
 export * from './did-document-test-fixtures.js'

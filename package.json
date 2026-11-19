@@ -78,6 +78,10 @@
       "types": "./dist/cryptography/index.d.ts",
       "default": "./dist/cryptography/index.js"
     },
+    "./public-offering-catalog": {
+      "types": "./dist/public-offering-catalog.d.ts",
+      "default": "./dist/public-offering-catalog.js"
+    },
     "./organization-service-catalog": {
       "types": "./dist/organization-service-catalog.d.ts",
       "default": "./dist/organization-service-catalog.js"
