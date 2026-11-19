@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.4.3
 
 - Add strict public Product/Service/application catalogue projections, grouped
   territorial seller offers, optional country/subdivision search and explicit
