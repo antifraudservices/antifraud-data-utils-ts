@@ -8,6 +8,10 @@ keys or seeds. Transport probes cover loopback, foreign origin, userinfo,
 query, fragment and encoded-separator cases. These fixtures perform no network
 requests. Positive documents use `DidDocument` and `PublicJwk`; adversarial
 documents remain `unknown` until the consumer validates them.
+Named material cases include unsupported agreement algorithms and signing-only
+operations. Metadata fixtures cover opaque or absent key identifiers, embedded
+methods and hybrid selection order; transport vectors bind a caller's actual
+loopback listener port and include capability-denial controls.
 
 ## Pinned credential verification
 

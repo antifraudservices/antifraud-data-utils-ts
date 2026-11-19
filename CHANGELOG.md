@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ## 0.4.2
 
+- Complete shared key-material rejection, public metadata, canonical URL and
+  explicit loopback-capability fixtures before publication. Preserve the
+  original sealed preparation archive as separate evidence.
+
 - Add typed, reusable DID-document test fixtures with public EC and ML-KEM
   samples, independent document copies and named adversarial JSON/transport
   probes. Positive fixtures reuse the existing DID and public-key contracts;
