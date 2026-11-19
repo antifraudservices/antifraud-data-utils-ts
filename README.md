@@ -144,6 +144,14 @@ Schedules, Slots, Appointments, subjects and research studies do not belong in
 that dataset. The builder emits no FHIR resources. A later sector adapter may
 translate the canonical Schema.org graph when required.
 
+The `public-offering-catalog` subpath supports commercial Products, Services
+and SoftwareApplications. `readPublicOfferingSubmission` accepts a JSON:API
+document with one resource or a batch in `data`. The host supplies the
+publisher, sector and Demo mode from its resolved context. Submitted copies of
+those fields must agree. The manufacturer and sellers are declarations in the
+listing. The parser validates the full submission before returning any entries
+and accepts only the public catalogue fields.
+
 It also exports the reviewed, stateless shared cryptography engine through
 `antifraud-data-utils-ts/cryptography`. The engine preserves the existing
 `gdc-common-utils-ts` confidential envelope: a fresh AES-256-GCM content key is

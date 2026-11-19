@@ -35,6 +35,7 @@ export type PublicOffering = Readonly<{
   offers: readonly PublicTerritorialOffer[]
 }>
 export type PublicOfferingQuery = Readonly<{sector?: string; category?: string; country?: string; region?: string; query?: string}>
+export type PublicOfferingPublicationScope = Readonly<Pick<PublicOffering, 'publisher' | 'sector' | 'demo'>>
 
 export function publicOfferingMediaClaimKeys(type: 'Product' | 'Service') {
   const prefix = `org.schema.${type}`
@@ -175,18 +176,45 @@ export function readPublicDemoOfferingCatalog(value: string | undefined, env: Re
   }))
 }
 
+function offeringDocumentEntry(entry: unknown): Record<string, unknown> {
+  const resource = record(entry)
+  keys(resource, ['id', 'type', 'attributes'])
+  const attributes = record(resource.attributes)
+  if ('id' in attributes || 'type' in attributes) return invalid()
+  return {...attributes, id:resource.id, type:resource.type}
+}
+
+/** Reads one publisher's catalogue submission with scope resolved by the host. */
+export function readPublicOfferingSubmission(document: unknown, scope: PublicOfferingPublicationScope): readonly PublicOffering[] {
+  const input = record(document)
+  keys(input, ['data', 'jsonapi'])
+  if (input.jsonapi !== undefined) {
+    const jsonapi = record(input.jsonapi)
+    keys(jsonapi, ['version'])
+    if (jsonapi.version !== '1.0' && jsonapi.version !== '1.1') return invalid()
+  }
+  const publisher = party(scope.publisher)
+  const sector = text(scope.sector)
+  const entries = Array.isArray(input.data) ? array(input.data) : [input.data]
+  if (!entries.length) return invalid()
+  return readPublicOfferingCatalog(entries.map(entry => {
+    const offering = offeringDocumentEntry(entry)
+    if (offering.publisher !== undefined) {
+      const asserted = party(offering.publisher)
+      if (asserted.id !== publisher.id || asserted.name !== publisher.name) return invalid()
+    }
+    if (offering.sector !== undefined && offering.sector !== sector) return invalid()
+    if (offering.demo !== undefined && offering.demo !== scope.demo) return invalid()
+    return {...offering, publisher, sector, demo: scope.demo}
+  }))
+}
+
 /** Pure configuration reader. Real companies and territorial agreements stay in private host configuration. */
 export function readPublicOfferingCatalogJson(value: string | undefined, demo: boolean): readonly PublicOffering[] {
   if (value === undefined) return Object.freeze([])
   if (value.length > 1_000_000) return invalid()
   const document: unknown = JSON.parse(value)
-  const entries = Array.isArray(document) ? document : array(record(document).data).map(entry => {
-    const resource = record(entry)
-    keys(resource, ['id', 'type', 'attributes'])
-    const attributes = record(resource.attributes)
-    if ('id' in attributes || 'type' in attributes) return invalid()
-    return {...attributes, id:resource.id, type:resource.type}
-  })
+  const entries = Array.isArray(document) ? document : array(record(document).data).map(offeringDocumentEntry)
   const catalog = readPublicOfferingCatalog(entries)
   if (catalog.some(item => item.demo !== demo)) return invalid()
   return catalog

@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
   territorial seller offers, optional country/subdivision search and explicit
   Schema.org exchange output. Separate Demo feeds and reject private evidence
   fields; discovery establishes no admission, authority or device capability.
+- Validate JSON:API offering submissions against the publisher, sector and
+  mode supplied by the host while preserving territorial sellers and billing.
 
 - Add separate public JOSE EC/X25519/ML-KEM agreement-key contracts and
   defaulted DID-document key generics. Keep the existing signing-engine

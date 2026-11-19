@@ -1,7 +1,8 @@
 // Flow contract: public discovery groups one item with territorial offers; geography never establishes authority or device operation.
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {readPublicOfferingCatalog, readPublicOfferingCatalogJson, searchPublicOfferingCatalog, projectPublicOfferingJsonLd} from '../dist/public-offering-catalog.js'
+import * as catalog from '../dist/public-offering-catalog.js'
+const {readPublicOfferingCatalog, readPublicOfferingCatalogJson, searchPublicOfferingCatalog, projectPublicOfferingJsonLd} = catalog
 
 const offer = (id, country, regions = []) => ({id, seller: {id: `seller-${id}`, name: `Distributor ${id}`}, eligibleRegions: [{country, regions}], deliveryCountries: [country], operationCountries: [], supportCountries: []})
 const item = {id: 'tracker', type: 'Product', category: 'devices', sector: 'animal-care', name: 'Example tracker', description: 'Animal monitoring device', publisher: {id: 'publisher', name: 'Example manufacturer'}, demo: true, offers: [offer('one', 'ES'), offer('two', 'CA', ['CA-BC'])]}
@@ -66,4 +67,33 @@ test('accepts a JSON:API Demo resource and projects ordered photos, brand and ex
   assert.equal(projection.brand['@type'], 'Brand')
   assert.deepEqual(projection.offers[0].priceSpecification.map(value => [value.price,value.unitCode]), [['3.95','MON']])
   assert.throws(() => readPublicOfferingCatalog([{...item,images:['javascript:alert(1)']}]))
+})
+
+test('binds a CRM submission to the trusted publisher scope and preserves territorial sellers and prices', () => {
+  const {id, type, publisher, sector, demo, ...input} = item
+  const scope = {publisher, sector, demo}
+  const manufacturer = {id:'manufacturer', name:'Device designer'}
+  const attributes = {...input, manufacturer, offers: [{...input.offers[0], plans: [
+    {name:'Basic', currency:'EUR', monthly:'3.95', features:['Monitoring']},
+  ]}, input.offers[1]]}
+  const document = {jsonapi:{version:'1.1'}, data:[{id, type, attributes}]}
+  const [submitted] = catalog.readPublicOfferingSubmission(document, scope)
+  assert.deepEqual(catalog.readPublicOfferingSubmission({data: document.data[0]}, scope), [submitted])
+  assert.deepEqual(submitted.publisher, publisher)
+  assert.equal(submitted.sector, sector)
+  assert.equal(submitted.demo, demo)
+  assert.deepEqual(submitted.manufacturer, manufacturer)
+  assert.equal(submitted.offers[0].plans[0].monthly, '3.95')
+  assert.equal(submitted.offers[0].plans[0].annually, undefined)
+  assert.equal(submitted.offers[1].seller.id, 'seller-two')
+  const submit = changes => catalog.readPublicOfferingSubmission({data:[{id, type, attributes:{...attributes, ...changes}}]}, scope)
+  assert.deepEqual(submit({publisher, sector, demo}), [submitted])
+  for (const changes of [{publisher:{...publisher, id:'other'}}, {publisher:{...publisher, name:'Another organisation'}},
+    {sector:'human-care'}, {demo:false}, {signature:'private'}, {controllerEmail:'private'}]) {
+    assert.throws(() => submit(changes), {message:'public_offering_catalog_invalid'})
+  }
+  assert.throws(() => catalog.readPublicOfferingSubmission({data:[]}, scope))
+  assert.throws(() => catalog.readPublicOfferingSubmission([item], scope))
+  assert.throws(() => catalog.readPublicOfferingSubmission({...document, included:[{id:'private'}]}, scope))
+  assert.throws(() => catalog.readPublicOfferingSubmission({data:[...document.data, ...document.data]}, scope))
 })
