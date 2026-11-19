@@ -36,6 +36,51 @@ export interface ClassicPublicJwk {
 
 export type PublicJwk = MlkemPublicJwk | MldsaPublicJwk | ClassicPublicJwk
 
+/** RFC 7518 section 4.6 and RFC 8037 section 3.2 agreement algorithm identifiers. */
+export const JoseEcdhAlgorithms = Object.freeze({
+  Direct: 'ECDH-ES',
+  A128KeyWrap: 'ECDH-ES+A128KW',
+  A192KeyWrap: 'ECDH-ES+A192KW',
+  A256KeyWrap: 'ECDH-ES+A256KW',
+})
+export type JoseEcdhAlgorithm = typeof JoseEcdhAlgorithms[keyof typeof JoseEcdhAlgorithms]
+export const JoseKeyOperations = Object.freeze({
+  Sign: 'sign', Verify: 'verify', Encrypt: 'encrypt', Decrypt: 'decrypt',
+  WrapKey: 'wrapKey', UnwrapKey: 'unwrapKey', DeriveKey: 'deriveKey', DeriveBits: 'deriveBits',
+})
+export const JoseAgreementCurves = Object.freeze({
+  P256: 'P-256', P384: 'P-384', Secp256k1: 'secp256k1', X25519: 'X25519',
+})
+export const X25519_PUBLIC_KEY_BYTES = 32
+export type PublicAgreementOperation = typeof JoseKeyOperations.Encrypt | typeof JoseKeyOperations.WrapKey
+  | typeof JoseKeyOperations.DeriveKey | typeof JoseKeyOperations.DeriveBits
+export interface PublicAgreementMetadata {
+  kid?: string
+  use?: 'enc'
+  key_ops?: PublicAgreementOperation[]
+  d?: never
+  k?: never
+}
+/** Existing resolver EC profile, including retained ES algorithm metadata. */
+export type LegacyEcAgreementPublicJwk = Omit<ClassicPublicJwk, 'crv' | 'use'> & PublicAgreementMetadata & {
+  crv: typeof JoseAgreementCurves.P256 | typeof JoseAgreementCurves.P384 | typeof JoseAgreementCurves.Secp256k1
+}
+/** Supported JOSE ECDH EC publication profile; it does not grant signing-engine support. */
+export type EcAgreementPublicJwk = Omit<ClassicPublicJwk, 'crv' | 'alg' | 'use'> & PublicAgreementMetadata & {
+  crv: typeof JoseAgreementCurves.P256 | typeof JoseAgreementCurves.P384
+  alg?: JoseEcdhAlgorithm
+}
+/** RFC 8037 public octet-key-pair projection. No private scalar is admitted. */
+export interface X25519PublicJwk extends PublicAgreementMetadata {
+  kty: 'OKP'
+  crv: typeof JoseAgreementCurves.X25519
+  x: string
+  alg?: JoseEcdhAlgorithm
+}
+export type MlkemAgreementPublicJwk = MlkemPublicJwk & PublicAgreementMetadata & { alg?: string }
+/** Eligible agreement families only; runtime validation still establishes encoding and bindings. */
+export type PublicAgreementJwk = LegacyEcAgreementPublicJwk | EcAgreementPublicJwk | X25519PublicJwk | MlkemAgreementPublicJwk
+
 /** Required public parameters used by the existing key/thumbprint profiles. */
 export type MlkemBaseJwk = Pick<MlkemPublicJwk, 'kty' | 'crv' | 'x'>
 export type MldsaBaseJwk = Pick<MldsaPublicJwk, 'kty' | 'alg' | 'pub'>

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add separate public JOSE EC/X25519/ML-KEM agreement-key contracts and
+  defaulted DID-document key generics. Keep the existing signing-engine
+  `PublicJwk` union unchanged. Share the RFC 8037 public X25519 sample,
+  standard ECDH metadata variants and malformed agreement probes.
+
 ## 0.4.2
 
 - Complete shared key-material rejection, public metadata, canonical URL and

@@ -1,5 +1,18 @@
 # Antifraud Data Utilities
 
+`PublicAgreementJwk` models eligible EC, X25519 and ML-KEM publication shapes
+separately from the existing cryptography engine's `PublicJwk` input. JOSE
+algorithm and key-operation identifiers are shared constants. Existing
+`DidDocument` and `VerificationMethod` consumers retain their default key type;
+agreement documents select `DidDocument<Service, Context, PublicAgreementJwk>`.
+Runtime resolvers still validate material, metadata and DID bindings.
+
+The agreement fixtures include the public recipient key from
+[RFC 8037 Appendix A.6](https://www.rfc-editor.org/rfc/rfc8037#appendix-A.6)
+and the ECDH algorithm labels defined by
+[RFC 7518 section 4.6](https://www.rfc-editor.org/rfc/rfc7518#section-4.6).
+The fixture catalog contains no private scalar or seed.
+
 The `did-document-test-fixtures` entry point supplies shared synthetic public
 keys, `createDidDocumentTestFixture({did, keys})` and named invalid-document
 vectors. Supply the consumer's reserved test DID. The public samples include

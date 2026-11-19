@@ -1,14 +1,18 @@
 /** Neutral synthetic public fixtures. No seed, private key, resolver or authority is provided. */
-import {DidCoreContext,type DidDocument,type VerificationMethod} from './did-document.js'
-import type {PublicJwk,ClassicPublicJwk,MlkemPublicJwk} from './cryptography/types.js'
+import {DidCoreContext,type DidDocument,type DidService,type VerificationMethod} from './did-document.js'
+import {JoseEcdhAlgorithms,JoseKeyOperations,JoseAgreementCurves,type PublicJwk,type ClassicPublicJwk,type MlkemPublicJwk,type PublicAgreementMetadata,type PublicAgreementJwk,type X25519PublicJwk,type EcAgreementPublicJwk} from './cryptography/types.js'
 
 /** Fixed public-only samples: EC point generated for this fixture; ML-KEM sample reuses the canonical AF predecessor vector. */
-const agreementEc=Object.assign({"kty":"EC","x":"sbYF2RiMtVl1Wm-WVIH6itOUcr-dMu6jcCnJhPr-UwQ-eSIjONPixRZWPyV8Sgp4","y":"acEQPCKQeL-GagDzZg8wSVYfW4pHHRBvaDOPDgaeJGqKkGMvnH07Am8N0pdnm1-F","crv":"P-384","kid":"legacy-agreement","alg":"ES384","use":"enc"} satisfies ClassicPublicJwk,{key_ops:['deriveKey']})
-const agreementMlkem=Object.assign({"kty":"OKP","crv":"ML-KEM-768","x":"RHFz0AHLHOdlCdM9S1squpxdxPxB3ACWMUixLgqVjps5hCJG9WXNcsi3V0Nv1OkEreKExxyIWulKQ_g4hfIY6Kd22RhLg0omuSO0vqUfPmwfNygBCILAAGVgnTijPzOZrjtR4BcWIslBeQCntOVNDUguD0STA5h0CXA8xdiJ0CgUlwYwqMAZAjs25-RIjDrNTgYYA8cx7wAFBdomX8IL8BNf2EurymUenjh3RQO25WFhvHWdfQpn7qU6PhO4_NMwSSxTnAEAhOZB0kQqCtwIvgKKfqDPSmWTM6oOgvYT7sDBbtXFuFg6MUBNy-km5vxLCeGEHWdgNCBbgnKuaQQU0-ykxTZoOhNMo4SGtYqK69kUr5EQKluFvDksFBc6qNMKCFYHIVAB-MPPzAUFBLF2ouM5NagGyUiahffOKrCJVUc9mzls7dN1fqkKiUFSn5JSM-u5PdA4JOdLG6OsB0aMaZQaRfojpQQbrfOckPg9o5Ab-ny3hEjCH4dYEirFSWDM_osGsxhlQutXvAstW-ozcXG6uVlFo8tBkde_SqCCq3WchEfEPnZ27IOYKsNictKry0UptYo5S1sxSyEOKcmd2MW3qBe0V_OgsZWuJPlkjhJFZkGGoai4NlFuhlIeiXFSE9J3h7ehdBFse2BCDDNOElMmtUAdR6aEewPB2naxCUFocDmFT1MY8ao3aaWPfmlXB3OrVfaixHsmM-NFiKmGSWsW66Za4USEDqi3RTww6tSeJhw2YPx1VQub1XR99yYGkFsWyKMLXyAOt3Q29cRbwAILouhG2AIfNvoSWZR2E-KjvjuJHqeUZRyUVjmCnKifzAqkuPudKUgv6BEkD_KfMpwgY-OrKGZ8IuA2pVMJz9xfJERXbBVVt-Ncx1AdGBWA4tRfO3q8X7Bw6jJTygVHapWlHmaDieE-LBE75VdoN6sBJtx18tTPsJKIfsFPWcZxo0BeDQYca3MPZUuOgTMQB-Fs5-sAAVaZaTEqiFaAj_JLyrolltUtM0rGtytBnRwc6st7kiJ59EZnGmMtSGKU61sHQYp90YisLjXI0LK3ssJTtOk8IHBYU9U9Z4Z_EwxpCop8L-o2xfXFCkAHMiCm9TfLMZjNXNoGnfok45p4b8iXITI1PlA22iSUBQlBucBWIPJp3CeQ5QGNDdudT_VwqyWNj8pWuyC7exmLqwigVkASUAVaxWOPl4nM2aLNyulUC2wFWNkFJzPMSjsCNkQumhmEsbV5UlY3bwiUVRdD7nQ_kESEt4C4lES8evJLhUuUtgN9HaefacokS_pqDgJB9tqQsnVsP1WmiWgDN2Qp2lwP3jkyazStk7orG1Wz7IRSh4tGqcS3TkpaN5jFRfyRqgk1PGPEeQqLiteUiIGBYIsxcNYdqNdisEXAh2twvtA9eJIJwVSLYsKOGWgKWTSJ1aV18dJWmPAWhUNNY7fF4iBCYbWKwKmANXwPDDu_sZCpKkszOjgxKTp0j6h0JHPHO6JxPek-kuOMYLuZQSCj3zqNQhSc20QRQfS1qbXOjDAZoy5mF732489XwhXxamcdVnb20F_ieRV22x6jPVbZYyw","kid":"m4106BYzgkaLZyjlMe9eCxrIQe3qTufxstgKtiTN2bk"} satisfies MlkemPublicJwk,{use:'enc',key_ops:['deriveBits']})
+const agreementEc=Object.assign({"kty":"EC","x":"sbYF2RiMtVl1Wm-WVIH6itOUcr-dMu6jcCnJhPr-UwQ-eSIjONPixRZWPyV8Sgp4","y":"acEQPCKQeL-GagDzZg8wSVYfW4pHHRBvaDOPDgaeJGqKkGMvnH07Am8N0pdnm1-F","crv":"P-384","kid":"legacy-agreement","alg":"ES384","use":"enc"} satisfies ClassicPublicJwk,{crv:JoseAgreementCurves.P384,use:'enc',key_ops:[JoseKeyOperations.DeriveKey]} satisfies PublicAgreementMetadata & {crv:typeof JoseAgreementCurves.P384})
+const agreementMlkem=Object.assign({"kty":"OKP","crv":"ML-KEM-768","x":"RHFz0AHLHOdlCdM9S1squpxdxPxB3ACWMUixLgqVjps5hCJG9WXNcsi3V0Nv1OkEreKExxyIWulKQ_g4hfIY6Kd22RhLg0omuSO0vqUfPmwfNygBCILAAGVgnTijPzOZrjtR4BcWIslBeQCntOVNDUguD0STA5h0CXA8xdiJ0CgUlwYwqMAZAjs25-RIjDrNTgYYA8cx7wAFBdomX8IL8BNf2EurymUenjh3RQO25WFhvHWdfQpn7qU6PhO4_NMwSSxTnAEAhOZB0kQqCtwIvgKKfqDPSmWTM6oOgvYT7sDBbtXFuFg6MUBNy-km5vxLCeGEHWdgNCBbgnKuaQQU0-ykxTZoOhNMo4SGtYqK69kUr5EQKluFvDksFBc6qNMKCFYHIVAB-MPPzAUFBLF2ouM5NagGyUiahffOKrCJVUc9mzls7dN1fqkKiUFSn5JSM-u5PdA4JOdLG6OsB0aMaZQaRfojpQQbrfOckPg9o5Ab-ny3hEjCH4dYEirFSWDM_osGsxhlQutXvAstW-ozcXG6uVlFo8tBkde_SqCCq3WchEfEPnZ27IOYKsNictKry0UptYo5S1sxSyEOKcmd2MW3qBe0V_OgsZWuJPlkjhJFZkGGoai4NlFuhlIeiXFSE9J3h7ehdBFse2BCDDNOElMmtUAdR6aEewPB2naxCUFocDmFT1MY8ao3aaWPfmlXB3OrVfaixHsmM-NFiKmGSWsW66Za4USEDqi3RTww6tSeJhw2YPx1VQub1XR99yYGkFsWyKMLXyAOt3Q29cRbwAILouhG2AIfNvoSWZR2E-KjvjuJHqeUZRyUVjmCnKifzAqkuPudKUgv6BEkD_KfMpwgY-OrKGZ8IuA2pVMJz9xfJERXbBVVt-Ncx1AdGBWA4tRfO3q8X7Bw6jJTygVHapWlHmaDieE-LBE75VdoN6sBJtx18tTPsJKIfsFPWcZxo0BeDQYca3MPZUuOgTMQB-Fs5-sAAVaZaTEqiFaAj_JLyrolltUtM0rGtytBnRwc6st7kiJ59EZnGmMtSGKU61sHQYp90YisLjXI0LK3ssJTtOk8IHBYU9U9Z4Z_EwxpCop8L-o2xfXFCkAHMiCm9TfLMZjNXNoGnfok45p4b8iXITI1PlA22iSUBQlBucBWIPJp3CeQ5QGNDdudT_VwqyWNj8pWuyC7exmLqwigVkASUAVaxWOPl4nM2aLNyulUC2wFWNkFJzPMSjsCNkQumhmEsbV5UlY3bwiUVRdD7nQ_kESEt4C4lES8evJLhUuUtgN9HaefacokS_pqDgJB9tqQsnVsP1WmiWgDN2Qp2lwP3jkyazStk7orG1Wz7IRSh4tGqcS3TkpaN5jFRfyRqgk1PGPEeQqLiteUiIGBYIsxcNYdqNdisEXAh2twvtA9eJIJwVSLYsKOGWgKWTSJ1aV18dJWmPAWhUNNY7fF4iBCYbWKwKmANXwPDDu_sZCpKkszOjgxKTp0j6h0JHPHO6JxPek-kuOMYLuZQSCj3zqNQhSc20QRQfS1qbXOjDAZoy5mF732489XwhXxamcdVnb20F_ieRV22x6jPVbZYyw","kid":"m4106BYzgkaLZyjlMe9eCxrIQe3qTufxstgKtiTN2bk"} satisfies MlkemPublicJwk,{use:'enc',key_ops:[JoseKeyOperations.DeriveBits]} satisfies PublicAgreementMetadata)
+/** Public recipient key from RFC 8037 Appendix A.6; no example private scalar is copied. */
+const agreementX25519={kty:'OKP',crv:JoseAgreementCurves.X25519,x:'3p7bfXt9wbTTW2HC7OQ1Nz-DQ8hbeGdNrfx-FG-IK08',kid:'Bob',use:'enc',alg:JoseEcdhAlgorithms.Direct,key_ops:[JoseKeyOperations.DeriveBits]} satisfies X25519PublicJwk
+const agreementEcEcdh={kty:'EC',crv:JoseAgreementCurves.P384,x:agreementEc.x,y:agreementEc.y,kid:agreementEc.kid,use:'enc',alg:JoseEcdhAlgorithms.Direct,key_ops:[JoseKeyOperations.DeriveKey]} satisfies EcAgreementPublicJwk
 export const DID_DOCUMENT_TEST_PUBLIC_KEYS=Object.freeze({
+ x25519:Object.freeze(agreementX25519),ecEcdh:Object.freeze(agreementEcEcdh),
  ec:Object.freeze(agreementEc),mlkem:Object.freeze(agreementMlkem),
  wrappedMlkem:Object.freeze(Object.assign(structuredClone(agreementMlkem),{alg:'ML-KEM-768+HKDF-SHA256+A256GCMKW',publicMetadata:'synthetic public extension'})),
- signature:Object.freeze(Object.assign(structuredClone(agreementEc),{kid:'signature-only',use:'sig',key_ops:['verify']})),
+ signature:Object.freeze({...structuredClone(agreementEc),kid:'signature-only',use:'sig',key_ops:[JoseKeyOperations.Verify]}),
 })
 /** Reserved identities and deliberate transport attack inputs, never operational endpoints. */
 export const DID_DOCUMENT_TEST_PROBES=Object.freeze({
@@ -24,8 +28,10 @@ export const DID_DOCUMENT_TEST_PROBES=Object.freeze({
 })
 export type DidDocumentTestFixtureInput=Readonly<{did:string;keys?:readonly PublicJwk[]}>
 /** The caller supplies its reserved identity; this factory performs no ownership validation. */
-export function createDidDocumentTestFixture(input:DidDocumentTestFixtureInput):DidDocument{
- const verificationMethod:VerificationMethod[]=(input.keys??[DID_DOCUMENT_TEST_PUBLIC_KEYS.ec]).map((key,index)=>({
+export function createDidDocumentTestFixture(input:DidDocumentTestFixtureInput):DidDocument
+export function createDidDocumentTestFixture(input:Readonly<{did:string;keys:readonly PublicAgreementJwk[]}>):DidDocument<DidService,string|string[],PublicAgreementJwk>
+export function createDidDocumentTestFixture(input:Readonly<{did:string;keys?:readonly (PublicJwk|PublicAgreementJwk)[]}>):DidDocument<DidService,string|string[],PublicJwk|PublicAgreementJwk>{
+ const verificationMethod:VerificationMethod<PublicJwk|PublicAgreementJwk>[]=(input.keys??[DID_DOCUMENT_TEST_PUBLIC_KEYS.ec]).map((key,index)=>({
   id:input.did+'#'+(key.kid||'test-key-'+index),type:'JsonWebKey2020',controller:input.did,publicKeyJwk:structuredClone(key),
  }))
  return {'@context':DidCoreContext,id:input.did,verificationMethod,keyAgreement:verificationMethod.map(method=>method.id)}
@@ -115,4 +121,26 @@ export function createDidDocumentLoopbackTestFixtures(port:number):Readonly<{did
   {name:'different-loopback-port',did,options:{didDocumentUrl:'http://127.0.0.1:'+(port+1)+'/did.json',allowTestLoopbackDocument:true}},
   {name:'non-loopback-ip-did',did:DID_DOCUMENT_TEST_PROBES.nonLoopbackIpDid,options:{didDocumentUrl:documentUrl,allowTestLoopbackDocument:true}},
  ]}
+}
+
+/** Public-only JOSE agreement variants; field values and algorithms have one neutral fixture owner. */
+export function createJoseAgreementKeyTestFixtures():readonly Readonly<{name:string;publicKeyJwk:PublicAgreementJwk}>[]{
+ return Object.values(JoseEcdhAlgorithms).flatMap(alg=>[
+  {name:'ec-'+alg,publicKeyJwk:{...structuredClone(agreementEcEcdh),alg}},
+  {name:'x25519-'+alg,publicKeyJwk:{...structuredClone(agreementX25519),alg}},
+ ])
+}
+/** Malformed or incompatible agreement input remains unknown, not a trusted key. */
+export function createInvalidJoseAgreementKeyTestFixtures():readonly Readonly<{name:string;publicKeyJwk:unknown}>[]{
+ const x=()=>structuredClone(agreementX25519)
+ return [
+  {name:'truncated-okp-coordinate',publicKeyJwk:{...x(),x:agreementX25519.x.slice(0,-2)}},
+  {name:'invalid-okp-encoding',publicKeyJwk:{...x(),x:'invalid'}},
+  {name:'private-okp-scalar',publicKeyJwk:{...x(),d:'synthetic-negative-value'}},
+  {name:'wrong-ec-family-x25519',publicKeyJwk:{...x(),kty:'EC'}},
+  {name:'signing-only-okp-curve',publicKeyJwk:{...x(),crv:'Ed25519'}},
+  {name:'incompatible-okp-algorithm',publicKeyJwk:{...x(),alg:agreementEc.alg}},
+  {name:'signing-only-key-use',publicKeyJwk:{...x(),use:'sig'}},
+  {name:'signing-only-key-operations',publicKeyJwk:{...x(),key_ops:[JoseKeyOperations.Sign]}},
+ ]
 }
