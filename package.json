@@ -113,6 +113,10 @@
     "./verification-contracts": {
       "types": "./dist/verification-contracts.d.ts",
       "default": "./dist/verification-contracts.js"
+    },
+    "./did-document-test-fixtures": {
+      "types": "./dist/did-document-test-fixtures.d.ts",
+      "default": "./dist/did-document-test-fixtures.js"
     }
   },
   "files": [

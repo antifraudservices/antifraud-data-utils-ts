@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add typed, reusable DID-document test fixtures with public EC and ML-KEM
+  samples, independent document copies and named adversarial JSON/transport
+  probes. Positive fixtures reuse the existing DID and public-key contracts;
+  invalid vectors remain `unknown` for consumer validation.
+
 ## 0.4.1
 
 - Add neutral ISCO-08 occupations for pharmacists (2262) and pharmaceutical

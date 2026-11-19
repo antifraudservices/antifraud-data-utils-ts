@@ -1,5 +1,14 @@
 # Antifraud Data Utilities
 
+The `did-document-test-fixtures` entry point supplies shared synthetic public
+keys, `createDidDocumentTestFixture({did, keys})` and named invalid-document
+vectors. Supply the consumer's reserved test DID. The public samples include
+an EC point and the existing ML-KEM predecessor vector; they contain no private
+keys or seeds. Transport probes cover loopback, foreign origin, userinfo,
+query, fragment and encoded-separator cases. These fixtures perform no network
+requests. Positive documents use `DidDocument` and `PublicJwk`; adversarial
+documents remain `unknown` until the consumer validates them.
+
 ## Pinned credential verification
 
 The `clearing-house` entry point provides pure verification primitives:
