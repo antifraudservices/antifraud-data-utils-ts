@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.4.2
+
 - Add typed, reusable DID-document test fixtures with public EC and ML-KEM
   samples, independent document copies and named adversarial JSON/transport
   probes. Positive fixtures reuse the existing DID and public-key contracts;
