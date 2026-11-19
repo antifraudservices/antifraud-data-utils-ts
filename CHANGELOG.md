@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Add strict public Product/Service/application catalogue projections, grouped
+  territorial seller offers, optional country/subdivision search and explicit
+  Schema.org exchange output. Separate Demo feeds and reject private evidence
+  fields; discovery establishes no admission, authority or device capability.
+
 - Add separate public JOSE EC/X25519/ML-KEM agreement-key contracts and
   defaulted DID-document key generics. Keep the existing signing-engine
   `PublicJwk` union unchanged. Share the RFC 8037 public X25519 sample,
