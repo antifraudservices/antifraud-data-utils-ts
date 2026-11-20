@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Convert homogeneous Schema.org JSON:API documents and published listings to
+  the same editable draft format, with shared publication-field validation.
+
 ## 0.4.3
 
 - Add strict public Product/Service/application catalogue projections, grouped

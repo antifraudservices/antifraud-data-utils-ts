@@ -36,6 +36,16 @@ export type PublicOffering = Readonly<{
 }>
 export type PublicOfferingQuery = Readonly<{sector?: string; category?: string; country?: string; region?: string; query?: string}>
 export type PublicOfferingPublicationScope = Readonly<Pick<PublicOffering, 'publisher' | 'sector' | 'demo'>>
+export type PublicOfferingDraftType = Extract<PublicOffering['type'], 'Product' | 'Service'>
+export type PublicOfferingDraftResource = Readonly<{
+  id: string
+  type: PublicOfferingDraftType
+  attributes: Readonly<Record<string, unknown>>
+}>
+export type PublicOfferingDraftDocument = Readonly<{
+  jsonapi: Readonly<{version: '1.1'}>
+  data: readonly PublicOfferingDraftResource[]
+}>
 
 export function publicOfferingMediaClaimKeys(type: 'Product' | 'Service') {
   const prefix = `org.schema.${type}`
@@ -184,8 +194,7 @@ function offeringDocumentEntry(entry: unknown): Record<string, unknown> {
   return {...attributes, id:resource.id, type:resource.type}
 }
 
-/** Reads one publisher's catalogue submission with scope resolved by the host. */
-export function readPublicOfferingSubmission(document: unknown, scope: PublicOfferingPublicationScope): readonly PublicOffering[] {
+function submissionEntries(document: unknown): readonly unknown[] {
   const input = record(document)
   keys(input, ['data', 'jsonapi'])
   if (input.jsonapi !== undefined) {
@@ -193,10 +202,133 @@ export function readPublicOfferingSubmission(document: unknown, scope: PublicOff
     keys(jsonapi, ['version'])
     if (jsonapi.version !== '1.0' && jsonapi.version !== '1.1') return invalid()
   }
-  const publisher = party(scope.publisher)
-  const sector = text(scope.sector)
   const entries = Array.isArray(input.data) ? array(input.data) : [input.data]
   if (!entries.length) return invalid()
+  return entries
+}
+
+function entriesOf(value: unknown): readonly unknown[] {
+  return Array.isArray(value) ? array(value) : [value]
+}
+
+function draftParty(value: unknown): Record<string, unknown> {
+  if (typeof value === 'string') return {name:value}
+  const {'@type':kind,'@id':schemaId,id,name,...rest} = record(value)
+  keys(rest,[])
+  if (kind !== undefined && kind !== 'Organization' && kind !== 'Person' || schemaId !== undefined && id !== undefined && schemaId !== id) return invalid()
+  return {...(schemaId !== undefined || id !== undefined ? {id:id ?? schemaId}:{}),...(name === undefined?{}:{name})}
+}
+
+function draftTerritories(value: unknown): readonly PublicOfferingTerritory[] {
+  const territories = new Map<string, string[]>()
+  for (const territoryValue of entriesOf(value)) {
+    const territory = typeof territoryValue === 'string' ? {identifier:territoryValue} : record(territoryValue)
+    keys(territory,['@type','identifier'])
+    const kind = territory['@type']
+    if (kind !== undefined && kind !== 'Country' && kind !== 'AdministrativeArea') return invalid()
+    const identifier = text(territory.identifier).toUpperCase()
+    if (!/^[A-Z]{2}(?:-[A-Z0-9]{1,3})?$/u.test(identifier)) return invalid()
+    const code = identifier.slice(0,2)
+    const regions = territories.get(code)
+    if (identifier === code) territories.set(code,[])
+    else if (!regions || regions.length) territories.set(code,[...new Set([...(regions??[]),identifier])])
+  }
+  return [...territories].map(([country,regions])=>({country,regions}))
+}
+
+function draftPlans(value: unknown): readonly PublicSubscriptionPlan[] {
+  const plans = new Map<string, PublicSubscriptionPlan>()
+  for (const priceValue of entriesOf(value)) {
+    const {'@type':kind,name,price,priceCurrency,billingIncrement,unitCode,...rest} = record(priceValue)
+    keys(rest,[])
+    if (kind !== undefined && kind !== 'UnitPriceSpecification' || billingIncrement !== undefined && billingIncrement !== 1) return invalid()
+    const period = unitCode === 'MON' ? 'monthly' : unitCode === 'ANN' ? 'annually' : invalid()
+    const planName = text(name), currency = text(priceCurrency), key = JSON.stringify([planName,currency])
+    const amount = text(typeof price === 'number' && Number.isFinite(price) ? String(price) : price)
+    const current = plans.get(key) ?? {name:planName,currency,features:[]}
+    if (current[period] !== undefined && current[period] !== amount) return invalid()
+    plans.set(key,{...current,[period]:amount})
+  }
+  return readPublicSubscriptionPlans([...plans.values()])
+}
+
+function draftOffer(value: unknown, itemId: string, index: number): Record<string, unknown> {
+  const {'@type':kind,'@id':schemaId,id,itemOffered,seller,eligibleRegion,eligibleRegions,priceSpecification,plans,...fields} = record(value)
+  keys(fields,['deliveryCountries','operationCountries','supportCountries','url'])
+  if (kind !== undefined && kind !== 'Offer' || schemaId !== undefined && id !== undefined && schemaId !== id) return invalid()
+  if (itemOffered !== undefined) {
+    const link=record(itemOffered)
+    keys(link,['@id'])
+    if (link['@id'] !== itemId) return invalid()
+  }
+  if (eligibleRegion !== undefined && eligibleRegions !== undefined || priceSpecification !== undefined && plans !== undefined) return invalid()
+  return {id:id ?? schemaId ?? `${itemId}-offer-${index+1}`,deliveryCountries:[],operationCountries:[],supportCountries:[],...fields,
+    ...(seller === undefined ? {} : {seller:draftParty(seller)}),
+    ...(eligibleRegion !== undefined ? {eligibleRegions:draftTerritories(eligibleRegion)} : eligibleRegions === undefined ? {} : {eligibleRegions}),
+    ...(priceSpecification !== undefined ? {plans:draftPlans(priceSpecification)} : plans === undefined ? {} : {plans})}
+}
+
+/** Imports a reviewable batch. The publication validator still checks every completed resource against its host scope. */
+export function readPublicOfferingDraftDocument(document: unknown, createId?: () => string): PublicOfferingDraftDocument {
+  const data = submissionEntries(document).map((entry): PublicOfferingDraftResource => {
+    const input = record(entry)
+    keys(input, ['id', 'type', 'attributes'])
+    if (typeof input.type !== 'string') return invalid()
+    const type = input.type.replace(/^https?:\/\/schema\.org\//u, '')
+    if (type !== 'Product' && type !== 'Service') return invalid()
+    const {'@context':context,'@type':schemaType,'@id':schemaId,image,images,brand,manufacturer,offers,...attributes} = record(input.attributes)
+    if (context !== undefined && context !== 'https://schema.org' || schemaType !== undefined && schemaType !== type
+      || schemaId !== undefined && input.id !== undefined && schemaId !== input.id) return invalid()
+    const declaredId = input.id === undefined ? schemaId : input.id
+    const id = text(declaredId === undefined ? createId?.() : declaredId)
+    keys(attributes, ['name', 'description', 'category', 'url', 'publisher', 'sector', 'demo'])
+    for (const key of ['name', 'description', 'category', 'url'] as const) {
+      if (attributes[key] !== undefined && typeof attributes[key] !== 'string') return invalid()
+    }
+    if (image !== undefined && images !== undefined) return invalid()
+    const photoValue = image === undefined ? images : image
+    if (photoValue !== undefined) {
+      const photos = typeof photoValue === 'string' ? [photoValue] : array(photoValue)
+      if (photos.length > 8 || photos.some(photo => typeof photo !== 'string')) return invalid()
+      attributes.images = [...photos]
+    }
+    if (typeof brand === 'string') attributes.brand = {name:brand}
+    else if (brand !== undefined) {
+      const {'@type':kind,logo,logoUrl,...fields} = record(brand)
+      keys(fields,['name'])
+      if (kind !== undefined && kind !== 'Brand' || logo !== undefined && logoUrl !== undefined) return invalid()
+      attributes.brand = {...fields,...(logo !== undefined || logoUrl !== undefined ? {logoUrl:logoUrl??logo}:{})}
+    }
+    if (manufacturer !== undefined) attributes.manufacturer = draftParty(manufacturer)
+    if (offers !== undefined) attributes.offers = entriesOf(offers).map((resource,index)=>draftOffer(resource,id,index))
+    return {id, type, attributes}
+  })
+  if (data.some(resource => resource.type !== data[0]?.type)) throw new TypeError('public_offering_draft_mixed_types')
+  uniqueIds(data)
+  return {jsonapi:{version:'1.1'},data}
+}
+
+/** Opens published offerings in the same editor format, with host-owned publication context supplied later. */
+export function projectPublicOfferingDraftDocument(offerings: readonly PublicOffering[]): PublicOfferingDraftDocument {
+  const data = offerings.map(({id, type, publisher, sector, demo, ...attributes}) => ({id, type, attributes}))
+  return readPublicOfferingDraftDocument({data})
+}
+
+/** Checks an editor entry for completeness before the host authorizes publication. */
+export function validatePublicOfferingDraftResource(resource: PublicOfferingDraftResource): void {
+  const {publisher, sector, demo, ...attributes} = resource.attributes
+  if (publisher !== undefined) party(publisher)
+  if (sector !== undefined) text(sector)
+  if (demo !== undefined && typeof demo !== 'boolean') return invalid()
+  readPublicOfferingCatalog([{...attributes,id:resource.id,type:resource.type,
+    publisher:{id:'draft',name:'Draft publisher'},sector:'draft',demo:false}])
+}
+
+/** Reads one publisher's catalogue submission with scope resolved by the host. */
+export function readPublicOfferingSubmission(document: unknown, scope: PublicOfferingPublicationScope): readonly PublicOffering[] {
+  const entries = submissionEntries(document)
+  const publisher = party(scope.publisher)
+  const sector = text(scope.sector)
   return readPublicOfferingCatalog(entries.map(entry => {
     const offering = offeringDocumentEntry(entry)
     if (offering.publisher !== undefined) {
