@@ -1,0 +1,32 @@
+{
+  "landingPage": "https://catalogue.example.invalid/assets/weather",
+  "v4": {
+    "version": "4.1.0",
+    "id": "did:op:1111111111111111111111111111111111111111111111111111111111111111",
+    "metadata": { "type": "dataset", "name": "Weather observations", "description": "Daily observations", "license": "https://example.invalid/terms" },
+    "services": [
+      { "id": "download", "type": "access", "serviceEndpoint": "https://provider.example.invalid/access", "files": "private-source" },
+      { "id": "compute", "type": "compute", "serviceEndpoint": "https://provider.example.invalid/compute", "datatokenAddress": "not-for-catalogue" }
+    ],
+    "indexedMetadata": { "private": true }
+  },
+  "v5": {
+    "version": "5.0.0",
+    "id": "did:ope:2222222222222222222222222222222222222222222222222222222222222222",
+    "credentialSubject": {
+      "id": "did:ope:2222222222222222222222222222222222222222222222222222222222222222",
+      "metadata": { "type": "dataset", "name": "Air quality", "description": { "@value": "Hourly readings", "@language": "en" }, "license": { "name": "https://example.invalid/terms" } },
+      "services": [
+        { "id": "download", "type": "access", "name": "Read observations", "serviceEndpoint": "https://provider.example.invalid/air-quality" }
+      ]
+    },
+    "proof": { "private": true }
+  },
+  "invalidVersion": "6.0.0",
+  "invalidAssetType": "algorithm",
+  "invalidEndpoint": "file:///private/asset",
+  "resourceTypes": { "dataset": "Dataset", "dataService": "DataService" },
+  "product": { "type": "Product", "id": "reference-device", "attributes": { "name": "Reference device" } },
+  "service": { "type": "Service", "id": "reference-support", "attributes": { "name": "Reference support" } },
+  "envelope": { "id": "example-message", "thid": "example-publication", "type": "https://example.invalid/catalogue/1.0/publish", "from": "did:example:publisher", "to": ["did:example:gateway"] }
+}

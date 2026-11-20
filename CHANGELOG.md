@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+- Project Ocean DDO v4 and v5 public dataset metadata and related data services
+  into catalogue entries. Build JSON:API primary documents for DIDComm bodies.
+
 ## 0.4.4 - 2026-11-20
 
 - Keep public offerings distinct by publisher, resource type and ID.

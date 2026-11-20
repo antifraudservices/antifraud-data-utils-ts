@@ -25,3 +25,5 @@ export * from './public-registry-search.js'
 export * from './public-offering-catalog.js'
 
 export * from './did-document-test-fixtures.js'
+
+export * from './ocean-catalogue.js'

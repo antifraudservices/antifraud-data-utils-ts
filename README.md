@@ -357,6 +357,19 @@ user-interface acceptance boundary.
 - [Schema.org EducationalOccupationalCredential](https://schema.org/EducationalOccupationalCredential)
 - [DC4EU EUDI Wallet large-scale pilot](https://ec.europa.eu/digital-building-blocks/sites/spaces/EUDIGITALIDENTITYWALLET/pages/920064520/LSP-DC4EU)
 
+## Ocean catalogue exchange
+
+Use `projectOceanDatasetEntries` with a resolved public Ocean DDO v4 or v5.
+It preserves the asset DID and projects dataset metadata and each access or
+compute service. The conversion expects an already trusted source and does
+not verify a credential.
+
+Use `buildCataloguePrimaryDocument` to assemble the JSON:API entries.
+For Product and Service submissions, use the existing catalogue validator
+and send each type in its own batch. `withCatalogueBody` places the primary
+document in the supplied DIDComm envelope. The caller supplies the receiving
+operation and uses its SDK to sign and send the message.
+
 ## Development
 
 Node.js 26.13.0 is required. See [public and contact exchange aliases](docs/PUBLIC_ALIASES.md)
