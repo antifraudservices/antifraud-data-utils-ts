@@ -106,6 +106,133 @@ export function projectOceanDatasetEntries(input: Readonly<{ ddo: unknown; landi
   return [dataset, ...services]
 }
 
+/** Original publisher JSON for private storage. Keep it outside catalogue documents and messages. */
+export type OceanDatasetSource = Readonly<{ json: string; landingPage?: string }>
+
+/** Imports a DDO and retains its original JSON, including fields absent from the public catalogue. */
+export function captureOceanDataset(source: OceanDatasetSource): Readonly<{
+  entries: readonly CatalogueEntry[]
+  source: OceanDatasetSource
+}> {
+  const { json, landingPage } = source
+  const entries = projectOceanDatasetEntries({ ddo: JSON.parse(json), landingPage })
+  return { entries, source: { json, landingPage } }
+}
+
+function canonicalEntry(entry: CatalogueEntry): string {
+  return JSON.stringify(entry, (_key, value: unknown) => {
+    if (value === null || typeof value !== 'object' || Array.isArray(value)) return value
+    const record = value as JsonObject
+    return Object.fromEntries(Object.keys(record).sort().map(key => [key, record[key]]))
+  })
+}
+
+/** Recovers the exact original JSON when the dataset's public entries still match the imported DDO. */
+export function restoreOceanDataset(entries: readonly CatalogueEntry[], source: OceanDatasetSource): string {
+  const { entries: expected } = captureOceanDataset(source)
+  const expectedEntries = new Set(expected.map(canonicalEntry))
+  if (entries.length !== expectedEntries.size || entries.some(entry => !expectedEntries.delete(canonicalEntry(entry)))) {
+    throw new TypeError('Catalogue no longer matches the original Ocean dataset')
+  }
+  return source.json
+}
+
+/** Portable Schema.org dataset metadata. Access and compute services travel in the catalogue separately. */
+export type SchemaOrgOceanDataset = Readonly<{
+  '@context'?: 'https://schema.org'
+  '@type': 'Dataset'
+  identifier: string
+  name: string
+  description?: string
+  license?: string
+  url?: string
+}>
+
+/** Reads the Schema.org metadata of the selected dataset from a catalogue projection. */
+export function toSchemaOrgDataset(entries: readonly CatalogueEntry[], datasetId: string): SchemaOrgOceanDataset {
+  const dataset = entries.find(entry => entry.type === 'Dataset' && entry.id === datasetId)
+  if (!dataset) throw new TypeError('Catalogue dataset was not found')
+  const { title, description, license, landingPage } = dataset.attributes
+  const url = publicUrl(landingPage, 'landing page')
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    identifier: dataset.id,
+    name: text(title, 'dataset title'),
+    ...(description === undefined ? {} : { description: text(description, 'dataset description') }),
+    ...(license === undefined ? {} : { license: text(license, 'dataset license') }),
+    ...(url === undefined ? {} : { url }),
+  }
+}
+
+/** Public service metadata passed to the publisher to combine with its access and pricing configuration. */
+export type OceanPublicationService = Readonly<{
+  id: string
+  type: 'access' | 'compute'
+  serviceEndpoint: string
+  name?: string
+  description?: string
+}>
+
+type OceanAssetBuilder<Service, Asset> = {
+  setType(type: 'dataset'): unknown
+  setName(name: string): unknown
+  setDescription(description: string): unknown
+  setLicense(license: string): unknown
+  setAuthor(author: string): unknown
+  setProvidedBy?(provider: string): unknown
+  addService(service: Service): unknown
+  build(): Asset
+}
+
+/** Builds the input to the caller's Ocean SDK using a fresh asset builder and its configured service factory.
+ * The SDK assigns the new DID and signs/publishes the resulting asset. Source IDs only link catalogue records.
+ */
+export function buildOceanDatasetPublication<Service, Asset>(
+  dataset: SchemaOrgOceanDataset,
+  entries: readonly CatalogueEntry[],
+  settings: Readonly<{ version: string; author: string; providedBy?: string }>,
+  builders: Readonly<{
+    asset: OceanAssetBuilder<Service, Asset>
+    createService(service: OceanPublicationService): Service
+  }>,
+): Asset {
+  if (dataset['@type'] !== 'Dataset') throw new TypeError('Expected a Schema.org Dataset')
+  if (!/^[45]\.\d+\.\d+$/u.test(settings.version)) throw new TypeError('Unsupported Ocean DDO version')
+  const id = text(dataset.identifier, 'dataset identifier')
+  const name = text(dataset.name, 'dataset name')
+  const description = text(dataset.description, 'dataset description')
+  const license = text(dataset.license, 'dataset license')
+  const author = text(settings.author, 'asset author')
+  const { asset, createService } = builders
+  const provider = settings.version.startsWith('5.') ? text(settings.providedBy, 'asset provider') : undefined
+  if (provider !== undefined && !asset.setProvidedBy) throw new TypeError('DDO v5 requires an asset builder with provider support')
+  const selected = entries.filter(entry => entry.type === 'DataService' && entry.relationships?.servesDataset.data.id === id)
+  if (selected.length === 0) throw new TypeError('Publishing requires at least one data service')
+  const { data } = buildCataloguePrimaryDocument(selected)
+  const services = data.map((entry): OceanPublicationService => {
+    const { serviceType, endpointURL, title, description: detail } = entry.attributes
+    if (serviceType !== 'access' && serviceType !== 'compute') throw new TypeError('Unsupported Ocean service type')
+    const serviceEndpoint = publicUrl(endpointURL, 'service endpoint')
+    if (!serviceEndpoint) throw new TypeError('Ocean service endpoint is required')
+    return {
+      id: entry.id,
+      type: serviceType,
+      serviceEndpoint,
+      ...(title === undefined ? {} : { name: text(title, 'service title') }),
+      ...(detail === undefined ? {} : { description: text(detail, 'service description') }),
+    }
+  }).map(createService)
+  asset.setType('dataset')
+  asset.setName(name)
+  asset.setDescription(description)
+  asset.setLicense(license)
+  asset.setAuthor(author)
+  if (provider !== undefined) asset.setProvidedBy?.(provider)
+  for (const service of services) asset.addService(service)
+  return asset.build()
+}
+
 /** Builds a direct JSON:API catalogue document. Send each commercial offering type in its own batch. */
 export function buildCataloguePrimaryDocument(entries: readonly CatalogueEntry[]): CataloguePrimaryDocument {
   if (entries.length === 0) throw new TypeError('Catalogue entries are required')
