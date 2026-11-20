@@ -78,6 +78,10 @@
       "types": "./dist/cryptography/index.d.ts",
       "default": "./dist/cryptography/index.js"
     },
+    "./ocean-catalogue": {
+      "types": "./dist/ocean-catalogue.d.ts",
+      "default": "./dist/ocean-catalogue.js"
+    },
     "./public-offering-catalog": {
       "types": "./dist/public-offering-catalog.d.ts",
       "default": "./dist/public-offering-catalog.js"
