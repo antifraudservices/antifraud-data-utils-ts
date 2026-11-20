@@ -22,6 +22,16 @@
     },
     "proof": { "private": true }
   },
+  "schemaDataset": {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "identifier": "did:op:1111111111111111111111111111111111111111111111111111111111111111",
+    "name": "Weather observations",
+    "description": "Daily observations",
+    "license": "https://example.invalid/terms",
+    "url": "https://catalogue.example.invalid/assets/weather"
+  },
+  "publisher": "Example data publisher",
   "invalidVersion": "6.0.0",
   "invalidAssetType": "algorithm",
   "invalidEndpoint": "file:///private/asset",

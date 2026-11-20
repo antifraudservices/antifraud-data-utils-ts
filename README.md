@@ -364,6 +364,23 @@ It preserves the asset DID and projects dataset metadata and each access or
 compute service. The conversion expects an already trusted source and does
 not verify a credential.
 
+For an exact round trip, use `captureOceanDataset({ json, landingPage })`.
+Persist its `source` privately and send only `entries` to the catalogue.
+`restoreOceanDataset(entries, source)` returns the original JSON text,
+including signed and provider-specific fields, after checking that the
+dataset and its services still match the public projection. Pass only the
+entries for that dataset.
+
+`toSchemaOrgDataset(entries, datasetId)` exports the portable Schema.org
+`Dataset` metadata. `buildOceanDatasetPublication(dataset, entries, settings,
+builders)` can start from a native Schema.org `Dataset` and its linked
+`DataService` entries. Supply a fresh Ocean SDK asset builder, an author
+and, for v5, the provider. The per-service factory receives the public
+metadata and supplies the configured files, access policy and pricing.
+Submit the returned asset through the publisher's SDK. A new publication
+receives its own DID and, for v5, a new proof. Pass the known landing page
+separately when reimporting: the Schema.org `url` is a catalogue link.
+
 Use `buildCataloguePrimaryDocument` to assemble the JSON:API entries.
 For Product and Service submissions, use the existing catalogue validator
 and send each type in its own batch. `withCatalogueBody` places the primary
