@@ -1,4 +1,4 @@
-// Flow contract: public discovery groups one item with territorial offers; geography never establishes authority or device operation.
+// Flow contract: review one kind of Schema.org offering at a time before publication, then group public listings with their eligible territorial offers.
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
 import * as catalog from '../dist/public-offering-catalog.js'
@@ -6,6 +6,46 @@ const {readPublicOfferingCatalog, readPublicOfferingCatalogJson, searchPublicOff
 
 const offer = (id, country, regions = []) => ({id, seller: {id: `seller-${id}`, name: `Distributor ${id}`}, eligibleRegions: [{country, regions}], deliveryCountries: [country], operationCountries: [], supportCountries: []})
 const item = {id: 'tracker', type: 'Product', category: 'devices', sector: 'animal-care', name: 'Example tracker', description: 'Animal monitoring device', publisher: {id: 'publisher', name: 'Example manufacturer'}, demo: true, offers: [offer('one', 'ES'), offer('two', 'CA', ['CA-BC'])]}
+
+test('opens a single resource or ordered homogeneous batch as drafts without publishing incomplete data', () => {
+  const image = 'https://example.invalid/tracker.png'
+  const first = {type:'https://schema.org/Product', attributes:{name:'Tracker', image, brand:'Example brand'}}
+  const second = {type:'Product', id:'existing-tracker', attributes:{category:'devices', offers:item.offers}}
+  const read = data => catalog.readPublicOfferingDraftDocument({jsonapi:{version:'1.1'},data}, () => 'new-tracker')
+  const [draft, existing] = read([first,second]).data
+  assert.deepEqual(draft,{type:'Product',id:'new-tracker',attributes:{name:'Tracker',images:[image],brand:{name:'Example brand'}}})
+  assert.deepEqual(existing,second)
+  assert.deepEqual(read(first).data,[draft])
+  assert.throws(()=>read([first,{type:'Service',id:'visit',attributes:{name:'Consultation'}}]), {message:'public_offering_draft_mixed_types'})
+  assert.throws(()=>read([second,second]), {message:'public_offering_catalog_invalid'})
+  assert.throws(()=>read({...first,attributes:{...first.attributes,images:[image]}}), {message:'public_offering_catalog_invalid'})
+  assert.throws(()=>read({...first,attributes:{...first.attributes,controllerEmail:'private'}}), {message:'public_offering_catalog_invalid'})
+  assert.throws(()=>catalog.readPublicOfferingSubmission(read(first),item), {message:'public_offering_catalog_invalid'})
+})
+
+test('opens existing listings in the same draft format while keeping identifiers and all editable offer data', () => {
+  const listing = {...item, brand:{name:'Tracker'}, images:['https://example.invalid/tracker.png']}
+  const [original] = readPublicOfferingCatalog([listing])
+  const {id,type,publisher,sector,demo,...attributes} = original
+  const document = catalog.projectPublicOfferingDraftDocument([original])
+  assert.deepEqual(document,{jsonapi:{version:'1.1'},data:[{id,type,attributes}]})
+  assert.deepEqual(catalog.readPublicOfferingSubmission(document,{publisher,sector,demo}),[original])
+})
+
+test('maps Schema.org image, brand, manufacturer, territory and recurring price attributes into editable fields',()=>{
+  const original={...item,manufacturer:{id:'maker',name:'Example maker'},brand:{name:'Tracker',logoUrl:'https://example.invalid/logo.png'},
+    images:['https://example.invalid/image.png'],offers:[{...item.offers[1],plans:[{
+      name:'Basic',currency:'EUR',features:[],monthly:'3.95',annually:'39.50',
+    }]}]}
+  const attributes=catalog.projectPublicOfferingJsonLd(original)
+  const document=catalog.readPublicOfferingDraftDocument({data:{id:original.id,type:'Product',attributes}})
+  const [published]=catalog.readPublicOfferingSubmission(document,original)
+  assert.deepEqual(published.brand,original.brand)
+  assert.deepEqual(published.manufacturer,original.manufacturer)
+  assert.deepEqual(published.images,original.images)
+  assert.deepEqual(published.offers[0].eligibleRegions,original.offers[0].eligibleRegions)
+  assert.deepEqual(published.offers[0].plans,original.offers[0].plans)
+})
 
 test('finds one product with matching distributor offers, independently of publisher location', () => {
   const catalog = readPublicOfferingCatalog([item])
