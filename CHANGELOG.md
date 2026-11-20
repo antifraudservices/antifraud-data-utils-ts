@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- Keep public offerings distinct by publisher, resource type and ID.
 - Convert homogeneous Schema.org JSON:API documents and published listings to
   the same editable draft format, with shared publication-field validation.
 

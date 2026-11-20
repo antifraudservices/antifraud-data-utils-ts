@@ -47,6 +47,16 @@ export type PublicOfferingDraftDocument = Readonly<{
   data: readonly PublicOfferingDraftResource[]
 }>
 
+/** JSON:API resource identity within one publisher's catalogue. */
+export function publicOfferingResourceKey(offering: Pick<PublicOffering, 'type' | 'id'>): string {
+  return `${offering.type}/${offering.id}`
+}
+
+/** Listing identity when feeds from multiple publishers are combined. */
+export function publicOfferingListingKey(offering: Pick<PublicOffering, 'publisher' | 'type' | 'id'>): string {
+  return JSON.stringify([offering.publisher.id, publicOfferingResourceKey(offering)])
+}
+
 export function publicOfferingMediaClaimKeys(type: 'Product' | 'Service') {
   const prefix = `org.schema.${type}`
   return {images:`${prefix}.image.contentUrl`, brand:`${prefix}.brand.name`, logo:`${prefix}.brand.logo.contentUrl`,
@@ -151,7 +161,7 @@ export function readPublicOfferingCatalog(value: unknown): readonly PublicOfferi
       ...(item.url === undefined ? {} : {url: url(item.url)}), ...media, offers: Object.freeze(offers),
     })
   })
-  uniqueIds(items)
+  if (new Set(items.map(publicOfferingListingKey)).size !== items.length) return invalid()
   return Object.freeze(items)
 }
 
