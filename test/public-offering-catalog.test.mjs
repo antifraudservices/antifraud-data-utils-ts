@@ -68,6 +68,17 @@ test('requires a country for subdivisions and rejects ambiguous or conflicting c
   assert.throws(() => readPublicOfferingCatalog([{...item, verified: true}]))
 })
 
+test('keeps offerings distinct by publisher, resource type and ID while rejecting true duplicates', () => {
+  const service = {...item, type: 'Service', name: 'Setup service'}
+  const anotherPublisher = {...item, publisher: {id: 'another-publisher', name: 'Another publisher'}}
+  const offerings = readPublicOfferingCatalog([item, service, anotherPublisher])
+  assert.equal(offerings.length, 3)
+  assert.notEqual(catalog.publicOfferingResourceKey(item), catalog.publicOfferingResourceKey(service))
+  assert.equal(catalog.publicOfferingResourceKey(item), catalog.publicOfferingResourceKey(anotherPublisher))
+  assert.equal(new Set(offerings.map(catalog.publicOfferingListingKey)).size, 3)
+  assert.throws(() => readPublicOfferingCatalog([item, {...item, name: 'Same listing'}]))
+})
+
 test('projects product and seller offers without declaring an API or clinical certification', () => {
   const json = projectPublicOfferingJsonLd(readPublicOfferingCatalog([item])[0])
   assert.equal(json['@type'], 'Product')
