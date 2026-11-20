@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## 0.4.4 - 2026-11-20
 
 - Keep public offerings distinct by publisher, resource type and ID.
 - Convert homogeneous Schema.org JSON:API documents and published listings to
