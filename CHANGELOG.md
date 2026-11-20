@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.4.5 - 2026-11-20
+
 - Prepare Ocean dataset publications from Schema.org and linked catalogue
   services. Restore original v4/v5 DDO JSON from the privately retained source.
 - Project Ocean DDO v4 and v5 public dataset metadata and related data services
